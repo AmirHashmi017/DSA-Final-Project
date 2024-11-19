@@ -24,6 +24,9 @@
   <h1>Track Device Location with Dijkstra's Algorithm</h1>
   <p id="status">Checking location...</p>
   <input type="file" id="csvFile" accept=".csv" />
+  <h2>Upload Points CSV</h2>
+  <input type="file" id="pointsCsvFile" accept=".csv" />
+  <button id="showPointsBtn">Show Points on Map</button>
   <div id="map"></div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -88,6 +91,73 @@
         loadCsvData(file);
       }
     });
+
+
+
+  // Global variable to store parsed points data
+  let pointsData = [];
+
+// Function to parse CSV for points and store data
+function loadPointsCsv(file) {
+  const reader = new FileReader();
+
+  reader.onload = function (event) {
+    const csvData = event.target.result;
+    const rows = csvData.split("\n");
+
+    // Skip the header row and parse each row
+    pointsData = rows.slice(1).map(row => {
+      const columns = row.split(";");
+      if (columns.length === 2) {
+        const name = columns[0].trim();
+        const [latitude, longitude] = columns[1].split(",").map(coord => parseFloat(coord.trim()));
+
+        // Validate coordinates
+        if (!isNaN(latitude) && !isNaN(longitude)) {
+          return { name, latitude, longitude };
+        }
+      }
+      return null;
+    }).filter(point => point !== null); // Filter out invalid rows
+  };
+
+  reader.readAsText(file);
+}
+
+// Function to display points on the map
+function displayPointsOnMap() {
+  if (pointsData.length === 0) {
+    alert("No points data loaded! Please upload a valid CSV file.");
+    return;
+  }
+
+  pointsData.forEach(point => {
+    L.marker([point.latitude, point.longitude])
+      .addTo(map)
+      .bindPopup(`<b>${point.name}</b><br>Lat: ${point.latitude}, Lng: ${point.longitude}`);
+  });
+}
+
+// Event listener for points CSV upload
+document.getElementById('pointsCsvFile').addEventListener('change', function (event) {
+  const file = event.target.files[0];
+  if (file) {
+    loadPointsCsv(file);
+    alert("Points CSV loaded successfully. Click 'Show Points on Map' to display them.");
+  }
+});
+
+// Event listener for "Show Points on Map" button
+document.getElementById('showPointsBtn').addEventListener('click', displayPointsOnMap);
+
+
+
+
+
+
+
+
+
 
     // Geolocation to get the current device location
     if (navigator.geolocation) {

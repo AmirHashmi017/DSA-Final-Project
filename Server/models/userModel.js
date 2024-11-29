@@ -35,4 +35,5 @@ const findUserByEmail = (email) => {
   return users.find((user) => user.email === email);
 };
 
+
 module.exports = { getUsers, saveUsers, validateUser, findUserByEmail };

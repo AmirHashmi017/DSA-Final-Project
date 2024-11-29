@@ -1,3 +1,4 @@
+const fs = require("fs");
 class Node 
 {
     constructor(value) 
@@ -63,3 +64,5 @@ class Queue
         return false;
     }
 }
+
+module.exports = Queue;

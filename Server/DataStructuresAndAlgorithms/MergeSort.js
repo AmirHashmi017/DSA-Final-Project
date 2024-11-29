@@ -1,4 +1,5 @@
-function MergeSort(array)
+const fs = require("fs");
+const MergeSort=(array)=>
 {
     if(array.length<=1)
     {
@@ -43,6 +44,4 @@ function Merge(LeftArray,RightArray)
     return output;
 }
 
-let array=[10,3,5,1,4,-12,'A']
-let sorted=MergeSort(array)
-console.log(sorted)
+module.exports = MergeSort;

@@ -1,16 +1,10 @@
-const fs = require("fs");
-const jwt = require("jsonwebtoken");
 const {
-  GetSearchedLocations,
-  SaveSearchedLocations,
+  SearchedLocationStack,
   validateSearchedLocation,
+  LoadSearchedLocationsFromFile,
+  SaveSearchedLocationsToFile,
 } = require("../models/SearchedLocationsModel");
-
 const LocationClass = require("../Classes/LocationClass.js");
-const Stack = require("../DataStructuresAndAlgorithms/Stack.js");
-
-const SECRET_KEY = "987654321";
-const locationStack = new Stack(); 
 
 const AddSearchedLocation = async (req, res) => {
   const { UserID, SourceLocation, DestinationLocation } = req.body;
@@ -21,56 +15,62 @@ const AddSearchedLocation = async (req, res) => {
 
   const newLocation = new LocationClass(UserID, SourceLocation, DestinationLocation);
   if (!validateSearchedLocation(newLocation)) {
-    return res.status(400).json({ message: "Invalid Search History format" });
+    return res.status(400).json({ message: "Invalid location format" });
   }
 
 
-  locationStack.Push(newLocation);
-  const currentLocations = GetSearchedLocations();
-  currentLocations.push(newLocation);
-  SaveSearchedLocations(currentLocations);
+  SearchedLocationStack.Push(newLocation);
+  SaveSearchedLocationsToFile();
 
-  res.status(201).json({ message: "Search History added successfully", location: newLocation });
+  res.status(201).json({ message: "Location added successfully", location: newLocation });
 };
 
 const GetSearchedLocationBYID = async (req, res) => {
-    const { UserID } = req.params; 
+  const { UserID } = req.params;
 
-    const locations = GetSearchedLocations();
-
-    if (UserID) {
-      const userLocations = locations.filter(location => location.UserID === parseInt(UserID));
-      if (userLocations.length === 0) {
-        return res.status(404).json({ message: "No search history found for the given UserID" });
-      }
-      return res.status(200).json(userLocations);
-    }
-    else{
+  if (!UserID) {
     return res.status(400).json({ message: "UserID is required in the path." });
+  }
+  if(SearchedLocationStack.head==null)
+  {
+  LoadSearchedLocationsFromFile();
+  }
+  const userLocations = [];
+  let current = SearchedLocationStack.head;
+  console.log(current.value);
+  while (current) {
+    const location = current.value;
+    if (location.UserID === parseInt(UserID)) {
+      userLocations.push(location);
     }
-  };
-  
+    current = current.next;
+  }
+
+  if (userLocations.length === 0) {
+    return res.status(404).json({ message: "No locations found for the given UserID" });
+  }
+
+  res.status(200).json(userLocations);
+};
 
 const DeleteSearchedLocation = async (req, res) => {
   const { UserID, SourceLocation, DestinationLocation } = req.body;
 
   if (!UserID || !SourceLocation || !DestinationLocation) {
-    return res.status(400).json({ message: "All fields are required" });
+      return res.status(400).json({ message: "All fields are required" });
   }
 
-  const locations = GetSearchedLocations();
-  const updatedLocations = locations.filter(
-    (location) =>
-      !(location.UserID === UserID && location.SourceLocation === SourceLocation && location.DestinationLocation === DestinationLocation)
-  );
+  const locationToDelete = new LocationClass(UserID, SourceLocation, DestinationLocation);
+  const deletedLocation = SearchedLocationStack.DeleteSpecific(locationToDelete);
 
-  if (locations.length === updatedLocations.length) {
-    return res.status(404).json({ message: "Search History not found" });
+  if (!deletedLocation) {
+      return res.status(404).json({ message: "Location not found" });
   }
 
-  SaveSearchedLocations(updatedLocations);
+  SaveSearchedLocationsToFile(SearchedLocationStack);
 
-  res.status(200).json({ message: "Search History deleted successfully" });
+  res.status(200).json({ message: "Location History deleted successfully", location: deletedLocation });
 };
+
 
 module.exports = { AddSearchedLocation, GetSearchedLocationBYID, DeleteSearchedLocation };

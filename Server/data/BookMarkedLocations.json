@@ -8,5 +8,10 @@
     "UserID": 2,
     "SourceLocation": "Chemical Department",
     "DestinationLocation": "Mechanical Department"
+  },
+  {
+    "UserID": 2,
+    "SourceLocation": "CS Department",
+    "DestinationLocation": "Physics Department"
   }
 ]

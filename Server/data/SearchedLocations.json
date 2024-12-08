@@ -2,11 +2,11 @@
   {
     "UserID": 1,
     "SourceLocation": "CS Department",
-    "DestinationLocation": "Electrical Department"
+    "DestinationLocation": "Chemical Department"
   },
   {
-    "UserID": 2,
-    "SourceLocation": "CE Department",
-    "DestinationLocation": "Physics Department"
+    "UserID": 1,
+    "SourceLocation": "CS Department",
+    "DestinationLocation": "Electrical Department"
   }
 ]

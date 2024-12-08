@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ContentSection from './ContentSection';  // Import the new ContentSection component
 
 const Sidebar = () => {
   const [activeIcon, setActiveIcon] = useState(null);  // State to track active icon
@@ -77,51 +78,36 @@ const Sidebar = () => {
       </div>
 
       {/* Content Area */}
-      <div className="flex-grow absolute h-full bg-transparent  z-[9999] left-24">
+      <div className="flex-grow absolute h-full  z-[9999] left-24">
         {/* Show the corresponding div based on active icon */}
         {activeIcon === 'saved' && (
-          <div className="w-full h-full bg-white p-6 shadow-lg rounded-lg">
-            <div className="flex justify-between items-center">
-              <h3 className="text-xl font-semibold mb-4">Saved Locations</h3>
-              <button onClick={handleClose} className="text-xl text-gray-500 hover:text-red-600">
-                <i className="fa-solid fa-xmark"></i>
-              </button>
-            </div>
-            <p>Your saved items will appear here.</p>
-          </div>
+          <ContentSection 
+            title="Saved Locations" 
+            source="Your saved items will appear here." 
+            destination="Your saved items will appear here." 
+            onClose={handleClose}
+          />
         )}
         {activeIcon === 'topVisited' && (
-          <div className="w-full h-full bg-white p-6 shadow-lg rounded-lg">
-            <div className="flex justify-between items-center">
-              <h3 className="text-xl font-semibold mb-4">Top Visited Locations</h3>
-              <button onClick={handleClose} className="text-xl text-gray-500 hover:text-red-600">
-                <i className="fa-solid fa-xmark"></i>
-              </button>
-            </div>
-            <p>Your top visited locations will appear here.</p>
-          </div>
+          <ContentSection 
+            title="Top Visited Locations" 
+            content="Your top visited locations will appear here." 
+            onClose={handleClose}
+          />
         )}
         {activeIcon === 'recent' && (
-          <div className="w-full h-full bg-white p-6 shadow-lg rounded-lg">
-            <div className="flex justify-between items-center">
-              <h3 className="text-xl font-semibold mb-4">Recent Searches</h3>
-              <button onClick={handleClose} className="text-xl text-gray-500 hover:text-red-600">
-                <i className="fa-solid fa-xmark"></i>
-              </button>
-            </div>
-            <p>Your recent searches will appear here.</p>
-          </div>
+          <ContentSection 
+            title="Recent Searches" 
+            content="Your recent searches will appear here." 
+            onClose={handleClose}
+          />
         )}
         {activeIcon === 'devices' && (
-          <div className="w-full h-full bg-white p-6 shadow-lg rounded-lg">
-            <div className="flex justify-between items-center">
-              <h3 className="text-xl font-semibold mb-4">Devices</h3>
-              <button onClick={handleClose} className="text-xl text-gray-500 hover:text-red-600">
-                <i className="fa-solid fa-xmark"></i>
-              </button>
-            </div>
-            <p>Your devices will appear here.</p>
-          </div>
+          <ContentSection 
+            title="Devices" 
+            content="Your devices will appear here." 
+            onClose={handleClose}
+          />
         )}
       </div>
     </div>

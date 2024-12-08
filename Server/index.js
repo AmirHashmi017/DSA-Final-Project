@@ -1,11 +1,12 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const bookMarkedLocationsRoutes = require("./routes/BookMarkedLocationsRoutes.js");
 const authRoutes = require("./routes/userRoute.js");
 const locationHistoryRoutes = require("./routes/locationHistoryRoutes.js");
 
 const app = express();
 
-// Middleware
+app.use(bodyParser.json());
 app.use(express.json());
 
 // Routes

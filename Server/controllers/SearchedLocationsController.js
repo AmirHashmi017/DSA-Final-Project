@@ -37,7 +37,7 @@ const GetSearchedLocationBYID = async (req, res) => {
   }
   const userLocations = [];
   let current = SearchedLocationStack.head;
-  console.log(current.value);
+  console.log(SearchedLocationStack.Peek());
   while (current) {
     const location = current.value;
     if (location.UserID === parseInt(UserID)) {

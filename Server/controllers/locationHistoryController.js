@@ -9,7 +9,7 @@ const DoublyLinkedList = require("../DataStructuresAndAlgorithms/LinkedList.js")
 const locationHistoryList = new DoublyLinkedList();
 
 const addLocationHistory = async (req, res) => {
-  const { userId, longitude, latitude, timestamp } = req.body;
+  const { userId, longitude, latitude, timestamp, deviceName } = req.body;
 
   if (!userId || !longitude || !latitude || !timestamp) {
     return res.status(400).json({ message: "All fields are required" });
@@ -19,7 +19,8 @@ const addLocationHistory = async (req, res) => {
     userId,
     longitude,
     latitude,
-    timestamp
+    timestamp,
+    deviceName
   );
 
   if (!validateLocation(newLocation)) {
@@ -56,9 +57,9 @@ const getLocationHistory = async (req, res) => {
 };
 
 const deleteLocationHistory = async (req, res) => {
-  const { userId, longitude, latitude, timestamp } = req.body;
-
-  if (!userId || !longitude || !latitude || !timestamp) {
+  const { userId, longitude, latitude, timestamp, deviceName } = req.body;
+  console.log(userId, longitude, latitude, timestamp, deviceName);
+  if (!userId || !longitude || !latitude || !timestamp || !deviceName) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
@@ -68,7 +69,8 @@ const deleteLocationHistory = async (req, res) => {
       location.userId === userId &&
       location.longitude === longitude &&
       location.latitude === latitude &&
-      location.timestamp === timestamp
+      location.timestamp === timestamp &&
+      location.deviceName === deviceName
   );
 
   if (locationIndex === -1) {

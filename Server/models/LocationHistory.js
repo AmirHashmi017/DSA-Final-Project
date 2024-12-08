@@ -9,6 +9,7 @@ const LocationHistorySchema = {
   longitude: "number",
   latitude: "number",
   timestamp: "string",
+  deviceName: "string",
 };
 
 const validateLocation = (location) => {
@@ -26,7 +27,8 @@ const GetLocationHistory = () => {
         item.userId,
         item.longitude,
         item.latitude,
-        item.timestamp
+        item.timestamp,
+        item.deviceName
       )
   );
 };
@@ -37,6 +39,7 @@ const saveLocationHistory = (locations) => {
     longitude: loc.longitude,
     latitude: loc.latitude,
     timestamp: loc.timestamp,
+    deviceName: loc.deviceName,
   }));
   fs.writeFileSync(filePath, JSON.stringify(dataToSave, null, 2));
 };

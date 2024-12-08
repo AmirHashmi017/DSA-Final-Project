@@ -6,18 +6,35 @@ export const AuthContext = createContext();
 // AuthContext Provider Component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const baseRoute = "http://192.168.43.116:3000";
 
   // Login function
-  const login = (userData) => {
-    setUser(userData);
-    // Optionally, persist the user data to AsyncStorage or SecureStore
+  const login = async (userData) => {
+    try {
+      console.log("Login: ", userData);
+      const response = await fetch(`${baseRoute}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        setUser(data?.user);
+      } else {
+        console.log("Error: ", data.message);
+      }
+    } catch (error) {
+      console.log("Error: ", error);
+    }
   };
 
   // Logout function
   const logout = () => {
     console.log("Logout");
     setUser(null);
-    // Optionally, clear the persisted data
   };
 
   // Function to get user details

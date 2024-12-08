@@ -9,9 +9,11 @@ import {
   Animated,
   Easing,
   Image,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
+import * as Location from "expo-location";
 import { AuthContext } from "../utils/AuthContext";
 
 const HomeScreen = ({ navigation }) => {
@@ -20,8 +22,8 @@ const HomeScreen = ({ navigation }) => {
   const rotation = new Animated.Value(0);
   const { setUser } = useContext(AuthContext);
 
-  const handleShareLocation = () => {
-    // Simulate sharing location with animation
+  const handleShareLocation = async () => {
+    // Start rotation animation
     Animated.loop(
       Animated.timing(rotation, {
         toValue: 1,
@@ -31,14 +33,36 @@ const HomeScreen = ({ navigation }) => {
       })
     ).start();
 
-    setTimeout(() => {
-      rotation.stopAnimation(); // Stop animation after 3 seconds
-      setConnected(true); // Set connected status
-    }, 3000);
-  };
+    try {
+      // Request location permissions
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("Permission denied", "Location permissions are required.");
+        rotation.stopAnimation();
+        return;
+      }
 
-  const handleLogout = () => {
-    setUser(null);
+      // Get the current location
+      const currentLocation = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = currentLocation.coords;
+      const timestamp = new Date(currentLocation.timestamp).toLocaleString();
+
+      // Log latitude, longitude, and timestamp
+      console.log("Device Name:", location);
+      console.log("Latitude:", latitude);
+      console.log("Longitude:", longitude);
+      console.log("Timestamp:", timestamp);
+
+      // Simulate connection success after 3 seconds
+      setTimeout(() => {
+        rotation.stopAnimation();
+        setConnected(true);
+      }, 3000);
+    } catch (error) {
+      console.error("Error fetching location:", error);
+      Alert.alert("Error", "Could not fetch location. Please try again.");
+      rotation.stopAnimation();
+    }
   };
 
   const rotationStyle = {
@@ -58,11 +82,6 @@ const HomeScreen = ({ navigation }) => {
       style={styles.gradientContainer}
     >
       <SafeAreaView style={styles.container}>
-        {/* Logout icon at the top right */}
-        {/* <TouchableOpacity
-          onPress={handleLogout}
-          style={styles.logoutIconContainer}
-          ></TouchableOpacity> */}
         <Text style={styles.title}>Share Your Device Location</Text>
         <Image
           source={{
@@ -117,11 +136,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 24,
-  },
-  logoutIconContainer: {
-    position: "absolute",
-    top: 20,
-    right: 20,
   },
   title: {
     fontSize: 24,

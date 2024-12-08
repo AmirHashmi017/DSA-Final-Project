@@ -8,7 +8,7 @@ import { AuthContext } from "../utils/AuthContext.js";
 const Stack = createStackNavigator();
 
 const AppStack = () => {
-  const { setUser } = useContext(AuthContext);
+  const { logout, user } = useContext(AuthContext);
   return (
     <Stack.Navigator
       screenOptions={{
@@ -16,7 +16,7 @@ const AppStack = () => {
           backgroundColor: "#4facfe",
         },
         headerStyle: {
-          backgroundColor: "#fff", // white background
+          backgroundColor: "#fff",
         },
         headerTintColor: "#4facfe",
         // headerTintColor: "#fff",
@@ -30,12 +30,12 @@ const AppStack = () => {
             size={30}
             color="#4facfe"
             style={styles.logoutIcon}
-            onPress={() => setUser(null)}
+            onPress={() => logout()}
           />
         ),
       }}
     >
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name={user?.email} component={HomeScreen} />
     </Stack.Navigator>
   );
 };

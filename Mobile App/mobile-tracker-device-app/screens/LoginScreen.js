@@ -14,22 +14,24 @@ import { AuthContext } from "../utils/AuthContext.js";
 
 const LoginScreen = ({ navigation }) => {
   const { setUser } = useContext(AuthContext);
-  const [username, setUsername] = useState("");
+  const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const { login } = useContext(AuthContext);
+
   const handleLogin = () => {
-    if (username && password) {
-      setUser({ username });
+    if (email && password) {
+      login({ email, password });
     } else {
-      alert("Please enter username and password");
+      alert("Please enter email and password");
     }
   };
 
   return (
     <LinearGradient
-      colors={["#4facfe", "#00f2fe"]} // Example color scheme (change as needed)
+      colors={["#4facfe", "#00f2fe"]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       style={styles.gradientContainer}
@@ -51,10 +53,10 @@ const LoginScreen = ({ navigation }) => {
               <View style={styles.inputContainer}>
                 <TextInput
                   style={styles.input}
-                  placeholder="Username"
+                  placeholder="email"
                   placeholderTextColor="#B0B3C3"
-                  value={username}
-                  onChangeText={setUsername}
+                  value={email}
+                  onChangeText={setemail}
                 />
               </View>
               <View style={styles.inputContainer}>
@@ -80,10 +82,10 @@ const LoginScreen = ({ navigation }) => {
                   <Switch
                     value={rememberMe}
                     onValueChange={setRememberMe}
-                    trackColor={{ false: "#E0E0E0", true: "#4facfe" }} // Updated to match theme
+                    trackColor={{ false: "#E0E0E0", true: "#4facfe" }}
                     thumbColor="#FFFFFF"
                   />
-                  <Text style={styles.rememberText}>Remember me</Text>
+                  <Text style={styles.rememberText}>Remember me </Text>
                 </View>
                 <TouchableOpacity>
                   <Text style={styles.forgotPassword}>Forgot Password?</Text>

@@ -1,17 +1,11 @@
-const fs = require("fs");
-const jwt = require("jsonwebtoken");
 const {
-  GetBookMarkedLocations,
-  SaveBookMarkedLocations,
+  locationsQueue,
   validateLocation,
+  LoadLocationsFromFile,
+  SaveLocationsToFile,
   IsLocationExist,
 } = require("../models/BookMarkedLocationsModel");
-
 const LocationClass = require("../Classes/LocationClass.js");
-const Queue = require("../DataStructuresAndAlgorithms/Queue.js");
-
-const SECRET_KEY = "987654321";
-const locationQueue = new Queue(); 
 
 const AddLocation = async (req, res) => {
   const { UserID, SourceLocation, DestinationLocation } = req.body;
@@ -29,52 +23,57 @@ const AddLocation = async (req, res) => {
     return res.status(400).json({ message: "Location already bookmarked" });
   }
 
-  locationQueue.Enqueue(newLocation);
-  const currentLocations = GetBookMarkedLocations();
-  currentLocations.push(newLocation);
-  SaveBookMarkedLocations(currentLocations);
+  locationsQueue.Enqueue(newLocation);
+  SaveLocationsToFile();
 
   res.status(201).json({ message: "Location added successfully", location: newLocation });
 };
 
 const GetLocationBYID = async (req, res) => {
-    const { UserID } = req.params; 
+  const { UserID } = req.params;
 
-    const locations = GetBookMarkedLocations();
-
-    if (UserID) {
-      const userLocations = locations.filter(location => location.UserID === parseInt(UserID));
-      if (userLocations.length === 0) {
-        return res.status(404).json({ message: "No locations found for the given UserID" });
-      }
-      return res.status(200).json(userLocations);
-    }
-    else{
+  if (!UserID) {
     return res.status(400).json({ message: "UserID is required in the path." });
+  }
+  if(locationsQueue.head==null)
+  {
+  LoadLocationsFromFile();
+  }
+  const userLocations = [];
+  let current = locationsQueue.head;
+  while (current) {
+    const location = current.value;
+    if (location.UserID === parseInt(UserID)) {
+      userLocations.push(location);
     }
-  };
-  
+    current = current.next;
+  }
+
+  if (userLocations.length === 0) {
+    return res.status(404).json({ message: "No locations found for the given UserID" });
+  }
+
+  res.status(200).json(userLocations);
+};
 
 const DeleteLocation = async (req, res) => {
   const { UserID, SourceLocation, DestinationLocation } = req.body;
 
   if (!UserID || !SourceLocation || !DestinationLocation) {
-    return res.status(400).json({ message: "All fields are required" });
+      return res.status(400).json({ message: "All fields are required" });
   }
 
-  const locations = GetBookMarkedLocations();
-  const updatedLocations = locations.filter(
-    (location) =>
-      !(location.UserID === UserID && location.SourceLocation === SourceLocation && location.DestinationLocation === DestinationLocation)
-  );
+  const locationToDelete = new LocationClass(UserID, SourceLocation, DestinationLocation);
+  const deletedLocation = locationsQueue.DeleteSpecific(locationToDelete);
 
-  if (locations.length === updatedLocations.length) {
-    return res.status(404).json({ message: "Location not found" });
+  if (!deletedLocation) {
+      return res.status(404).json({ message: "Location not found" });
   }
 
-  SaveBookMarkedLocations(updatedLocations);
+  SaveLocationsToFile(locationsQueue);
 
-  res.status(200).json({ message: "Location deleted successfully" });
+  res.status(200).json({ message: "Location deleted successfully", location: deletedLocation });
 };
+
 
 module.exports = { AddLocation, GetLocationBYID, DeleteLocation };

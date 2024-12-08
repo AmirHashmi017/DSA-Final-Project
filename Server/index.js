@@ -6,16 +6,13 @@ const searchedLocationsRoutes = require("./routes/SearchedLocationsRoutes.js");
 
 const app = express();
 
-// Middleware
 app.use(express.json());
 
-// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/BookMarkedLocations", bookMarkedLocationsRoutes);
 app.use("/api/SearchedLocations", searchedLocationsRoutes);
 app.use("/api/locationHistory", locationHistoryRoutes);
 
-// Start Server
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

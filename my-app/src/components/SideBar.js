@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import ContentSection from './ContentSection';  // Import the new ContentSection component
+import { AuthContext } from '../utils/AuthContext';
 
 const Sidebar = () => {
+  const { login } = useContext(AuthContext);
   const [activeIcon, setActiveIcon] = useState(null);  // State to track active icon
 
   // Function to handle icon click
   const handleIconClick = (iconName) => {
     // Toggle the active icon on click
     setActiveIcon(activeIcon === iconName ? null : iconName);
+    const loginData = {
+      email: 'sher@example.com',
+      password: 'password123'
+    }
+    login(loginData);
   };
 
   // Function to handle closing of the active icon
@@ -24,7 +31,7 @@ const Sidebar = () => {
         </h2>
         <ul className="">
           {/* Saved Icon */}
-          <li 
+          <li
             className="cursor-pointer text-gray-500 hover:text-blue-600 flex flex-col justify-center items-center text-center mb-5"
             onClick={() => handleIconClick('saved')}
           >
@@ -35,7 +42,7 @@ const Sidebar = () => {
           </li>
 
           {/* Top Visited Icon */}
-          <li 
+          <li
             className="cursor-pointer text-gray-500 hover:text-blue-600 flex flex-col justify-center items-center text-center mb-5"
             onClick={() => handleIconClick('topVisited')}
           >
@@ -46,7 +53,7 @@ const Sidebar = () => {
           </li>
 
           {/* Recent Icon */}
-          <li 
+          <li
             className="cursor-pointer text-gray-500 hover:text-blue-600 flex flex-col justify-center items-center text-center mb-5"
             onClick={() => handleIconClick('recent')}
           >
@@ -57,7 +64,7 @@ const Sidebar = () => {
           </li>
 
           {/* Devices Icon */}
-          <li 
+          <li
             className="cursor-pointer text-gray-500 hover:text-blue-600 flex flex-col justify-center items-center text-center mb-5"
             onClick={() => handleIconClick('devices')}
           >
@@ -81,31 +88,31 @@ const Sidebar = () => {
       <div className="flex-grow absolute h-full  z-[9999] left-24">
         {/* Show the corresponding div based on active icon */}
         {activeIcon === 'saved' && (
-          <ContentSection 
-            title="Saved Locations" 
-            source="Your saved items will appear here." 
-            destination="Your saved items will appear here." 
+          <ContentSection
+            title="Saved Locations"
+            source="Your saved items will appear here."
+            destination="Your saved items will appear here."
             onClose={handleClose}
           />
         )}
         {activeIcon === 'topVisited' && (
-          <ContentSection 
-            title="Top Visited Locations" 
-            content="Your top visited locations will appear here." 
+          <ContentSection
+            title="Top Visited Locations"
+            content="Your top visited locations will appear here."
             onClose={handleClose}
           />
         )}
         {activeIcon === 'recent' && (
-          <ContentSection 
-            title="Recent Searches" 
-            content="Your recent searches will appear here." 
+          <ContentSection
+            title="Recent Searches"
+            content="Your recent searches will appear here."
             onClose={handleClose}
           />
         )}
         {activeIcon === 'devices' && (
-          <ContentSection 
-            title="Devices" 
-            content="Your devices will appear here." 
+          <ContentSection
+            title="Devices"
+            content="Your devices will appear here."
             onClose={handleClose}
           />
         )}

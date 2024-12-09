@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const bookMarkedLocationsRoutes = require("./routes/BookMarkedLocationsRoutes.js");
 const authRoutes = require("./routes/userRoute.js");
 const locationHistoryRoutes = require("./routes/locationHistoryRoutes.js");
@@ -7,6 +8,7 @@ const TopVisitedLocationsRoutes = require("./routes/TopVisitedLocationsRoutes.js
 
 const app = express();
 
+app.use(bodyParser.json());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);

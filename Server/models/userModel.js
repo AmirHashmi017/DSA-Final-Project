@@ -1,12 +1,13 @@
 const fs = require("fs");
 const path = require("path");
+const User = require("../Classes/UserClass");
 
 const filePath = path.join(__dirname, "../data/users.json");
 
 // Define the user schema
 const userSchema = {
-  id: "number",
-  name: "string",
+  userId: "number",
+  userName: "string",
   email: "string",
   password: "string",
 };
@@ -21,7 +22,8 @@ const validateUser = (user) => {
 // Get all users from the file
 const getUsers = () => {
   const data = fs.readFileSync(filePath, "utf8");
-  return JSON.parse(data);
+  const parsedData = JSON.parse(data);
+  return parsedData;
 };
 
 // Save users to the file
@@ -29,11 +31,25 @@ const saveUsers = (users) => {
   fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
 };
 
-// Find a user by email
-const findUserByEmail = (email) => {
-  const users = getUsers(); // Future Improvement: Use a hashmaps to store users
-  return users.find((user) => user.email === email);
+const addUser = (user) => {
+  if (!validateUser(user)) {
+    throw new Error("Invalid user data");
+  }
+  const users = getUsers();
+  users[user.email] = user;
+  saveUsers(users);
 };
 
+// Find a user by email
+const findUserByEmail = (email) => {
+  const users = getUsers();
+  return users[email] || null;
+};
 
-module.exports = { getUsers, saveUsers, validateUser, findUserByEmail };
+module.exports = {
+  getUsers,
+  saveUsers,
+  validateUser,
+  findUserByEmail,
+  addUser,
+};

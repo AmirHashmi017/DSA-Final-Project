@@ -12,7 +12,6 @@ const userSchema = {
   password: "string",
 };
 
-// Validate user data
 const validateUser = (user) => {
   return Object.keys(userSchema).every(
     (key) => typeof user[key] === userSchema[key]

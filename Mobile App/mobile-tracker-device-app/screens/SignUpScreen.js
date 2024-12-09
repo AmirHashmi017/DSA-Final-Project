@@ -5,15 +5,16 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Switch,
   StyleSheet,
   Image,
   SafeAreaView,
+  ToastAndroid,
 } from "react-native";
 import { AuthContext } from "../utils/AuthContext";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const SignupScreen = ({ navigation }) => {
-  const [email, setemail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
 
@@ -23,7 +24,7 @@ const SignupScreen = ({ navigation }) => {
     if (email && password && userName) {
       signUp({ email, userName, password });
     } else {
-      alert("Please enter all fields");
+      ToastAndroid.show("Please enter all fields", ToastAndroid.SHORT);
     }
   };
 
@@ -37,7 +38,7 @@ const SignupScreen = ({ navigation }) => {
       <SafeAreaView style={styles.container}>
         <Image
           source={{
-            uri: "https://cdn1.iconfinder.com/data/icons/daily-business-illustrations/1000/illustration2-128.png",
+            uri: "https://cdn1.iconfinder.com/data/icons/groovy-illustrations/1000/location___map_marker_pin_navigation_maps_person_people-128.png",
           }}
           style={styles.illustration}
           resizeMode="contain"
@@ -47,33 +48,59 @@ const SignupScreen = ({ navigation }) => {
             <Text style={styles.title}>Create Account</Text>
 
             <View style={styles.form}>
+              {/* Email Input */}
               <View style={styles.inputContainer}>
+                <MaterialIcons
+                  name="email"
+                  size={24}
+                  color="#4facfe"
+                  style={styles.icon}
+                />
                 <TextInput
                   style={styles.input}
-                  placeholder="email"
+                  placeholder="Email"
                   placeholderTextColor="#B0B3C3"
                   value={email}
-                  onChangeText={setemail}
+                  onChangeText={setEmail}
                 />
               </View>
+
+              {/* Username Input */}
               <View style={styles.inputContainer}>
+                <MaterialIcons
+                  name="person"
+                  size={24}
+                  color="#4facfe"
+                  style={styles.icon}
+                />
                 <TextInput
                   style={styles.input}
-                  placeholder="username"
+                  placeholder="Username"
                   placeholderTextColor="#B0B3C3"
                   value={userName}
                   onChangeText={setUserName}
                 />
               </View>
+
+              {/* Password Input */}
               <View style={styles.inputContainer}>
+                <MaterialIcons
+                  name="lock"
+                  size={24}
+                  color="#4facfe"
+                  style={styles.icon}
+                />
                 <TextInput
                   style={styles.input}
                   placeholder="Password"
                   placeholderTextColor="#B0B3C3"
                   value={password}
+                  secureTextEntry
                   onChangeText={setPassword}
                 />
               </View>
+
+              {/* Sign Up Button */}
               <TouchableOpacity
                 style={styles.signInButton}
                 onPress={handleSignUp}
@@ -122,12 +149,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "#333333",
     textAlign: "center",
-    marginBottom: 10,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#777777",
-    textAlign: "center",
     marginBottom: 20,
   },
   form: {
@@ -139,42 +160,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F8F9FD",
     borderRadius: 10,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     height: 50,
     marginBottom: 15,
+  },
+  icon: {
+    marginRight: 10,
   },
   input: {
     flex: 1,
     fontSize: 16,
     color: "#333333",
-  },
-  eyeIcon: {
-    paddingHorizontal: 10,
-  },
-  showPassword: {
-    color: "#4facfe",
-    fontSize: 14,
-    fontWeight: "600",
-  },
-  rememberContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  rememberMe: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  rememberText: {
-    marginLeft: 8,
-    fontSize: 14,
-    color: "#666666",
-  },
-  forgotPassword: {
-    fontSize: 14,
-    color: "#4facfe",
-    fontWeight: "600",
   },
   signInButton: {
     backgroundColor: "#4facfe",
@@ -186,21 +182,6 @@ const styles = StyleSheet.create({
   signInText: {
     color: "#FFFFFF",
     fontSize: 16,
-    fontWeight: "600",
-  },
-  signUpContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  signUpText: {
-    fontSize: 14,
-    color: "#777777",
-  },
-  signUpLink: {
-    fontSize: 14,
-    color: "#4facfe",
     fontWeight: "600",
   },
 });

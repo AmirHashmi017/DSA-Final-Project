@@ -1,4 +1,4 @@
-import React, { use, useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   Easing,
   Image,
   Alert,
+  ToastAndroid,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -21,11 +22,17 @@ const HomeScreen = ({ navigation }) => {
   const [deviceName, setDeviceName] = useState("");
   const [connected, setConnected] = useState(false);
   const rotation = new Animated.Value(0);
+  const [hasLocationShared, setHasLocationShared] = useState(false);
 
   const { user } = useContext(AuthContext);
   const { addLocationHistory } = useContext(LocationHistoryContext);
 
   const handleShareLocation = async () => {
+    if (!deviceName) {
+      ToastAndroid.show("Please enter device name", ToastAndroid.SHORT);
+      return;
+    }
+
     // Start rotation animation
     Animated.loop(
       Animated.timing(rotation, {
@@ -40,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
       // Request location permissions
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        Alert.alert("Permission denied", "Location permissions are required.");
+        ToastAndroid.show("Location permission denied", ToastAndroid.SHORT);
         rotation.stopAnimation();
         return;
       }
@@ -65,14 +72,34 @@ const HomeScreen = ({ navigation }) => {
         timestamp,
       });
 
-      rotation.stopAnimation();
       setConnected(true);
+      rotation.stopAnimation();
     } catch (error) {
       console.error("Error fetching location:", error);
       Alert.alert("Error", "Could not fetch location. Please try again.");
       rotation.stopAnimation();
     }
   };
+
+  const startLocationSharing = () => {
+    handleShareLocation();
+    setHasLocationShared(true);
+  };
+
+  useEffect(() => {
+    let intervalRef = null;
+    if (hasLocationShared) {
+      intervalRef = setInterval(() => {
+        handleShareLocation();
+      }, 120000);
+    }
+
+    return () => {
+      if (intervalRef) {
+        clearInterval(intervalRef);
+      }
+    };
+  }, [hasLocationShared]);
 
   const rotationStyle = {
     transform: [
@@ -91,7 +118,7 @@ const HomeScreen = ({ navigation }) => {
       style={styles.gradientContainer}
     >
       <SafeAreaView style={styles.container}>
-        <Text style={styles.title}>Share Your Device Location</Text>
+        <Text style={styles.title}>Share Your Location</Text>
         <Image
           source={{
             uri: "https://cdn4.iconfinder.com/data/icons/pop-scenes/1000/real_estate_mobile_device___home_house_location_map_purchase-128.png",
@@ -110,7 +137,7 @@ const HomeScreen = ({ navigation }) => {
           />
           <TouchableOpacity
             style={styles.shareButton}
-            onPress={handleShareLocation}
+            onPress={startLocationSharing}
             disabled={connected}
           >
             <Text style={styles.shareText}>Share Location</Text>

@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }) => {
         setUser(data?.user);
       } else {
         console.log("Error: ", data.message);
+        ToastAndroid.show(data.message, ToastAndroid.SHORT);
       }
     } catch (error) {
       console.log("Error: ", error);
@@ -44,6 +45,9 @@ export const AuthProvider = ({ children }) => {
       if (response.ok) {
         ToastAndroid.show(data.message, ToastAndroid.SHORT);
         setUser(data?.user);
+      } else {
+        console.log("Error: ", data.message);
+        ToastAndroid.show(data.message, ToastAndroid.SHORT);
       }
     } catch (error) {
       console.log("Error: ", error);

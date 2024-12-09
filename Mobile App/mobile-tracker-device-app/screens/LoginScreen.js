@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { AuthContext } from "../utils/AuthContext.js";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { ToastAndroid } from "react-native";
 
 const LoginScreen = ({ navigation }) => {
   const [email, setemail] = useState("");
@@ -24,7 +26,7 @@ const LoginScreen = ({ navigation }) => {
     if (email && password) {
       login({ email, password });
     } else {
-      alert("Please enter email and password");
+      ToastAndroid.show("Please enter all fields", ToastAndroid.SHORT);
     }
   };
 
@@ -50,15 +52,27 @@ const LoginScreen = ({ navigation }) => {
 
             <View style={styles.form}>
               <View style={styles.inputContainer}>
+                <MaterialIcons
+                  name="email"
+                  size={20}
+                  color="#4facfe"
+                  style={styles.icon}
+                />
                 <TextInput
                   style={styles.input}
-                  placeholder="email"
+                  placeholder="Email"
                   placeholderTextColor="#B0B3C3"
                   value={email}
                   onChangeText={setemail}
                 />
               </View>
               <View style={styles.inputContainer}>
+                <MaterialIcons
+                  name="lock"
+                  size={20}
+                  color="#4facfe"
+                  style={styles.icon}
+                />
                 <TextInput
                   style={styles.input}
                   placeholder="Password"
@@ -71,9 +85,11 @@ const LoginScreen = ({ navigation }) => {
                   onPress={() => setShowPassword(!showPassword)}
                   style={styles.eyeIcon}
                 >
-                  <Text style={styles.showPassword}>
-                    {showPassword ? "Hide" : "Show"}
-                  </Text>
+                  <MaterialIcons
+                    name={showPassword ? "visibility" : "visibility-off"}
+                    size={20}
+                    color="#4facfe"
+                  />
                 </TouchableOpacity>
               </View>
               <View style={styles.rememberContainer}>
@@ -84,7 +100,7 @@ const LoginScreen = ({ navigation }) => {
                     trackColor={{ false: "#E0E0E0", true: "#4facfe" }}
                     thumbColor="#FFFFFF"
                   />
-                  <Text style={styles.rememberText}>Remember me </Text>
+                  <Text style={styles.rememberText}>Remember me</Text>
                 </View>
                 <TouchableOpacity>
                   <Text style={styles.forgotPassword}>Forgot Password?</Text>
@@ -132,7 +148,7 @@ const styles = StyleSheet.create({
   illustration: {
     width: "100%",
     height: 200,
-    marginBottom: 30, // Optional: Add space below the image for balance
+    marginBottom: 30,
   },
   card: {
     width: "100%",
@@ -170,6 +186,9 @@ const styles = StyleSheet.create({
     height: 50,
     marginBottom: 15,
   },
+  icon: {
+    marginRight: 10,
+  },
   input: {
     flex: 1,
     fontSize: 16,
@@ -177,11 +196,6 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     paddingHorizontal: 10,
-  },
-  showPassword: {
-    color: "#4facfe", // Updated color for show/hide text
-    fontSize: 14,
-    fontWeight: "600",
   },
   rememberContainer: {
     flexDirection: "row",
@@ -200,11 +214,11 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     fontSize: 14,
-    color: "#4facfe", // Updated to match theme
+    color: "#4facfe",
     fontWeight: "600",
   },
   signInButton: {
-    backgroundColor: "#4facfe", // Updated to match theme
+    backgroundColor: "#4facfe",
     borderRadius: 10,
     height: 50,
     justifyContent: "center",
@@ -227,7 +241,7 @@ const styles = StyleSheet.create({
   },
   signUpLink: {
     fontSize: 14,
-    color: "#4facfe", // Updated to match theme
+    color: "#4facfe",
     fontWeight: "600",
   },
 });

@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("fs").promises;
 const path = require("path");
 const Queue = require("../DataStructuresAndAlgorithms/Queue.js");
 const LocationClass = require("../Classes/LocationClass.js");
@@ -19,18 +19,18 @@ const validateLocation = (location) => {
   );
 };
 
-const LoadLocationsFromFile = () => {
-  if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, JSON.stringify([]));
+const LoadLocationsFromFile = async() => {
+  if (!await fs.stat(filePath).then(() => true).catch(() => false)) {
+    await fs.writeFile(filePath, JSON.stringify([]));
   }
-  const data = fs.readFileSync(filePath, "utf8");
+  const data = await fs.readFile(filePath, "utf8");
   const parsedData = JSON.parse(data);
   parsedData.forEach((item) => {
     locationsQueue.Enqueue(new LocationClass(item.UserID, item.SourceLocation, item.DestinationLocation));
   });
 };
 
-const SaveLocationsToFile = () => {
+const SaveLocationsToFile = async() => {
   const dataToSave = [];
   let current = locationsQueue.head;
   while (current) {
@@ -42,7 +42,7 @@ const SaveLocationsToFile = () => {
     });
     current=current.next;
   }
-  fs.writeFileSync(filePath, JSON.stringify(dataToSave, null, 2));
+  await fs.writeFile(filePath, JSON.stringify(dataToSave, null, 2));
 };
 
 const IsLocationExist = (UserID, source, destination) => {

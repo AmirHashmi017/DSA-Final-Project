@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("fs").promises;
 const path = require("path");
 const User = require("../Classes/UserClass");
 
@@ -20,15 +20,16 @@ const validateUser = (user) => {
 };
 
 // Get all users from the file
-const getUsers = () => {
-  const data = fs.readFileSync(filePath, "utf8");
+const getUsers = async () => {
+  const data = await fs.readFile(filePath, "utf8");
   const parsedData = JSON.parse(data);
+  console.log(parsedData, "test");
   return parsedData;
 };
 
 // Save users to the file
-const saveUsers = (users) => {
-  fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
+const saveUsers = async (users) => {
+  await fs.writeFile(filePath, JSON.stringify(users, null, 2));
 };
 
 const addUser = (user) => {
@@ -41,8 +42,9 @@ const addUser = (user) => {
 };
 
 // Find a user by email
-const findUserByEmail = (email) => {
-  const users = getUsers();
+const findUserByEmail = async (email) => {
+  const users = await getUsers();
+  console.log("users in email function", users)
   return users[email] || null;
 };
 

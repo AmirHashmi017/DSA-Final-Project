@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("fs").promises;
 const path = require("path");
 const LocationHistory = require("../Classes/LocationHistory.js");
 
@@ -18,8 +18,8 @@ const validateLocation = (location) => {
   );
 };
 
-const GetLocationHistory = () => {
-  const data = fs.readFileSync(filePath, "utf8");
+const GetLocationHistory = async() => {
+  const data = await fs.readFile(filePath, "utf8");
   const parsedData = JSON.parse(data);
   return parsedData.map(
     (item) =>
@@ -33,7 +33,7 @@ const GetLocationHistory = () => {
   );
 };
 
-const saveLocationHistory = (locations) => {
+const saveLocationHistory = async(locations) => {
   const dataToSave = locations.map((loc) => ({
     userId: loc.userId,
     longitude: loc.longitude,
@@ -41,7 +41,7 @@ const saveLocationHistory = (locations) => {
     timestamp: loc.timestamp,
     deviceName: loc.deviceName,
   }));
-  fs.writeFileSync(filePath, JSON.stringify(dataToSave, null, 2));
+  await fs.writeFile(filePath, JSON.stringify(dataToSave, null, 2));
 };
 
 module.exports = { GetLocationHistory, saveLocationHistory, validateLocation };

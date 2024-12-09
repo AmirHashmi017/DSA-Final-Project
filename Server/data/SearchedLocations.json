@@ -1,47 +1,7 @@
 [
   {
-    "UserID": 1,
-    "SourceLocation": "Automotive Department",
-    "DestinationLocation": "Chemical Department"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "CS Department",
-    "DestinationLocation": "Chemical Department"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "CS Department",
-    "DestinationLocation": "Chemical Department"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "CS Department",
-    "DestinationLocation": "Electrical Department"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "CS Department",
-    "DestinationLocation": "Chemical Department"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "CS Department",
-    "DestinationLocation": "Chemical Department"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "CS Department",
-    "DestinationLocation": "Electrical Department"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "CS Department",
-    "DestinationLocation": "Chemical Department"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "Automotive Department",
-    "DestinationLocation": "Chemical Department"
+    "UserID": 2,
+    "SourceLocation": "IBM Department",
+    "DestinationLocation": "Physics Department"
   }
 ]

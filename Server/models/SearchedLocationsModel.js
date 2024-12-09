@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("fs").promises;
 const path = require("path");
 const Stack = require("../DataStructuresAndAlgorithms/Stack.js");
 const LocationClass = require("../Classes/LocationClass.js");
@@ -19,18 +19,18 @@ const validateSearchedLocation = (location) => {
   );
 };
 
-const LoadSearchedLocationsFromFile = () => {
-  if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, JSON.stringify([]));
+const LoadSearchedLocationsFromFile = async () => {
+  if (!await fs.stat(filePath).then(() => true).catch(() => false)) {
+    await fs.writeFile(filePath, JSON.stringify([]));
   }
-  const data = fs.readFileSync(filePath, "utf8");
+  const data = await fs.readFile(filePath, "utf8");
   const parsedData = JSON.parse(data);
   parsedData.forEach((item) => {
     SearchedLocationStack.Push(new LocationClass(item.UserID, item.SourceLocation, item.DestinationLocation));
   });
 };
 
-const SaveSearchedLocationsToFile = () => {
+const SaveSearchedLocationsToFile = async () => {
   const dataToSave = [];
   let current = SearchedLocationStack.head;
   while (current) {
@@ -40,9 +40,9 @@ const SaveSearchedLocationsToFile = () => {
       SourceLocation: location.SourceLocation,
       DestinationLocation: location.DestinationLocation,
     });
-    current=current.next;
+    current = current.next;
   }
-  fs.writeFileSync(filePath, JSON.stringify(dataToSave, null, 2));
+  await fs.writeFile(filePath, JSON.stringify(dataToSave, null, 2));
 };
 
 

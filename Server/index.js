@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const bookMarkedLocationsRoutes = require("./routes/BookMarkedLocationsRoutes.js");
 const authRoutes = require("./routes/userRoute.js");
@@ -7,6 +8,13 @@ const searchedLocationsRoutes = require("./routes/SearchedLocationsRoutes.js");
 const TopVisitedLocationsRoutes = require("./routes/TopVisitedLocationsRoutes.js");
 
 const app = express();
+const corsOptions = {
+  // origin: ["http://localhost:3000", "http://yourfrontenddomain.com"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use(express.json());

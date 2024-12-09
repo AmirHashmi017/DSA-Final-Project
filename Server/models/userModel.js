@@ -31,11 +31,11 @@ const saveUsers = async (users) => {
   await fs.writeFile(filePath, JSON.stringify(users, null, 2));
 };
 
-const addUser = (user) => {
+const addUser = async (user) => {
   if (!validateUser(user)) {
     throw new Error("Invalid user data");
   }
-  const users = getUsers();
+  const users = await getUsers();
   users[user.email] = user;
   saveUsers(users);
 };
@@ -43,7 +43,7 @@ const addUser = (user) => {
 // Find a user by email
 const findUserByEmail = async (email) => {
   const users = await getUsers();
-  console.log("users in email function", users)
+  console.log("users in email function", users);
   return users[email] || null;
 };
 

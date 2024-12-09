@@ -15,7 +15,7 @@ const signup = async (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  const existingUser = findUserByEmail(email);
+  const existingUser = await findUserByEmail(email);
   if (existingUser) {
     return res
       .status(400)
@@ -55,7 +55,7 @@ const login = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
-  const users = getUsers();
+  const users = await getUsers();
   const allUsers = Object.values(users).map(
     (user) => new User(user.userId, user.userName, user.email, user.password)
   );
@@ -64,12 +64,12 @@ const getAllUsers = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   const { email } = req.body;
-  const user = findUserByEmail(email);
+  const user = await findUserByEmail(email);
   if (!user) {
     return res.status(400).json({ message: "User not found" });
   }
 
-  const users = getUsers();
+  const users = await getUsers();
   delete users[email];
   saveUsers(users);
   return res.status(200).json({ message: "User deleted successfully" });

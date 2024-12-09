@@ -18,7 +18,7 @@ const validateLocation = (location) => {
   );
 };
 
-const GetLocationHistory = async() => {
+const GetLocationHistory = async () => {
   const data = await fs.readFile(filePath, "utf8");
   const parsedData = JSON.parse(data);
   return parsedData.map(
@@ -33,7 +33,7 @@ const GetLocationHistory = async() => {
   );
 };
 
-const saveLocationHistory = async(locations) => {
+const saveLocationHistory = async (locations) => {
   const dataToSave = locations.map((loc) => ({
     userId: loc.userId,
     longitude: loc.longitude,

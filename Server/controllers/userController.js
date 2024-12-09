@@ -4,74 +4,75 @@ const {
   saveUsers,
   validateUser,
   findUserByEmail,
+  addUser,
 } = require("../models/userModel.js");
-const SECRET_KEY = "987654321";
-// Signup handler
-const signup = async (req, res) => {
-  const { name, email, password } = req.body;
+const User = require("../Classes/UserClass.js");
 
-  // Validate input
-  if (!name || !email || !password) {
+const signup = async (req, res) => {
+  const { userName, email, password } = req.body;
+
+  if (!userName || !email || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  // Check if the user already exists
   const existingUser = findUserByEmail(email);
   if (existingUser) {
     return res
       .status(400)
       .json({ message: "User with this email already exists" });
   }
-  // Create the new user
-  const newUser = { name, email, password };
 
-  // Save the user data
-  const users = getUsers();
-  users.push(newUser);
-  saveUsers(users);
+  const userId = Date.now();
+  const newUser = new User(userId, userName, email, password);
 
-  // Create a JWT token
-  const token = jwt.sign({ email: newUser.email }, SECRET_KEY, {
-    expiresIn: "1h",
-  });
-
-  // Send response with the token
+  addUser(newUser);
   res.status(201).json({
     message: "User registered successfully",
-    token,
   });
 };
 
-// Login handler
 const login = async (req, res) => {
   const { email, password } = req.body;
 
-  // Validate input
   if (!email || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  // Check if the user exists
   const user = findUserByEmail(email);
   if (!user) {
     return res.status(400).json({ message: "User not found" });
   }
 
-  // Validate the password
   if (user.password !== password) {
     return res.status(400).json({ message: "Invalid credentials" });
   }
 
-  // Create a JWT token
-  const token = jwt.sign({ email: user.email }, SECRET_KEY, {
-    expiresIn: "1h",
-  });
-
-  // Send response with the token
-  res.status(200).json({
-    message: "User logged in successfully",
-    token,
+  const { password: userPassword, ...userWithoutPassword } = user;
+  return res.status(200).json({
+    message: "Login successful",
+    user: userWithoutPassword,
   });
 };
 
-module.exports = { signup, login };
+const getAllUsers = async (req, res) => {
+  const users = getUsers();
+  const allUsers = Object.values(users).map(
+    (user) => new User(user.userId, user.userName, user.email, user.password)
+  );
+  return res.status(200).json(allUsers);
+};
+
+const deleteUser = async (req, res) => {
+  const { email } = req.body;
+  const user = findUserByEmail(email);
+  if (!user) {
+    return res.status(400).json({ message: "User not found" });
+  }
+
+  const users = getUsers();
+  delete users[email];
+  saveUsers(users);
+  return res.status(200).json({ message: "User deleted successfully" });
+};
+
+module.exports = { signup, login, getAllUsers, deleteUser };

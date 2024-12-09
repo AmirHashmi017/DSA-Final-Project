@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { use, useContext, useState } from "react";
 import {
   View,
   Text,
@@ -15,12 +15,15 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as Location from "expo-location";
 import { AuthContext } from "../utils/AuthContext";
+import { LocationHistoryContext } from "../utils/LocationHistoryContext";
 
 const HomeScreen = ({ navigation }) => {
-  const [location, setLocation] = useState("");
+  const [deviceName, setDeviceName] = useState("");
   const [connected, setConnected] = useState(false);
   const rotation = new Animated.Value(0);
-  const { setUser } = useContext(AuthContext);
+
+  const { user } = useContext(AuthContext);
+  const { addLocationHistory } = useContext(LocationHistoryContext);
 
   const handleShareLocation = async () => {
     // Start rotation animation
@@ -46,18 +49,24 @@ const HomeScreen = ({ navigation }) => {
       const currentLocation = await Location.getCurrentPositionAsync({});
       const { latitude, longitude } = currentLocation.coords;
       const timestamp = new Date(currentLocation.timestamp).toLocaleString();
+      const userId = user?.userId;
 
       // Log latitude, longitude, and timestamp
-      console.log("Device Name:", location);
+      console.log("Device Name:", deviceName);
       console.log("Latitude:", latitude);
       console.log("Longitude:", longitude);
       console.log("Timestamp:", timestamp);
 
-      // Simulate connection success after 3 seconds
-      setTimeout(() => {
-        rotation.stopAnimation();
-        setConnected(true);
-      }, 3000);
+      await addLocationHistory({
+        userId,
+        deviceName,
+        latitude,
+        longitude,
+        timestamp,
+      });
+
+      rotation.stopAnimation();
+      setConnected(true);
     } catch (error) {
       console.error("Error fetching location:", error);
       Alert.alert("Error", "Could not fetch location. Please try again.");
@@ -96,8 +105,8 @@ const HomeScreen = ({ navigation }) => {
             style={styles.input}
             placeholder="Enter Device Name"
             placeholderTextColor="#A0A0A0"
-            value={location}
-            onChangeText={setLocation}
+            value={deviceName}
+            onChangeText={setDeviceName}
           />
           <TouchableOpacity
             style={styles.shareButton}
@@ -114,7 +123,9 @@ const HomeScreen = ({ navigation }) => {
               <MaterialIcons name="location-on" size={50} color="#fff" />
             </Animated.View>
           ) : (
-            <Text style={styles.connectedText}>Connected!</Text>
+            <View style={[styles.iconContainer]}>
+              <MaterialIcons name="check-circle" size={50} color="#fff" />
+            </View>
           )}
         </View>
       </SafeAreaView>

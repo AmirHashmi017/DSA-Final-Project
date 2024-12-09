@@ -13,7 +13,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { AuthContext } from "../utils/AuthContext.js";
 
 const LoginScreen = ({ navigation }) => {
-  const { setUser } = useContext(AuthContext);
   const [email, setemail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -102,7 +101,12 @@ const LoginScreen = ({ navigation }) => {
             <View style={styles.signUpContainer}>
               <Text style={styles.signUpText}>Don't have an account? </Text>
               <TouchableOpacity>
-                <Text style={styles.signUpLink}>Sign Up</Text>
+                <Text
+                  style={styles.signUpLink}
+                  onPress={() => navigation.navigate("Signup")}
+                >
+                  Sign Up
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

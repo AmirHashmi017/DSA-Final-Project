@@ -28,6 +28,7 @@ const signup = async (req, res) => {
   addUser(newUser);
   res.status(201).json({
     message: "User registered successfully",
+    user: { userId, userName, email },
   });
 };
 

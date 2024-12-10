@@ -2,10 +2,12 @@ import React, { useContext, useState } from 'react';
 import ContentSection from './ContentSection';
 import { AuthContext } from '../utils/AuthContext';
 import { SearchedLocationsContext, SearchedLocationsProvider }  from '../utils/SearchedLocationsContext';
+import { useLocationsContext } from '../utils/BookMarkedLocationsContext';
 
 const Sidebar = () => {
+  const { locations, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
   const { login } = useContext(AuthContext);
-const { addLocation,fetchLocations,searchedLocations,deleteLocation } = useContext(SearchedLocationsContext);
+  const { addLocation,fetchLocations,searchedLocations,deleteLocation } = useContext(SearchedLocationsContext);
   const [activeIcon, setActiveIcon] = useState(null);
   const [sourceLocation, setSourceLocation] = useState('');
   const [destinationLocation, setDestinationLocation] = useState('');
@@ -27,9 +29,16 @@ const { addLocation,fetchLocations,searchedLocations,deleteLocation } = useConte
   const handleRemoveLocation = (location) => {
     deleteLocation(location.UserID, location.SourceLocation, location.DestinationLocation);
   };
+  const handleRemoveBookMarkedLocation = (location) => {
+    deleteBookMarkedLocation(userID, location.SourceLocation, location.DestinationLocation);
+  };
   const handleFetch=()=>{
     handleIconClick("recent")
     fetchLocations(userID)
+  }
+  const handleBookMarkFetch=()=>{
+    handleIconClick("saved")
+    fetchBookMarkedLocations(userID)
   }
 
 
@@ -45,7 +54,7 @@ const { addLocation,fetchLocations,searchedLocations,deleteLocation } = useConte
           {/* Saved Icon */}
           <li
             className="cursor-pointer text-gray-500 hover:text-blue-600 flex flex-col justify-center items-center text-center mb-5"
-            onClick={() => handleIconClick('saved')}
+            onClick={() => handleBookMarkFetch()}
 
           >
             <div>
@@ -125,12 +134,24 @@ const { addLocation,fetchLocations,searchedLocations,deleteLocation } = useConte
 
         {/* Display Content Sections */}
         {activeIcon === 'saved' && (
-          <ContentSection
-            title="Saved Locations"
-            source="Your saved items will appear here."
-            destination="Your saved items will appear here."
-            onClose={handleClose}
-          />
+          locations && locations.length > 0 ? (
+            locations.map((location, index) => (
+              <ContentSection
+                key={index}
+                title={`Saved Locations`}
+                source={location.SourceLocation || "N/A"} 
+                destination={location.DestinationLocation || "N/A"}
+                onDel={() => handleRemoveBookMarkedLocation(location)}
+              />
+            ))
+          ) : (
+            <ContentSection
+                    title="Saved Locations"
+                      source="Your saved items will appear here."
+                    destination="Your saved items will appear here."
+                    onClose={handleClose}
+                  />
+          )
         )}
         {activeIcon === 'topVisited' && (
           <ContentSection
@@ -145,8 +166,8 @@ const { addLocation,fetchLocations,searchedLocations,deleteLocation } = useConte
       <ContentSection
         key={index}
         title={`Recent Searches`}
-        source={location.SourceLocation || "N/A"} // Fallback if undefined
-        destination={location.DestinationLocation || "N/A"} // Fallback if undefined
+        source={location.SourceLocation || "N/A"} 
+        destination={location.DestinationLocation || "N/A"}
         onDel={() => handleRemoveLocation(location)}
       />
     ))

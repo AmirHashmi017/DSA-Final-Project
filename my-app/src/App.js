@@ -3,9 +3,11 @@ import Sidebar from './components/SideBar';
 import SearchBar from './components/SearchBar';
 import MapView from './components/MapView';
 import { AuthProvider } from './utils/AuthContext';
+import { SearchedLocationsProvider } from "./utils/SearchedLocationsContext";
 
 const App = () => {
   return (
+    <SearchedLocationsProvider>
     <AuthProvider>
       <div className="flex h-screen">
         <Sidebar />
@@ -15,6 +17,7 @@ const App = () => {
         </div>
       </div>
     </AuthProvider>
+    </SearchedLocationsProvider>
   );
 };
 

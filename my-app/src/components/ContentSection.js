@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-const ContentSection = ({ title, content, source, destination, onClose }) => {
+const ContentSection = ({ title, content, source, destination, onClose,onDel }) => {
   return (
     <div className="w-full h-full bg-white p-6 shadow-lg rounded-lg ">
       <div className="flex justify-between items-center flex-row">
@@ -20,7 +20,7 @@ const ContentSection = ({ title, content, source, destination, onClose }) => {
         </div>
       </div>
         <div className="flex justify-between  items-center pl-6">
-          <i className="fa-solid fa-trash-can text-lg cursor-pointer hover:text-red-700"></i>
+          <i onClick={onDel} className="fa-solid fa-trash-can text-lg cursor-pointer hover:text-red-700"></i>
         </div>
       </div>
     </div>

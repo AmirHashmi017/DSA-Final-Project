@@ -1,26 +1,38 @@
 import React, { useContext, useState } from 'react';
-import ContentSection from './ContentSection';  // Import the new ContentSection component
+import ContentSection from './ContentSection';
 import { AuthContext } from '../utils/AuthContext';
+import { SearchedLocationsContext, SearchedLocationsProvider }  from '../utils/SearchedLocationsContext';
 
 const Sidebar = () => {
   const { login } = useContext(AuthContext);
-  const [activeIcon, setActiveIcon] = useState(null);  // State to track active icon
+const { addLocation,fetchLocations,searchedLocations,deleteLocation } = useContext(SearchedLocationsContext);
+  const [activeIcon, setActiveIcon] = useState(null);
+  const [sourceLocation, setSourceLocation] = useState('');
+  const [destinationLocation, setDestinationLocation] = useState('');
+  const [userID] = useState(1); // Replace with dynamic user ID if available
 
-  // Function to handle icon click
   const handleIconClick = (iconName) => {
-    // Toggle the active icon on click
     setActiveIcon(activeIcon === iconName ? null : iconName);
-    const loginData = {
-      email: 'sher@example.com',
-      password: 'password123'
-    }
-    login(loginData);
   };
 
-  // Function to handle closing of the active icon
   const handleClose = () => {
     setActiveIcon(null);
   };
+
+  const handleSearch = () => {
+    addLocation(userID, sourceLocation, destinationLocation);
+  // setSourceLocation('');
+  // setDestinationLocation('');
+  };
+  const handleRemoveLocation = (location) => {
+    deleteLocation(location.UserID, location.SourceLocation, location.DestinationLocation);
+  };
+  const handleFetch=()=>{
+    handleIconClick("recent")
+    fetchLocations(userID)
+  }
+
+
 
   return (
     <div className="flex h-screen">
@@ -34,6 +46,7 @@ const Sidebar = () => {
           <li
             className="cursor-pointer text-gray-500 hover:text-blue-600 flex flex-col justify-center items-center text-center mb-5"
             onClick={() => handleIconClick('saved')}
+
           >
             <div>
               <i className="fa-regular fa-bookmark text-xl"></i>
@@ -55,7 +68,7 @@ const Sidebar = () => {
           {/* Recent Icon */}
           <li
             className="cursor-pointer text-gray-500 hover:text-blue-600 flex flex-col justify-center items-center text-center mb-5"
-            onClick={() => handleIconClick('recent')}
+            onClick={() => handleFetch('recent')}
           >
             <div>
               <i className="fa-solid fa-rotate-left text-xl"></i>
@@ -86,7 +99,31 @@ const Sidebar = () => {
 
       {/* Content Area */}
       <div className="flex-grow absolute h-full  z-[9999] left-24">
-        {/* Show the corresponding div based on active icon */}
+
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Source Location"
+            value={sourceLocation}
+            onChange={(e) => setSourceLocation(e.target.value)}
+            className="border p-2 mr-2"
+          />
+          <input
+            type="text"
+            placeholder="Destination Location"
+            value={destinationLocation}
+            onChange={(e) => setDestinationLocation(e.target.value)}
+            className="border p-2 mr-2"
+          />
+          <button
+            onClick={handleSearch}
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            Search
+          </button>
+        </div>
+
+        {/* Display Content Sections */}
         {activeIcon === 'saved' && (
           <ContentSection
             title="Saved Locations"
@@ -102,13 +139,26 @@ const Sidebar = () => {
             onClose={handleClose}
           />
         )}
-        {activeIcon === 'recent' && (
-          <ContentSection
-            title="Recent Searches"
-            content="Your recent searches will appear here."
+   {activeIcon === 'recent' && (
+  searchedLocations && searchedLocations.length > 0 ? (
+    searchedLocations.map((location, index) => (
+      <ContentSection
+        key={index}
+        title={`Recent Searches`}
+        source={location.SourceLocation || "N/A"} // Fallback if undefined
+        destination={location.DestinationLocation || "N/A"} // Fallback if undefined
+        onDel={() => handleRemoveLocation(location)}
+      />
+    ))
+  ) : (
+    <ContentSection
+            title="Recent Locations"
+              source="Your saved items will appear here."
+            destination="Your saved items will appear here."
             onClose={handleClose}
           />
-        )}
+  )
+)}
         {activeIcon === 'devices' && (
           <ContentSection
             title="Devices"

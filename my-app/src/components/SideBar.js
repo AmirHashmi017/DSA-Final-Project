@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import ContentSection from './ContentSection';
 import { AuthContext } from '../utils/AuthContext';
-import { SearchedLocationsContext, SearchedLocationsProvider } from '../utils/SearchedLocationsContext';
+import { SearchedLocationsContext, SearchedLocationsProvider,l,setL } from '../utils/SearchedLocationsContext';
 import { useLocationsContext } from '../utils/BookMarkedLocationsContext';
 
 const Sidebar = () => {
@@ -12,7 +12,7 @@ const Sidebar = () => {
   const [sourceLocation, setSourceLocation] = useState('');
   const [destinationLocation, setDestinationLocation] = useState('');
   const [userID] = useState(1); // Replace with dynamic user ID if available
-
+  const {l,setL}=useContext(SearchedLocationsContext)
   const handleIconClick = (iconName) => {
     setActiveIcon(activeIcon === iconName ? null : iconName);
   };
@@ -23,6 +23,8 @@ const Sidebar = () => {
 
   const handleSearch = () => {
     addLocation(userID, sourceLocation, destinationLocation);
+    alert('Location Searched')
+    handleAddBookMarkedLocation()
     // setSourceLocation('');
     // setDestinationLocation('');
   };
@@ -31,6 +33,9 @@ const Sidebar = () => {
   };
   const handleRemoveBookMarkedLocation = (location) => {
     deleteBookMarkedLocation(userID, location.SourceLocation, location.DestinationLocation);
+  };
+  const handleAddBookMarkedLocation = (location) => {
+    addBookMarkedLocation(userID, sourceLocation, destinationLocation);
   };
   const handleFetch = () => {
     handleIconClick("recent")
@@ -107,17 +112,18 @@ const Sidebar = () => {
       </div>
 
       {/* Content Area */}
-      <div className="flex-grow absolute z-[9999] left-24">
+      <div className="flex-grow absolute z-[999999] left-24 ">
 
-        <div className="mb-4">
+      {l && 
+         <div className="mb-4 z-[999999] items-center flex flex-col mt-[35vh] ml-10">
           <input
-            type="text"
-            placeholder="Source Location"
-            value={sourceLocation}
+          type="text"
+          placeholder="Source Location"
+          value={sourceLocation}
             onChange={(e) => setSourceLocation(e.target.value)}
-            className="border p-2 mr-2"
-          />
-          <input
+            className="border p-2 mr-2 my-2"
+            />
+            <input
             type="text"
             placeholder="Destination Location"
             value={destinationLocation}
@@ -125,12 +131,13 @@ const Sidebar = () => {
             className="border p-2 mr-2"
           />
           <button
-            onClick={handleSearch}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+          onClick={handleSearch}
+          className="bg-blue-500 text-white px-12 py-2 rounded my-2"
           >
-            Search
+          Search
           </button>
-        </div>
+          </div> 
+          }
         {activeIcon &&
           <div className="w-full h-full h bg-white p-6 shadow-lg rounded-lg ">
             <div className="flex justify-between items-center flex-row">

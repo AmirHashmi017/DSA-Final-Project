@@ -7,6 +7,7 @@ const SearchedLocationsProvider = ({ children }) => {
   const [searchedLocations, setSearchedLocations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [l,setL ]=useState(false);
 
   const API_BASE_URL = "http://localhost:3000/api/SearchedLocations"; 
 
@@ -95,6 +96,8 @@ const SearchedLocationsProvider = ({ children }) => {
   return (
     <SearchedLocationsContext.Provider
       value={{
+        l,
+        setL,
         searchedLocations,
         loading,
         error,

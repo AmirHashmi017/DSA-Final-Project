@@ -3,5 +3,15 @@
     "UserID": 1,
     "SourceLocation": "CS Department",
     "DestinationLocation": "Physics Department"
+  },
+  {
+    "UserID": 1,
+    "SourceLocation": "4",
+    "DestinationLocation": "4s"
+  },
+  {
+    "UserID": 1,
+    "SourceLocation": "4",
+    "DestinationLocation": "9"
   }
 ]

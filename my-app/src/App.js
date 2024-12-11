@@ -5,9 +5,11 @@ import MapView from './components/MapView';
 import { AuthProvider } from './utils/AuthContext';
 import { SearchedLocationsProvider } from "./utils/SearchedLocationsContext";
 import { LocationsProvider } from './utils/BookMarkedLocationsContext';
+import { TopVisitedLocationsProvider } from "./utils/TopVisitedLocationsContext";
 
 const App = () => {
   return (
+<TopVisitedLocationsProvider>
     <LocationsProvider>
     <SearchedLocationsProvider>
     <AuthProvider>
@@ -21,6 +23,7 @@ const App = () => {
     </AuthProvider>
     </SearchedLocationsProvider>
     </LocationsProvider>
+</TopVisitedLocationsProvider>
   );
 };
 

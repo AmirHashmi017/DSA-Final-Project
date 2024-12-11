@@ -3,6 +3,8 @@ import ContentSection from './ContentSection';
 import { AuthContext } from '../utils/AuthContext';
 import { SearchedLocationsContext, SearchedLocationsProvider,l,setL } from '../utils/SearchedLocationsContext';
 import { useLocationsContext } from '../utils/BookMarkedLocationsContext';
+import { TopVisitedLocationsProvider } from "../utils/TopVisitedLocationsContext";
+import TopVisitedLocations from "./TopVisitedLocations";
 
 const Sidebar = () => {
   const { locations, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
@@ -142,11 +144,12 @@ const Sidebar = () => {
               )
             )}
             {activeIcon === 'topVisited' && (
-              <ContentSection
-                title="Top Visited Locations"
-                content="Your top visited locations will appear here."
-                onClose={handleClose}
-              />
+              // <ContentSection
+              //   title="Top Visited Locations"
+              //   content="Your top visited locations will appear here."
+              //   onClose={handleClose}
+              // />
+              <TopVisitedLocations userId={userID} />
             )}
             {activeIcon === 'recent' && (
               searchedLocations && searchedLocations.length > 0 ? (

@@ -1,32 +1,7 @@
 [
   {
     "UserID": 1,
-    "SourceLocation": "CS Department",
-    "DestinationLocation": "Physics Department"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "4",
-    "DestinationLocation": "4s"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "4",
-    "DestinationLocation": "9"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "4",
-    "DestinationLocation": "4"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "5",
-    "DestinationLocation": "5"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "554546546",
-    "DestinationLocation": "55656565"
+    "SourceLocation": "7",
+    "DestinationLocation": "7"
   }
 ]

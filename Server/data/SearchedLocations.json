@@ -1,42 +1,7 @@
 [
   {
     "UserID": 1,
-    "SourceLocation": "554546546",
-    "DestinationLocation": "55656565"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "56",
-    "DestinationLocation": "56"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "5",
-    "DestinationLocation": "5"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "4",
-    "DestinationLocation": "4s"
-  },
-  {
-    "UserID": 1,
     "SourceLocation": "4",
     "DestinationLocation": "4"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "4",
-    "DestinationLocation": "4"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "JDajdklsajfl",
-    "DestinationLocation": "sajdaksdj"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "asdasdsadas",
-    "DestinationLocation": "asdasidas"
   }
 ]

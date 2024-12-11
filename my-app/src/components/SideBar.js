@@ -49,13 +49,13 @@ const Sidebar = () => {
 
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen max-h-screen">
       {/* Sidebar */}
-      <div className="w-fit bg-gray-100 p-4 shadow-lg h-full z-[99999]">
+      <div className="w-fit bg-gray-100 p-4 shadow-lg h-full z-[99999] max-h-screen">
         <h2 className="text-2xl font-bold mb-14 text-center">
           <i className="fa-solid fa-home"></i>
         </h2>
-        <ul className="">
+        <ul className="h-[75vh]">
           {/* Saved Icon */}
           <li
             className="cursor-pointer text-gray-500 hover:text-blue-600 flex flex-col justify-center items-center text-center mb-5"
@@ -103,7 +103,7 @@ const Sidebar = () => {
         </ul>
 
         {/* Log Out Button */}
-        <div className="cursor-pointer text-gray-500 hover:text-blue-600 flex flex-col text-center mb-5 items-end justify-end mt-[480px]" onClick={() => handleIconClick(null)}>
+        <div className="cursor-pointer text-gray-500 hover:text-blue-600 flex flex-col text-center mb-5 items-end justify-end " onClick={() => handleIconClick(null)}>
           <div>
             <i className="fa-solid fa-arrow-right-from-bracket text-xl rotate-180"></i>
             <div className='text-sm'>Log Out</div>

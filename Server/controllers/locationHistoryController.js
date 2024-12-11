@@ -28,9 +28,9 @@ const addLocationHistory = async (req, res) => {
   }
 
   locationHistoryList.append(newLocation);
-  const locations = GetLocationHistory();
+  const locations = await GetLocationHistory();
   locations.push(newLocation);
-  saveLocationHistory(locations);
+  await saveLocationHistory(locations);
 
   res
     .status(201)
@@ -39,7 +39,7 @@ const addLocationHistory = async (req, res) => {
 
 const getLocationHistory = async (req, res) => {
   const { userId } = req.params;
-  const locations = GetLocationHistory();
+  const locations = await GetLocationHistory();
   console.log(locations, userId);
   if (userId) {
     const userLocations = locations.filter(
@@ -63,7 +63,7 @@ const deleteLocationHistory = async (req, res) => {
     return res.status(400).json({ message: "All fields are required" });
   }
 
-  const locations = GetLocationHistory();
+  const locations = await GetLocationHistory();
   const locationIndex = locations.findIndex(
     (location) =>
       location.userId === userId &&
@@ -79,14 +79,14 @@ const deleteLocationHistory = async (req, res) => {
 
   locationHistoryList.remove(locations[locationIndex]);
   locations.splice(locationIndex, 1);
-  saveLocationHistory(locations);
+  await saveLocationHistory(locations);
 
   res.status(200).json({ message: "Location deleted successfully" });
 };
 
 const deleteAllLocationHistory = async (req, res) => {
   const { userId } = req.params;
-  const locations = GetLocationHistory();
+  const locations = await GetLocationHistory();
   const updatedLocations = locations.filter(
     (location) => location.userId !== parseInt(userId)
   );
@@ -94,7 +94,7 @@ const deleteAllLocationHistory = async (req, res) => {
     return res.status(404).json({ message: "Location not found" });
   }
   locationHistoryList.head = null;
-  saveLocationHistory(updatedLocations);
+  await saveLocationHistory(updatedLocations);
   res.status(200).json({ message: "Location deleted successfully" });
 };
 

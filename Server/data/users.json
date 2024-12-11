@@ -4,5 +4,29 @@
     "userName": "Sher",
     "email": "sher@example.com",
     "password": "password123"
+  },
+  "amir@example.com": {
+    "userId": 1733756140124,
+    "userName": "Amir Khan",
+    "email": "amir@example.com",
+    "password": "password123"
+  },
+  "sherry@example.com": {
+    "userId": 1733757938116,
+    "userName": "Sherry sab",
+    "email": "sherry@example.com",
+    "password": "password123"
+  },
+  "sherrykela@example.com": {
+    "userId": 1733758447513,
+    "userName": "Sherry Kela",
+    "email": "sherrykela@example.com",
+    "password": "password123"
+  },
+  "nazeef@gmail.com": {
+    "userId": 1733758536521,
+    "userName": "nazeem dsa",
+    "email": "nazeef@gmail.com",
+    "password": "123"
   }
 }

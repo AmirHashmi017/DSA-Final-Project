@@ -1,49 +1,72 @@
 import React, { createContext, useState } from "react";
+import { ToastAndroid } from "react-native";
 
-// Create the AuthContext
 export const AuthContext = createContext();
 
-// AuthContext Provider Component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const baseRoute = "http://192.168.43.116:3000";
+  const baseRoute = "http://192.168.43.116:3000/api/auth";
 
-  // Login function
-  const login = async (userData) => {
+  const login = async (payload) => {
     try {
-      console.log("Login: ", userData);
-      const response = await fetch(`${baseRoute}/api/auth/login`, {
+      console.log("Login: ", payload);
+      const response = await fetch(`${baseRoute}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(payload),
       });
       const data = await response.json();
       console.log(data);
       if (response.ok) {
+        ToastAndroid.show(data.message, ToastAndroid.SHORT);
         setUser(data?.user);
       } else {
         console.log("Error: ", data.message);
+        ToastAndroid.show(data.message, ToastAndroid.SHORT);
       }
     } catch (error) {
       console.log("Error: ", error);
     }
   };
 
-  // Logout function
+  const signUp = async (payload) => {
+    try {
+      const response = await fetch(`${baseRoute}/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        ToastAndroid.show(data.message, ToastAndroid.SHORT);
+        setUser(data?.user);
+      } else {
+        console.log("Error: ", data.message);
+        ToastAndroid.show(data.message, ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
   const logout = () => {
     console.log("Logout");
     setUser(null);
   };
 
-  // Function to get user details
   const getUserDetails = () => {
     return user;
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, getUserDetails }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, getUserDetails, signUp }}
+    >
       {children}
     </AuthContext.Provider>
   );

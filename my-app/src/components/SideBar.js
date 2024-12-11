@@ -21,22 +21,14 @@ const Sidebar = () => {
     setActiveIcon(null);
   };
 
-  const handleSearch = () => {
-    addLocation(userID, sourceLocation, destinationLocation);
-    alert('Location Searched')
-    handleAddBookMarkedLocation()
-    // setSourceLocation('');
-    // setDestinationLocation('');
-  };
+ 
   const handleRemoveLocation = (location) => {
     deleteLocation(location.UserID, location.SourceLocation, location.DestinationLocation);
   };
   const handleRemoveBookMarkedLocation = (location) => {
     deleteBookMarkedLocation(userID, location.SourceLocation, location.DestinationLocation);
   };
-  const handleAddBookMarkedLocation = (location) => {
-    addBookMarkedLocation(userID, sourceLocation, destinationLocation);
-  };
+  
   const handleFetch = () => {
     handleIconClick("recent")
     fetchLocations(userID)
@@ -114,30 +106,7 @@ const Sidebar = () => {
       {/* Content Area */}
       <div className="flex-grow absolute z-[999999] left-24 ">
 
-      {l && 
-         <div className="mb-4 z-[999999] items-center flex flex-col mt-[35vh] ml-10">
-          <input
-          type="text"
-          placeholder="Source Location"
-          value={sourceLocation}
-            onChange={(e) => setSourceLocation(e.target.value)}
-            className="border p-2 mr-2 my-2"
-            />
-            <input
-            type="text"
-            placeholder="Destination Location"
-            value={destinationLocation}
-            onChange={(e) => setDestinationLocation(e.target.value)}
-            className="border p-2 mr-2"
-          />
-          <button
-          onClick={handleSearch}
-          className="bg-blue-500 text-white px-12 py-2 rounded my-2"
-          >
-          Search
-          </button>
-          </div> 
-          }
+     
         {activeIcon &&
           <div className="w-full h-full h bg-white p-6 shadow-lg rounded-lg ">
             <div className="flex justify-between items-center flex-row">

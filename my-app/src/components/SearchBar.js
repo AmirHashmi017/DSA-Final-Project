@@ -1,11 +1,17 @@
 import React, { useContext, useState } from 'react';
 import {l,setL,SearchedLocationsContext} from '../utils/SearchedLocationsContext';
+import { AuthContext } from '../utils/AuthContext';
 import { useLocationsContext ,addBookMarkedLocation} from '../utils/BookMarkedLocationsContext';
 
 const SearchBar = () => {
   const recentLocations = ['New York', 'Los Angeles', 'Chicago', 'San Francisco', 'Miami'];
-  
+  const { locations, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
+  const { login } = useContext(AuthContext);
+  const { addLocation, fetchLocations, searchedLocations, deleteLocation } = useContext(SearchedLocationsContext);
   const [isFocused, setIsFocused] = useState(false);
+  const [sourceLocation, setSourceLocation] = useState('');
+  const [destinationLocation, setDestinationLocation] = useState('');
+  const [userID] = useState(1); // Replace with dynamic user ID if available
   const [searchQuery, setSearchQuery] = useState('');
   const [locationSelected, setLocationSelected] = useState(null);
   const {l,setL}=useContext(SearchedLocationsContext);
@@ -22,7 +28,9 @@ const SearchBar = () => {
   const handleSearch = () => {
     setLocationSelected(searchQuery);
   };
-
+  const handleAddBookMarkedLocation = (location) => {
+    addBookMarkedLocation(userID, sourceLocation, destinationLocation);
+  };
   const handleDirectionClick = () => {
     alert(`Directions to ${locationSelected}`);
     setL(true)
@@ -30,6 +38,13 @@ const SearchBar = () => {
 
   const handleBookmarkClick = () => {
     alert(`${locationSelected} bookmarked!`);
+  };
+  const handleFinalSearch = () => {
+    addLocation(userID, sourceLocation, destinationLocation);
+    alert('Location Searched')
+
+    // setSourceLocation('');
+    // setDestinationLocation('');
   };
   const handleCrossClick = () => {
     setLocationSelected(null);
@@ -99,11 +114,35 @@ const SearchBar = () => {
             </button>
             <button
               className= "text-blue-600 font-semibold flex flex-col text-center text-sm justify-center items-center w-20 "
-              onClick={handleBookmarkClick}
+              onClick={handleAddBookMarkedLocation}
             >
                   <i className="fa-solid fa-bookmark text-xl rounded-full px-3 py-1.5 mb-1 border-blue-700 border-2"></i>
               Bookmark
             </button>
+            {l && 
+         <div className="mb-4 z-[999999] left-24 items-center flex absolute flex-col mt-[35vh] ml-10">
+          <input
+          type="text"
+          placeholder="Source Location"
+          value={sourceLocation}
+            onChange={(e) => setSourceLocation(e.target.value)}
+            className="border p-2 mr-2 my-2"
+            />
+            <input
+            type="text"
+            placeholder="Destination Location"
+            value={destinationLocation}
+            onChange={(e) => setDestinationLocation(e.target.value)}
+            className="border p-2 mr-2"
+          />
+          <button
+          onClick={handleFinalSearch}
+          className="bg-blue-500 text-white px-12 py-2 rounded my-2"
+          >
+          Search
+          </button>
+          </div> 
+          }
           </div>
         </div>
       </div>

@@ -13,5 +13,20 @@
     "UserID": 1,
     "SourceLocation": "4",
     "DestinationLocation": "9"
+  },
+  {
+    "UserID": 1,
+    "SourceLocation": "4",
+    "DestinationLocation": "4"
+  },
+  {
+    "UserID": 1,
+    "SourceLocation": "5",
+    "DestinationLocation": "5"
+  },
+  {
+    "UserID": 1,
+    "SourceLocation": "554546546",
+    "DestinationLocation": "55656565"
   }
 ]

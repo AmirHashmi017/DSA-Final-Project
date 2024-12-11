@@ -1,13 +1,13 @@
 import React, { useContext, useState } from 'react';
 import ContentSection from './ContentSection';
 import { AuthContext } from '../utils/AuthContext';
-import { SearchedLocationsContext, SearchedLocationsProvider }  from '../utils/SearchedLocationsContext';
+import { SearchedLocationsContext, SearchedLocationsProvider } from '../utils/SearchedLocationsContext';
 import { useLocationsContext } from '../utils/BookMarkedLocationsContext';
 
 const Sidebar = () => {
   const { locations, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
   const { login } = useContext(AuthContext);
-  const { addLocation,fetchLocations,searchedLocations,deleteLocation } = useContext(SearchedLocationsContext);
+  const { addLocation, fetchLocations, searchedLocations, deleteLocation } = useContext(SearchedLocationsContext);
   const [activeIcon, setActiveIcon] = useState(null);
   const [sourceLocation, setSourceLocation] = useState('');
   const [destinationLocation, setDestinationLocation] = useState('');
@@ -23,8 +23,8 @@ const Sidebar = () => {
 
   const handleSearch = () => {
     addLocation(userID, sourceLocation, destinationLocation);
-  // setSourceLocation('');
-  // setDestinationLocation('');
+    // setSourceLocation('');
+    // setDestinationLocation('');
   };
   const handleRemoveLocation = (location) => {
     deleteLocation(location.UserID, location.SourceLocation, location.DestinationLocation);
@@ -32,11 +32,11 @@ const Sidebar = () => {
   const handleRemoveBookMarkedLocation = (location) => {
     deleteBookMarkedLocation(userID, location.SourceLocation, location.DestinationLocation);
   };
-  const handleFetch=()=>{
+  const handleFetch = () => {
     handleIconClick("recent")
     fetchLocations(userID)
   }
-  const handleBookMarkFetch=()=>{
+  const handleBookMarkFetch = () => {
     handleIconClick("saved")
     fetchBookMarkedLocations(userID)
   }
@@ -107,7 +107,7 @@ const Sidebar = () => {
       </div>
 
       {/* Content Area */}
-      <div className="flex-grow absolute h-full  z-[9999] left-24">
+      <div className="flex-grow absolute z-[9999] left-24">
 
         <div className="mb-4">
           <input
@@ -131,62 +131,76 @@ const Sidebar = () => {
             Search
           </button>
         </div>
+        {activeIcon &&
+          <div className="w-full h-full h bg-white p-6 shadow-lg rounded-lg ">
+            <div className="flex justify-between items-center flex-row">
+              <h3 className="text-xl font-semibold mb-4">sdfsdf</h3>
+              <button onClick={handleClose} className="text-xl text-gray-500 hover:text-red-600">
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            </div>
 
-        {/* Display Content Sections */}
-        {activeIcon === 'saved' && (
-          locations && locations.length > 0 ? (
-            locations.map((location, index) => (
-              <ContentSection
-                key={index}
-                title={`Saved Locations`}
-                source={location.SourceLocation || "N/A"} 
-                destination={location.DestinationLocation || "N/A"}
-                onDel={() => handleRemoveBookMarkedLocation(location)}
-              />
-            ))
-          ) : (
-            <ContentSection
-                    title="Saved Locations"
-                      source="Your saved items will appear here."
-                    destination="Your saved items will appear here."
-                    onClose={handleClose}
+            {/* side-ba */}
+
+
+
+            {/* Display Content Sections */}
+            {activeIcon === 'saved' && (
+              locations && locations.length > 0 ? (
+                locations.map((location, index) => (
+                  <ContentSection
+                    key={index}
+                    title={`Saved Locations`}
+                    source={location.SourceLocation || "N/A"}
+                    destination={location.DestinationLocation || "N/A"}
+                    onDel={() => handleRemoveBookMarkedLocation(location)}
                   />
-          )
-        )}
-        {activeIcon === 'topVisited' && (
-          <ContentSection
-            title="Top Visited Locations"
-            content="Your top visited locations will appear here."
-            onClose={handleClose}
-          />
-        )}
-   {activeIcon === 'recent' && (
-  searchedLocations && searchedLocations.length > 0 ? (
-    searchedLocations.map((location, index) => (
-      <ContentSection
-        key={index}
-        title={`Recent Searches`}
-        source={location.SourceLocation || "N/A"} 
-        destination={location.DestinationLocation || "N/A"}
-        onDel={() => handleRemoveLocation(location)}
-      />
-    ))
-  ) : (
-    <ContentSection
-            title="Recent Locations"
-              source="Your saved items will appear here."
-            destination="Your saved items will appear here."
-            onClose={handleClose}
-          />
-  )
-)}
-        {activeIcon === 'devices' && (
-          <ContentSection
-            title="Devices"
-            content="Your devices will appear here."
-            onClose={handleClose}
-          />
-        )}
+                ))
+              ) : (
+                <ContentSection
+                  title="Saved Locations"
+                  source="Your saved items will appear here."
+                  destination="Your saved items will appear here."
+                  onClose={handleClose}
+                />
+              )
+            )}
+            {activeIcon === 'topVisited' && (
+              <ContentSection
+                title="Top Visited Locations"
+                content="Your top visited locations will appear here."
+                onClose={handleClose}
+              />
+            )}
+            {activeIcon === 'recent' && (
+              searchedLocations && searchedLocations.length > 0 ? (
+                searchedLocations.map((location, index) => (
+                  <ContentSection
+                    key={index}
+                    title={`Recent Searches`}
+                    source={location.SourceLocation || "N/A"}
+                    destination={location.DestinationLocation || "N/A"}
+                    onDel={() => handleRemoveLocation(location)}
+                  />
+                ))
+              ) : (
+                <ContentSection
+                  title="Recent Locations"
+                  source="Your saved items will appear here."
+                  destination="Your saved items will appear here."
+                  onClose={handleClose}
+                />
+              )
+            )}
+            {activeIcon === 'devices' && (
+              <ContentSection
+                title="Devices"
+                content="Your devices will appear here."
+                onClose={handleClose}
+              />
+            )}
+          </div>
+        }
       </div>
     </div>
   );

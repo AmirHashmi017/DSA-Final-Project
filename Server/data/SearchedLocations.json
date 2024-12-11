@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "UserID": 1,
+    "SourceLocation": "asdasdsadas",
+    "DestinationLocation": "asdasidas"
+  },
+  {
+    "UserID": 1,
+    "SourceLocation": "JDajdklsajfl",
+    "DestinationLocation": "sajdaksdj"
+  }
+]

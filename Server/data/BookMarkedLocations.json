@@ -1,11 +1,6 @@
 [
   {
     "UserID": 1,
-    "SourceLocation": "CE Department",
-    "DestinationLocation": "Physics Department"
-  },
-  {
-    "UserID": 1,
     "SourceLocation": "CS Department",
     "DestinationLocation": "Physics Department"
   }

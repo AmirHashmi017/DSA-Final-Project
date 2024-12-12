@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "../utils/AuthContext"; // Adjust the import path if necessary
 
 const LoginSignupForm = () => {
-  const { login,signup } = useContext(AuthContext);
+  const { login,signup,user,handleLogout ,showModal,setShowModal} = useContext(AuthContext);
   const [isLogin, setIsLogin] = useState(true); // Toggle between login and signup
   const [formData, setFormData] = useState({
     email: "",
@@ -28,8 +28,43 @@ const LoginSignupForm = () => {
     }
   };
 
-  return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+
+const handleProfileClick = () => {
+    setShowModal(true); // Show modal when profile is clicked
+};
+  return user ? (
+    <div className="relative">
+    <div
+        className="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center cursor-pointer absolute right-0 top-1"
+        onClick={handleProfileClick}
+    >
+        {user.userName[0].toUpperCase()}
+    </div>
+
+    {/* Modal for logout */}
+    {showModal && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-[99999999]">
+            <div className="bg-white p-6 rounded-md shadow-lg max-w-sm w-full">
+                <h3 className="text-xl mb-4 text-center">Welcome, {user.userName}</h3>
+                <button
+                    onClick={handleLogout}
+                    className="w-full py-2 bg-red-500 text-white rounded"
+                >
+                    Logout
+                </button>
+                <button
+                    onClick={() => setShowModal(false)}
+                    className="w-full py-2 mt-2 bg-gray-200 text-gray-700 rounded"
+                >
+                    Cancel
+                </button>
+            </div>
+        </div>
+    )}
+</div>
+    ) :(
+
+        <div className="flex justify-center items-center h-screen bg-gray-100">
       <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4 text-center">
           {isLogin ? "Login" : "Sign Up"}
@@ -68,7 +103,7 @@ const LoginSignupForm = () => {
               onChange={handleChange}
               required
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+              />
           </div>
           <button
             type="submit"
@@ -82,13 +117,13 @@ const LoginSignupForm = () => {
           <span
             onClick={() => setIsLogin(!isLogin)}
             className="text-blue-500 cursor-pointer hover:underline"
-          >
+            >
             {isLogin ? "Sign Up" : "Login"}
           </span>
         </p>
       </div>
     </div>
-  );
+)
 };
 
 export default LoginSignupForm;

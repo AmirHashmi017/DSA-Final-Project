@@ -11,13 +11,14 @@ import LoginSignupForm from "./components/Auth";
 const App = () => {
   return (
     <AuthProvider>
-    <LoginSignupForm>
 <TopVisitedLocationsProvider>
     <LocationsProvider>
     <SearchedLocationsProvider>
       <div className="flex h-screen">
         <Sidebar />
         <div className="flex flex-col w-4/5">
+    <LoginSignupForm> 
+    </LoginSignupForm>
           <SearchBar />
           <MapView />
         </div>
@@ -25,7 +26,6 @@ const App = () => {
     </SearchedLocationsProvider>
     </LocationsProvider>
 </TopVisitedLocationsProvider>
-    </LoginSignupForm>
     </AuthProvider>
   );
 };

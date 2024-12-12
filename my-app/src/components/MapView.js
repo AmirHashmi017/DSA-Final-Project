@@ -12,6 +12,20 @@ import "leaflet/dist/leaflet.css";
 import "../styles/tailwind.css";
 import "leaflet-routing-machine";
 
+
+let points = [];
+let mapInstance = null;
+
+// Function to set points
+export function setPoints(newPoints) {
+  points = newPoints;
+}
+
+// Function to set map instance
+export function setMap(instance) {
+  mapInstance = instance;
+}
+let graph = {};
 // Fix for missing Leaflet marker icons
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -62,7 +76,7 @@ const MapPoints = ({ pointsData, threshold, setGraph }) => {
   }, [pointsData, map, threshold]);
 
   function connectNodes(points, threshold) {
-    const graph = {}; // Reset the graph on each call
+    // Reset the graph on each call
     const polylines = []; // Reset polylines
 
     for (let i = 0; i < points.length; i++) {
@@ -94,8 +108,8 @@ const MapPoints = ({ pointsData, threshold, setGraph }) => {
             ],
             { color: "blue", weight: 1 }
           )
-            .addTo(map)
-            .bindPopup(`Distance: ${distance.toFixed(2)} meters`);
+            // .addTo(map)
+            // .bindPopup(`Distance: ${distance.toFixed(2)} meters`);
 
           polylines.push({
             points: [points[i].name, points[j].name],
@@ -106,10 +120,95 @@ const MapPoints = ({ pointsData, threshold, setGraph }) => {
     }
 
     console.log("Graph of connections (node points):", graph);
-  }
+   
 
   return null; // This component doesn't render anything itself
 };
+}
+export function dijkstra(startNode, endNode){
+  // const map = getMapInstance(); 
+  // Initialize distances and predecessors
+  console.log("Global Graph:", graph);
+  const distances = {};
+  const predecessors = {};
+  const priorityQueue = new Set();
+
+  // Set all distances to infinity and add nodes to the priority queue
+  for (const node in graph) {
+    distances[node] = Infinity;
+    priorityQueue.add(node);
+  }
+  distances[startNode] = 0;
+
+  while (priorityQueue.size > 0) {
+    // Find the node with the smallest distance
+    let currentNode = null;
+    let smallestDistance = Infinity;
+
+    for (const node of priorityQueue) {
+      if (distances[node] < smallestDistance) {
+        smallestDistance = distances[node];
+        currentNode = node;
+      }
+    }
+
+    // If the smallest distance is Infinity, we cannot reach further nodes
+    if (currentNode === null || distances[currentNode] === Infinity) break;
+
+    // Remove the node with the smallest distance from the queue
+    priorityQueue.delete(currentNode);
+
+    // Update distances for neighbors
+    for (const neighbor of graph[currentNode]) {
+      const altDistance = distances[currentNode] + neighbor.distance;
+
+      if (altDistance < distances[neighbor.name]) {
+        distances[neighbor.name] = altDistance;
+        predecessors[neighbor.name] = currentNode;
+      }
+    }
+
+    // Stop if we reach the endNode
+    if (currentNode === endNode) break;
+  }
+
+  // Reconstruct the shortest path
+  const path = [];
+  let currentNode = endNode;
+
+  while (currentNode !== undefined) {
+    path.unshift(currentNode);
+    currentNode = predecessors[currentNode];
+  }
+
+  // Draw the shortest path on the map
+  // if (path.length > 1) {
+  //   for (let i = 0; i < path.length - 1; i++) {
+  //     const startPoint = points.find((p) => p.name === path[i]);
+  //     const endPoint = points.find((p) => p.name === path[i + 1]);
+
+  //     if (startPoint && endPoint) {
+  //       // Draw the polyline for the shortest path
+  //       L.polyline(
+  //         [
+  //           [startPoint.latitude, startPoint.longitude],
+  //           [endPoint.latitude, endPoint.longitude],
+  //         ],
+  //         { color: "green", weight: 5 } // Define the line's appearance
+  //       )
+  //         .addTo(map) // Add the line to the map
+  //         .bindPopup(`Shortest Path: ${path[i]} → ${path[i + 1]}`); // Bind a popup for the line segment
+  //     }
+  //   }
+  // }
+
+  // Ensure the function also computes and returns the path and its total distance
+  return {
+    path,
+    distance: distances[endNode],
+  };
+}
+
 
 const MapView = () => {
   const [pointsData, setPointsData] = useState([]);

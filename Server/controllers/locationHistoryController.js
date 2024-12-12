@@ -11,7 +11,7 @@ const locationHistoryList = new DoublyLinkedList();
 const addLocationHistory = async (req, res) => {
   const { userId, longitude, latitude, timestamp, deviceName } = req.body;
 
-  if (!userId || !longitude || !latitude || !timestamp) {
+  if (!userId || !longitude || !latitude || !timestamp || !deviceName) {
     return res.status(400).json({ message: "All fields are required" });
   }
 

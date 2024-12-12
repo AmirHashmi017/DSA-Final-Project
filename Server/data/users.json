@@ -28,5 +28,11 @@
     "userName": "nazeem dsa",
     "email": "nazeef@gmail.com",
     "password": "123"
+  },
+  "qasim@gmail.com": {
+    "userId": 1733765638172,
+    "userName": "Qasim",
+    "email": "qasim@gmail.com",
+    "password": "123"
   }
 }

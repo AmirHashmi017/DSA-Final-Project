@@ -35,13 +35,20 @@ const calculateDistance = (lat1, lng1, lat2, lng2) => {
 
 const MapPoints = ({ pointsData, threshold, setGraph }) => {
   const map = useMap(); // Access the map instance
-
   useEffect(() => {
     if (pointsData.length === 0) return;
 
-    const graph = {};
-    const polylines = [];
+    // Clear only existing markers and point-to-point polylines
+    // map.eachLayer((layer) => {
+    //   if (
+    //     layer instanceof L.Marker ||
+    //     (layer instanceof L.Polyline && !layer.polygonId) // Avoid removing polygon layers
+    //   ) {
+    //     map.removeLayer(layer);
+    //   }
+    // });
 
+    // Add markers for points
     pointsData.forEach((point) => {
       L.marker([point.latitude, point.longitude])
         .addTo(map)
@@ -50,61 +57,56 @@ const MapPoints = ({ pointsData, threshold, setGraph }) => {
         );
     });
 
-    for (let i = 0; i < pointsData.length; i++) {
-      for (let j = i + 1; j < pointsData.length; j++) {
+    // Connect nodes for points
+    connectNodes(pointsData, threshold);
+  }, [pointsData, map, threshold]);
+
+  function connectNodes(points, threshold) {
+    const graph = {}; // Reset the graph on each call
+    const polylines = []; // Reset polylines
+
+    for (let i = 0; i < points.length; i++) {
+      if (!graph[points[i].name]) {
+        graph[points[i].name] = [];
+      }
+
+      for (let j = i + 1; j < points.length; j++) {
         const distance = calculateDistance(
-          pointsData[i].latitude,
-          pointsData[i].longitude,
-          pointsData[j].latitude,
-          pointsData[j].longitude
+          points[i].latitude,
+          points[i].longitude,
+          points[j].latitude,
+          points[j].longitude
         );
 
         if (distance <= threshold) {
-          if (!graph[pointsData[i].name]) graph[pointsData[i].name] = [];
-          if (!graph[pointsData[j].name]) graph[pointsData[j].name] = [];
-          graph[pointsData[i].name].push({
-            name: pointsData[j].name,
-            distance,
+          if (!graph[points[j].name]) {
+            graph[points[j].name] = [];
+          }
+
+          graph[points[i].name].push({ name: points[j].name, distance });
+          graph[points[j].name].push({ name: points[i].name, distance });
+
+          // Create and store the polyline
+          const polyline = L.polyline(
+            [
+              [points[i].latitude, points[i].longitude],
+              [points[j].latitude, points[j].longitude],
+            ],
+            { color: "blue", weight: 1 }
+          )
+            .addTo(map)
+            .bindPopup(`Distance: ${distance.toFixed(2)} meters`);
+
+          polylines.push({
+            points: [points[i].name, points[j].name],
+            polyline,
           });
-          graph[pointsData[j].name].push({
-            name: pointsData[i].name,
-            distance,
-          });
-
-          const waypoints = [
-            L.latLng(pointsData[i].latitude, pointsData[i].longitude),
-            L.latLng(pointsData[j].latitude, pointsData[j].longitude),
-          ];
-
-          L.Routing.control({
-            waypoints: waypoints,
-            routeWhileDragging: false,
-            createMarker: () => null, // Suppress default markers
-            lineOptions: {
-              styles: [{ color: "blue", weight: 3, opacity: 0.8 }],
-            },
-          })
-            .on("routesfound", (e) => {
-              const route = e.routes[0];
-              const polyline = L.polyline(route.coordinates, {
-                color: "blue",
-                weight: 3,
-                opacity: 0.8,
-              }).addTo(map);
-
-              polylines.push({
-                points: [pointsData[i].name, pointsData[j].name],
-                polyline,
-              });
-            })
-            .addTo(map);
         }
       }
     }
 
-    console.log("Graph of connections:", graph);
-    setGraph(graph); // Update the graph state
-  }, [pointsData, map, threshold, setGraph]);
+    console.log("Graph of connections (node points):", graph);
+  }
 
   return null; // This component doesn't render anything itself
 };
@@ -112,7 +114,7 @@ const MapPoints = ({ pointsData, threshold, setGraph }) => {
 const MapView = () => {
   const [pointsData, setPointsData] = useState([]);
   const [graph, setGraph] = useState({});
-  const [threshold, setThreshold] = useState(100);
+  const [threshold, setThreshold] = useState(200);
   const [polylines, setPolylines] = useState();
 
   const loadCsvData = (file) => {
@@ -143,6 +145,7 @@ const MapView = () => {
     };
     reader.readAsText(file);
   };
+
   const loadPointsCsv = (file) => {
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -176,18 +179,22 @@ const MapView = () => {
         center={[31.59, 74.375]}
         zoom={18}
       >
-        {/* <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" /> */}
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
         {polylines?.map((polygon, index) => (
           <Polygon key={index} positions={polygon.latLngs} color="blue">
             <Popup>{polygon.polygonId}</Popup>
           </Polygon>
         ))}
+
+        {/* Pass data to child components */}
         <MapPoints
           pointsData={pointsData}
           threshold={threshold}
           setGraph={setGraph}
         />
       </MapContainer>
+
       <input
         type="file"
         accept=".csv"

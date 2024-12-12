@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react';
 import {l,setL,SearchedLocationsContext} from '../utils/SearchedLocationsContext';
 import { AuthContext } from '../utils/AuthContext';
 import { useLocationsContext ,addBookMarkedLocation} from '../utils/BookMarkedLocationsContext';
+import { dijkstra } from './MapView.js';
+import { useMap } from './MapView.js';
 
 const SearchBar = () => {
   const recentLocations = ['New York', 'Los Angeles', 'Chicago', 'San Francisco', 'Miami'];
@@ -33,6 +35,7 @@ const SearchBar = () => {
   };
   const handleDirectionClick = () => {
     alert(`Directions to ${locationSelected}`);
+    
     setL(true)
   };
 
@@ -41,6 +44,19 @@ const SearchBar = () => {
   };
   const handleFinalSearch = () => {
     addLocation(userID, sourceLocation, destinationLocation);
+
+      // Compute the shortest path using Dijkstra
+      console.log("Source:", sourceLocation);
+      console.log("Destination:", destinationLocation);
+  const result = dijkstra(
+    sourceLocation,
+    destinationLocation
+  );
+
+  console.log("Shortest path result:", result);
+
+  // Mark the shortest path in red
+ 
     alert('Location Searched')
 
     // setSourceLocation('');

@@ -1,8 +1,10 @@
 import React, { useContext, useState } from 'react';
 import ContentSection from './ContentSection';
 import { AuthContext } from '../utils/AuthContext';
-import { SearchedLocationsContext, SearchedLocationsProvider } from '../utils/SearchedLocationsContext';
+import { SearchedLocationsContext, SearchedLocationsProvider,l,setL } from '../utils/SearchedLocationsContext';
 import { useLocationsContext } from '../utils/BookMarkedLocationsContext';
+import { TopVisitedLocationsProvider } from "../utils/TopVisitedLocationsContext";
+import TopVisitedLocations from "./TopVisitedLocations";
 
 const Sidebar = () => {
   const { locations, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
@@ -12,7 +14,7 @@ const Sidebar = () => {
   const [sourceLocation, setSourceLocation] = useState('');
   const [destinationLocation, setDestinationLocation] = useState('');
   const [userID] = useState(1); // Replace with dynamic user ID if available
-
+  const {l,setL}=useContext(SearchedLocationsContext)
   const handleIconClick = (iconName) => {
     setActiveIcon(activeIcon === iconName ? null : iconName);
   };
@@ -21,17 +23,14 @@ const Sidebar = () => {
     setActiveIcon(null);
   };
 
-  const handleSearch = () => {
-    addLocation(userID, sourceLocation, destinationLocation);
-    // setSourceLocation('');
-    // setDestinationLocation('');
-  };
+ 
   const handleRemoveLocation = (location) => {
     deleteLocation(location.UserID, location.SourceLocation, location.DestinationLocation);
   };
   const handleRemoveBookMarkedLocation = (location) => {
     deleteBookMarkedLocation(userID, location.SourceLocation, location.DestinationLocation);
   };
+  
   const handleFetch = () => {
     handleIconClick("recent")
     fetchLocations(userID)
@@ -44,13 +43,13 @@ const Sidebar = () => {
 
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen max-h-screen">
       {/* Sidebar */}
-      <div className="w-fit bg-gray-100 p-4 shadow-lg h-full z-[99999]">
+      <div className="w-fit bg-gray-100 p-4 shadow-lg h-full z-[99999] max-h-screen">
         <h2 className="text-2xl font-bold mb-14 text-center">
           <i className="fa-solid fa-home"></i>
         </h2>
-        <ul className="">
+        <ul className="h-[75vh]">
           {/* Saved Icon */}
           <li
             className="cursor-pointer text-gray-500 hover:text-blue-600 flex flex-col justify-center items-center text-center mb-5"
@@ -98,7 +97,7 @@ const Sidebar = () => {
         </ul>
 
         {/* Log Out Button */}
-        <div className="cursor-pointer text-gray-500 hover:text-blue-600 flex flex-col text-center mb-5 items-end justify-end mt-[480px]" onClick={() => handleIconClick(null)}>
+        <div className="cursor-pointer text-gray-500 hover:text-blue-600 flex flex-col text-center mb-5 items-end justify-end " onClick={() => handleIconClick(null)}>
           <div>
             <i className="fa-solid fa-arrow-right-from-bracket text-xl rotate-180"></i>
             <div className='text-sm'>Log Out</div>
@@ -107,30 +106,9 @@ const Sidebar = () => {
       </div>
 
       {/* Content Area */}
-      <div className="flex-grow absolute z-[9999] left-24">
+      <div className="flex-grow absolute z-[999999] left-24 ">
 
-        <div className="mb-4">
-          <input
-            type="text"
-            placeholder="Source Location"
-            value={sourceLocation}
-            onChange={(e) => setSourceLocation(e.target.value)}
-            className="border p-2 mr-2"
-          />
-          <input
-            type="text"
-            placeholder="Destination Location"
-            value={destinationLocation}
-            onChange={(e) => setDestinationLocation(e.target.value)}
-            className="border p-2 mr-2"
-          />
-          <button
-            onClick={handleSearch}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            Search
-          </button>
-        </div>
+     
         {activeIcon &&
           <div className="w-full h-full h bg-white p-6 shadow-lg rounded-lg ">
             <div className="flex justify-between items-center flex-row">
@@ -166,11 +144,12 @@ const Sidebar = () => {
               )
             )}
             {activeIcon === 'topVisited' && (
-              <ContentSection
-                title="Top Visited Locations"
-                content="Your top visited locations will appear here."
-                onClose={handleClose}
-              />
+              // <ContentSection
+              //   title="Top Visited Locations"
+              //   content="Your top visited locations will appear here."
+              //   onClose={handleClose}
+              // />
+              <TopVisitedLocations userId={userID} />
             )}
             {activeIcon === 'recent' && (
               searchedLocations && searchedLocations.length > 0 ? (

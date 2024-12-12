@@ -8,12 +8,12 @@ import { useMap } from './MapView.js';
 const SearchBar = () => {
   const recentLocations = ['New York', 'Los Angeles', 'Chicago', 'San Francisco', 'Miami'];
   const { locations, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
-  const { login } = useContext(AuthContext);
+  const { login,user } = useContext(AuthContext);
   const { addLocation, fetchLocations, searchedLocations, deleteLocation } = useContext(SearchedLocationsContext);
   const [isFocused, setIsFocused] = useState(false);
   const [sourceLocation, setSourceLocation] = useState('');
   const [destinationLocation, setDestinationLocation] = useState('');
-  const [userID] = useState(1); // Replace with dynamic user ID if available
+  const userID = user?.userId;
   const [searchQuery, setSearchQuery] = useState('');
   const [locationSelected, setLocationSelected] = useState(null);
   const {l,setL}=useContext(SearchedLocationsContext);

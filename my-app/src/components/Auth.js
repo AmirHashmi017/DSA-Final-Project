@@ -33,7 +33,7 @@ const handleProfileClick = () => {
     setShowModal(true); // Show modal when profile is clicked
 };
   return user ? (
-    <div className="relative">
+    <div className="relative z-[9999999999999999]">
     <div
         className="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center cursor-pointer absolute right-0 top-1"
         onClick={handleProfileClick}

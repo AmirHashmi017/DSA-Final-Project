@@ -1,6 +1,16 @@
 [
   {
     "UserID": 1,
+    "SourceLocation": "3",
+    "DestinationLocation": "3"
+  },
+  {
+    "UserID": 1,
+    "SourceLocation": "4",
+    "DestinationLocation": "5"
+  },
+  {
+    "UserID": 1,
     "SourceLocation": "Sir Syed Hall",
     "DestinationLocation": "IBM UET"
   }

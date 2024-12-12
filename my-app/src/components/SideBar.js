@@ -8,12 +8,12 @@ import TopVisitedLocations from "./TopVisitedLocations";
 
 const Sidebar = () => {
   const { locations, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
-  const { login } = useContext(AuthContext);
+  const { login,user } = useContext(AuthContext);
   const { addLocation, fetchLocations, searchedLocations, deleteLocation } = useContext(SearchedLocationsContext);
   const [activeIcon, setActiveIcon] = useState(null);
   const [sourceLocation, setSourceLocation] = useState('');
   const [destinationLocation, setDestinationLocation] = useState('');
-  const [userID] = useState(1); // Replace with dynamic user ID if available
+  const userID = user?.userId;
   const {l,setL}=useContext(SearchedLocationsContext)
   const handleIconClick = (iconName) => {
     setActiveIcon(activeIcon === iconName ? null : iconName);

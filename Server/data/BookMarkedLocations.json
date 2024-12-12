@@ -3,5 +3,10 @@
     "UserID": 1,
     "SourceLocation": "Hell",
     "DestinationLocation": "Los"
+  },
+  {
+    "UserID": 1,
+    "SourceLocation": "3",
+    "DestinationLocation": "3"
   }
 ]

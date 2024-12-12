@@ -1,37 +1,7 @@
 [
   {
     "UserID": 1,
-    "SourceLocation": "Cricket Groung UET",
-    "DestinationLocation": "Department of Mechatronics and Control Engineering"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "Cricket Groung UET",
-    "DestinationLocation": "UET Gate number 3"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "Cricket Groung UET",
-    "DestinationLocation": "UET Gate number 3"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "Cricket Groung UET",
-    "DestinationLocation": "Transport Office"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "Cricket Groung UET",
-    "DestinationLocation": "National Library of Engineering Sciences"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "Cricket Groung UET",
-    "DestinationLocation": "National Library of Engineering Sciences"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "BasketBall Court",
-    "DestinationLocation": "Cricket Groung UET"
+    "SourceLocation": "Sir Syed Hall",
+    "DestinationLocation": "IBM UET"
   }
 ]

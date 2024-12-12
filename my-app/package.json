@@ -5,6 +5,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
+    "axios": "^1.7.9",
     "cra-template": "1.2.0",
     "leaflet": "^1.9.4",
     "leaflet-routing-machine": "^3.2.12",

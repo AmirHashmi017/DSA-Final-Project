@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import {l,setL,SearchedLocationsContext} from '../utils/SearchedLocationsContext';
+import { AuthContext } from '../utils/AuthContext';
+import { useLocationsContext ,addBookMarkedLocation} from '../utils/BookMarkedLocationsContext';
 
 const SearchBar = () => {
   const recentLocations = ['New York', 'Los Angeles', 'Chicago', 'San Francisco', 'Miami'];
-  
+  const { locations, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
+  const { login } = useContext(AuthContext);
+  const { addLocation, fetchLocations, searchedLocations, deleteLocation } = useContext(SearchedLocationsContext);
   const [isFocused, setIsFocused] = useState(false);
+  const [sourceLocation, setSourceLocation] = useState('');
+  const [destinationLocation, setDestinationLocation] = useState('');
+  const [userID] = useState(1); // Replace with dynamic user ID if available
   const [searchQuery, setSearchQuery] = useState('');
   const [locationSelected, setLocationSelected] = useState(null);
-
+  const {l,setL}=useContext(SearchedLocationsContext);
   const handleFocus = () => {
     setIsFocused(true);
   };
@@ -20,23 +28,36 @@ const SearchBar = () => {
   const handleSearch = () => {
     setLocationSelected(searchQuery);
   };
-
+  const handleAddBookMarkedLocation = (location) => {
+    addBookMarkedLocation(userID, sourceLocation, destinationLocation);
+  };
   const handleDirectionClick = () => {
     alert(`Directions to ${locationSelected}`);
+    setL(true)
   };
 
   const handleBookmarkClick = () => {
     alert(`${locationSelected} bookmarked!`);
   };
+  const handleFinalSearch = () => {
+    addLocation(userID, sourceLocation, destinationLocation);
+    alert('Location Searched')
+
+    // setSourceLocation('');
+    // setDestinationLocation('');
+  };
   const handleCrossClick = () => {
     setLocationSelected(null);
     setSearchQuery('');
+    setL(false)
   };
   return (
     <div className="relative">
       {!locationSelected ? (
         <div className="w-1/2 bg-white px-4 py-2 shadow-sm flex items-center rounded-3xl">
-          <input
+          {!l &&
+          <>
+           <input
             type="text"
             placeholder="Search location..."
             className="flex-grow border border-gray-300 px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300 rounded-l-3xl"
@@ -44,13 +65,16 @@ const SearchBar = () => {
             onBlur={handleBlur}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-          />
+            />
           <button
             className="bg-blue-600 text-white px-4 py-2.5 hover:bg-blue-700 rounded-r-3xl"
             onClick={handleSearch}
-          >
+            >
             Search
           </button>
+            </>
+          }
+          
 
           {/* Recent locations dropdown */}
           {isFocused && (
@@ -90,11 +114,35 @@ const SearchBar = () => {
             </button>
             <button
               className= "text-blue-600 font-semibold flex flex-col text-center text-sm justify-center items-center w-20 "
-              onClick={handleBookmarkClick}
+              onClick={handleAddBookMarkedLocation}
             >
                   <i className="fa-solid fa-bookmark text-xl rounded-full px-3 py-1.5 mb-1 border-blue-700 border-2"></i>
               Bookmark
             </button>
+            {l && 
+         <div className="mb-4 z-[999999] left-24 items-center flex absolute flex-col mt-[35vh] ml-10">
+          <input
+          type="text"
+          placeholder="Source Location"
+          value={sourceLocation}
+            onChange={(e) => setSourceLocation(e.target.value)}
+            className="border p-2 mr-2 my-2"
+            />
+            <input
+            type="text"
+            placeholder="Destination Location"
+            value={destinationLocation}
+            onChange={(e) => setDestinationLocation(e.target.value)}
+            className="border p-2 mr-2"
+          />
+          <button
+          onClick={handleFinalSearch}
+          className="bg-blue-500 text-white px-12 py-2 rounded my-2"
+          >
+          Search
+          </button>
+          </div> 
+          }
           </div>
         </div>
       </div>

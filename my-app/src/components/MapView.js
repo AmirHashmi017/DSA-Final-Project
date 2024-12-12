@@ -1,16 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polygon, useMap } from 'react-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-import '../styles/tailwind.css';
-import 'leaflet-routing-machine';
+import React, { useEffect, useState } from "react";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polygon,
+  useMap,
+} from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "../styles/tailwind.css";
+import "leaflet-routing-machine";
 
 // Fix for missing Leaflet marker icons
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
 const calculateDistance = (lat1, lng1, lat2, lng2) => {
@@ -37,7 +45,9 @@ const MapPoints = ({ pointsData, threshold, setGraph }) => {
     pointsData.forEach((point) => {
       L.marker([point.latitude, point.longitude])
         .addTo(map)
-        .bindPopup(`<b>${point.name}</b><br>Lat: ${point.latitude}, Lng: ${point.longitude}`);
+        .bindPopup(
+          `<b>${point.name}</b><br>Lat: ${point.latitude}, Lng: ${point.longitude}`
+        );
     });
 
     for (let i = 0; i < pointsData.length; i++) {
@@ -52,8 +62,14 @@ const MapPoints = ({ pointsData, threshold, setGraph }) => {
         if (distance <= threshold) {
           if (!graph[pointsData[i].name]) graph[pointsData[i].name] = [];
           if (!graph[pointsData[j].name]) graph[pointsData[j].name] = [];
-          graph[pointsData[i].name].push({ name: pointsData[j].name, distance });
-          graph[pointsData[j].name].push({ name: pointsData[i].name, distance });
+          graph[pointsData[i].name].push({
+            name: pointsData[j].name,
+            distance,
+          });
+          graph[pointsData[j].name].push({
+            name: pointsData[i].name,
+            distance,
+          });
 
           const waypoints = [
             L.latLng(pointsData[i].latitude, pointsData[i].longitude),
@@ -65,25 +81,28 @@ const MapPoints = ({ pointsData, threshold, setGraph }) => {
             routeWhileDragging: false,
             createMarker: () => null, // Suppress default markers
             lineOptions: {
-              styles: [{ color: 'blue', weight: 3, opacity: 0.8 }],
+              styles: [{ color: "blue", weight: 3, opacity: 0.8 }],
             },
           })
-            .on('routesfound', (e) => {
+            .on("routesfound", (e) => {
               const route = e.routes[0];
               const polyline = L.polyline(route.coordinates, {
-                color: 'blue',
+                color: "blue",
                 weight: 3,
                 opacity: 0.8,
               }).addTo(map);
 
-              polylines.push({ points: [pointsData[i].name, pointsData[j].name], polyline });
+              polylines.push({
+                points: [pointsData[i].name, pointsData[j].name],
+                polyline,
+              });
             })
             .addTo(map);
         }
       }
     }
 
-    console.log('Graph of connections:', graph);
+    console.log("Graph of connections:", graph);
     setGraph(graph); // Update the graph state
   }, [pointsData, map, threshold, setGraph]);
 
@@ -100,20 +119,26 @@ const MapView = () => {
     const reader = new FileReader();
     reader.onload = (event) => {
       const csvData = event.target.result;
-      const rows = csvData.split('\n').slice(1); // Skip header row
-      const polygons = rows.map((row) => {
-        const columns = row.split(';');
-        if (columns.length === 2) {
-          const polygonId = columns[0].trim();
-          const coordinates = columns[1].split('@');
-          const latLngs = coordinates.map((coord) => {
-            const [lng, lat] = coord.split(',').map((val) => parseFloat(val.trim()));
-            return isNaN(lng) || isNaN(lat) ? null : [lat, lng];
-          }).filter(Boolean);
-          return latLngs.length ? { polygonId, latLngs } : null;
-        }
-        return null;
-      }).filter(Boolean);
+      const rows = csvData.split("\n").slice(1); // Skip header row
+      const polygons = rows
+        .map((row) => {
+          const columns = row.split(";");
+          if (columns.length === 2) {
+            const polygonId = columns[0].trim();
+            const coordinates = columns[1].split("@");
+            const latLngs = coordinates
+              .map((coord) => {
+                const [lng, lat] = coord
+                  .split(",")
+                  .map((val) => parseFloat(val.trim()));
+                return isNaN(lng) || isNaN(lat) ? null : [lat, lng];
+              })
+              .filter(Boolean);
+            return latLngs.length ? { polygonId, latLngs } : null;
+          }
+          return null;
+        })
+        .filter(Boolean);
       setPolylines(polygons);
     };
     reader.readAsText(file);
@@ -122,16 +147,22 @@ const MapView = () => {
     const reader = new FileReader();
     reader.onload = (event) => {
       const csvData = event.target.result;
-      const rows = csvData.split('\n').slice(1); // Skip header row
-      const points = rows.map((row) => {
-        const columns = row.split(';');
-        if (columns.length === 2) {
-          const name = columns[0].trim();
-          const [latitude, longitude] = columns[1].split(',').map((coord) => parseFloat(coord.trim()));
-          return !isNaN(latitude) && !isNaN(longitude) ? { name, latitude, longitude } : null;
-        }
-        return null;
-      }).filter(Boolean);
+      const rows = csvData.split("\n").slice(1); // Skip header row
+      const points = rows
+        .map((row) => {
+          const columns = row.split(";");
+          if (columns.length === 2) {
+            const name = columns[0].trim();
+            const [latitude, longitude] = columns[1]
+              .split(",")
+              .map((coord) => parseFloat(coord.trim()));
+            return !isNaN(latitude) && !isNaN(longitude)
+              ? { name, latitude, longitude }
+              : null;
+          }
+          return null;
+        })
+        .filter(Boolean);
       setPointsData(points);
     };
     reader.readAsText(file);
@@ -139,14 +170,23 @@ const MapView = () => {
 
   return (
     <div>
-      <MapContainer id="map" style={{ height: '80vh', width: '100%' }} center={[31.590, 74.375]} zoom={18}>
+      <MapContainer
+        id="map"
+        style={{ height: "80vh", width: "100%" }}
+        center={[31.59, 74.375]}
+        zoom={18}
+      >
         {/* <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" /> */}
         {polylines?.map((polygon, index) => (
           <Polygon key={index} positions={polygon.latLngs} color="blue">
             <Popup>{polygon.polygonId}</Popup>
           </Polygon>
         ))}
-        <MapPoints pointsData={pointsData} threshold={threshold} setGraph={setGraph} />
+        <MapPoints
+          pointsData={pointsData}
+          threshold={threshold}
+          setGraph={setGraph}
+        />
       </MapContainer>
       <input
         type="file"

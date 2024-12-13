@@ -30,11 +30,11 @@ const calculateDistance = (lat1, lng1, lat2, lng2) => {
     Math.sin(dLat / 2) ** 2 +
     Math.cos(lat1 * rad) * Math.cos(lat2 * rad) * Math.sin(dLng / 2) ** 2;
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c; // Distance in meters
+  return R * c;
 };
 
 const MapPoints = ({ pointsData, threshold, setGraph }) => {
-  const map = useMap(); // Access the map instance
+  const map = useMap();
   useEffect(() => {
     if (pointsData.length === 0) return;
 
@@ -108,7 +108,7 @@ const MapPoints = ({ pointsData, threshold, setGraph }) => {
     console.log("Graph of connections (node points):", graph);
   }
 
-  return null; // This component doesn't render anything itself
+  return null;
 };
 
 const MapView = () => {

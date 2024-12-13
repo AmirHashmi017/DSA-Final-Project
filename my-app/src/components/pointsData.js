@@ -1,4 +1,4 @@
-const points = [
+export const pointsData = [
 {name:"Al-Khawarizmi Institute of Computer Science",latitude:31.57807108217065,longitude: 74.35786330238952},
 {name:"Environmental engineering department uet Lahore",latitude:31.577497148974047,longitude: 74.3569819290696},
 {name:"Research Centre",latitude:31.577201274011752, longitude:74.35702738186762},

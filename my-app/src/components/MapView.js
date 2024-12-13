@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -11,11 +11,12 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "../styles/tailwind.css";
 import "leaflet-routing-machine";
+import { AuthContext } from '../utils/AuthContext';
+import {pointsData} from './pointsData.js'
 
 
-let points = [];
+let points = pointsData;
 let mapInstance = null;
-
 // Function to set points
 export function setPoints(newPoints) {
   points = newPoints;
@@ -47,22 +48,23 @@ const calculateDistance = (lat1, lng1, lat2, lng2) => {
   return R * c; // Distance in meters
 };
 
-export const MapPoints = ({ pointsData, threshold, setGraph }) => {
-  const map = useMap(); // Access the map instance
+export const MapPoints = ({ pointsData, threshold ,setGraph}) => {
+  let polylines = [];
+  const { login,user,source,destination,setSource,setDestination } = useContext(AuthContext);
+  console.log(source,destination)
+  const map = useMap();
+   useEffect(() => {
+     dijkstra(source, destination); 
+
+
+   }, [source,destination]);
+
+
   useEffect(() => {
     if (pointsData.length === 0) return;
 
-    // Clear only existing markers and point-to-point polylines
-    // map.eachLayer((layer) => {
-    //   if (
-    //     layer instanceof L.Marker ||
-    //     (layer instanceof L.Polyline && !layer.polygonId) // Avoid removing polygon layers
-    //   ) {
-    //     map.removeLayer(layer);
-    //   }
-    // });
 
-    // Add markers for points
+
     pointsData.forEach((point) => {
       L.marker([point.latitude, point.longitude])
         .addTo(map)
@@ -131,23 +133,31 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
      path.unshift(currentNode);
      currentNode = predecessors[currentNode];
    }
-  
+   polylines = [];
+   
    // Draw the shortest path on the map
    if (path.length > 1) {
+    polylines.forEach((polyline) => {
+      polyline.remove();
+    });
      for (let i = 0; i < path.length - 1; i++) {
+   
        const startPoint = points.find((p) => p.name === path[i]);
        const endPoint = points.find((p) => p.name === path[i + 1]);
+       console.log("Path",path,startPoint,endPoint,)
        if (startPoint && endPoint) {
          // Draw the polyline for the shortest path
-         L.polyline(
+         const polyline =  L.polyline(
            [
              [startPoint.latitude, startPoint.longitude],
              [endPoint.latitude, endPoint.longitude],
            ],
-           { color: "green", weight: 5 } // Define the line's appearance
+           { color: "red", weight: 5 } // Define the line's appearance
          )
-           .addTo(map) // Add the line to the map
+           .addTo(map)
            .bindPopup(`Shortest Path: ${path[i]} → ${path[i + 1]}`); // Bind a popup for the line segment
+           console.log(`Shortest Path: ${path[i]} → ${path[i + 1]}`)
+           polylines.push(polyline);
        }
      }
    }
@@ -184,22 +194,24 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
           graph[points[j].name].push({ name: points[i].name, distance });
 
           // Create and store the polyline
-          const polyline = L.polyline(
-            [
-              [points[i].latitude, points[i].longitude],
-              [points[j].latitude, points[j].longitude],
-            ],
-            { color: "blue", weight: 1 }
-          )
-             .addTo(map)
-            // .bindPopup(`Distance: ${distance.toFixed(2)} meters`);
+          // const polyline = L.polyline(
+          //   [
+          //     [points[i].latitude, points[i].longitude],
+          //     [points[j].latitude, points[j].longitude],
+          //   ],
+          //   { color: "blue", weight: 1 }
+          // )
+          //    .addTo(map)
+          //   // .bindPopup(`Distance: ${distance.toFixed(2)} meters`);
 
-          polylines.push({
-            points: [points[i].name, points[j].name],
-            polyline,
-          });
+          // polylines.push({
+          //   points: [points[i].name, points[j].name],
+          //   polyline,
+          // });
         }
       }
+      
+
     }
 
     console.log("Graph of connections (node points):", graph);

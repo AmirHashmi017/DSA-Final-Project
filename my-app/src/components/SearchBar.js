@@ -4,7 +4,7 @@ import { AuthContext } from '../utils/AuthContext';
 import { useLocationsContext ,addBookMarkedLocation} from '../utils/BookMarkedLocationsContext';
 import { MapPoints } from './MapView.js';
 import {MapView} from './MapView.js'
-
+import {pointsData} from './pointsData.js'
 import {
   MapContainer,
   TileLayer,
@@ -21,13 +21,12 @@ import "leaflet-routing-machine";
 
 const SearchBar = () => {
   const recentLocations = ['New York', 'Los Angeles', 'Chicago', 'San Francisco', 'Miami'];
+  const { login,user,source,destination,setSource,setDestination } = useContext(AuthContext);
   const { locations, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
-  const { login,user } = useContext(AuthContext);
   const { addLocation, fetchLocations, searchedLocations, deleteLocation } = useContext(SearchedLocationsContext);
   const [isFocused, setIsFocused] = useState(false);
   const [sourceLocation, setSourceLocation] = useState('');
-  // const {pointsData, threshold, setGraph }=MapView()
-  // const [dijkstra]=MapPoints(pointsData, threshold, setGraph)
+  //  const [dijkstra]=MapPoints(pointsData, 200)
   const [destinationLocation, setDestinationLocation] = useState('');
   const userID = user?.userId;
   const [searchQuery, setSearchQuery] = useState('');
@@ -64,6 +63,8 @@ const SearchBar = () => {
       // Compute the shortest path using Dijkstra
       console.log("Source:", sourceLocation);
       console.log("Destination:", destinationLocation);
+      setSource(sourceLocation)
+      setDestination(destinationLocation)
   // const result = dijkstra(
   //   sourceLocation,
   //   destinationLocation

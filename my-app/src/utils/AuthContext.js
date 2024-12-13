@@ -8,6 +8,8 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem("authToken") || null);
     const [user, setUser] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [source, setSource] = useState();
+    const [destination, setDestination] = useState();
     const baseRoute = "http://localhost:3000";
 
     // Login function
@@ -69,7 +71,7 @@ const signup = async (userData) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, getUserDetails, signup, handleLogout, token ,showModal,setShowModal}}>
+        <AuthContext.Provider value={{ user, login, logout, getUserDetails, signup, handleLogout, token ,showModal,setShowModal,source,setDestination,destination,setSource}}>
             {children}
         </AuthContext.Provider>
     );

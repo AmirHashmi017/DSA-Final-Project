@@ -62,6 +62,7 @@ const SearchBar = () => {
     setDestination(searchQuery)
   };
   const handleAddBookMarkedLocation = (location) => {
+    alert(`${sourceLocation} => ${destinationLocation} bookmarked!`);
     addBookMarkedLocation(userID, sourceLocation, destinationLocation);
   };
   const handleDirectionClick = () => {

@@ -14,6 +14,7 @@ import "leaflet-routing-machine";
 import { AuthContext } from "../utils/AuthContext";
 import { PointsData } from "./pointsData.js";
 import { PriorityQueue } from "../DataStructures/PriorityQueue.js";
+import { DeviceLocationHistoryContext } from "../utils/TrackDevicesContext.js";
 let mstPolylines = [];
 
 let points = PointsData;
@@ -62,7 +63,8 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
     setMST,
     searchMST,
   } = useContext(AuthContext);
-  console.log(source, destination);
+  const { mobileLocation } = useContext(DeviceLocationHistoryContext);
+
   const map = useMap();
   useEffect(() => {
     dijkstra(source, destination);
@@ -79,6 +81,10 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
   useEffect(() => {
     setView(destination);
   }, [destination]);
+
+  useEffect(() => {
+    showPointOnMap(mobileLocation);
+  }, [mobileLocation]);
 
   useEffect(() => {
     if (pointsData.length === 0) return;
@@ -376,116 +382,47 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
   }
 
   function setView() {
+    if (!pointsData || !destination) {
+      console.log("Points data or destination is missing");
+      return;
+    }
+
     const selectedLocation = pointsData.find(
       (location) =>
         location.name.toLowerCase().trim() === destination.toLowerCase()
     );
-    console.log(selectedLocation);
+
     if (selectedLocation) {
       const latitude = selectedLocation.latitude;
       const longitude = selectedLocation.longitude;
 
       if (latitude && longitude) {
         map.setView([latitude, longitude], 20); // Set the map view based on the coordinates
+      } else {
+        console.log("Latitude or longitude is missing");
       }
     } else {
       console.log("Location not found");
     }
   }
-  // function connectNodes(points, threshold) {
-  //   const polylines = []; // Reset polylines
-  //   const graph = {}; // Reset the graph
 
-  //   const maxRequests = 5; // Max simultaneous requests at a time
-  //   let requestCount = 0;  // Track active requests
-  //   const delayTime = 500; // Delay between requests (in milliseconds)
+  function showPointOnMap(deviceLocation) {
+    const latitude = deviceLocation?.latitude;
+    const longitude = deviceLocation?.longitude;
+    const pointName = deviceLocation?.deviceName;
+    if (!latitude || !longitude || !pointName) {
+      console.log("Latitude, longitude, or point name is missing");
+      return;
+    }
 
-  //   // Function to process routes with a delay
-  //   function processRoutes(startIndex, endIndex) {
-  //     if (startIndex >= points.length) return; // Exit if all points are processed
+    // Add the marker to the map
+    const marker = L.marker([latitude, longitude])
+      .addTo(map)
+      .bindPopup(`<b>${pointName}</b><br>Lat: ${latitude}, Lng: ${longitude}`);
 
-  //     const startPoint = points[startIndex];
-  //     if (!graph[startPoint.name]) {
-  //       graph[startPoint.name] = [];
-  //     }
-
-  //     const endPoint = points[endIndex];
-  //     const distance = calculateDistance(startPoint, endPoint);
-  //     if (distance > threshold) return; // Skip if distance exceeds threshold
-
-  //     // Use Leaflet Routing Machine to calculate the distance between points
-  //     const routeControl = L.Routing.control({
-  //       waypoints: [
-  //         L.latLng(startPoint.latitude, startPoint.longitude),
-  //         L.latLng(endPoint.latitude, endPoint.longitude),
-  //       ],
-  //       routeWhileDragging: false,
-  //       createMarker: function() { return null; }, // Disable markers
-  //     }).on('routesfound', function(e) {
-  //       const route = e.routes[0];
-  //       const routeDistance = route.summary.totalDistance; // Distance in meters
-
-  //       // If the distance is less than or equal to the threshold, add to the graph
-  //       if (routeDistance <= threshold) {
-  //         graph[startPoint.name].push({ name: endPoint.name, distance: routeDistance });
-  //         graph[endPoint.name].push({ name: startPoint.name, distance: routeDistance });
-
-  //         // Create and store the polyline on the map
-  //         const polyline = L.Routing.line(route).addTo(map);
-  //         polylines.push({
-  //           points: [startPoint.name, endPoint.name],
-  //           polyline,
-  //         });
-  //       }
-
-  //       requestCount--; // Decrease active request count
-  //     }).addTo(map); // Add routing control to the map for calculating routes
-
-  //     requestCount++; // Increase active request count
-
-  //     // If too many requests are running, add a delay before processing the next one
-  //     if (requestCount >= maxRequests) {
-  //       setTimeout(() => {
-  //         processRoutes(startIndex, endIndex + 1);
-  //       }, delayTime);
-  //     } else {
-  //       processRoutes(startIndex, endIndex + 1);
-  //     }
-  //   }
-
-  //   // Loop through each pair of points
-  //   for (let i = 0; i < points.length; i++) {
-  //     for (let j = i + 1; j < points.length; j++) {
-  //       // Delay next call if there are too many ongoing requests
-  //       if (requestCount < maxRequests) {
-  //         processRoutes(i, j);
-  //       } else {
-  //         setTimeout(() => {
-  //           processRoutes(i, j);
-  //         }, delayTime); // Delay next request if max request limit reached
-  //       }
-  //     }
-  //   }
-  // }
-
-  // // Dummy function to calculate distance between two points (could be replaced with a more efficient method)
-  // function calculateDistance(point1, point2) {
-  //   const lat1 = point1.latitude;
-  //   const lon1 = point1.longitude;
-  //   const lat2 = point2.latitude;
-  //   const lon2 = point2.longitude;
-
-  //   const R = 6371; // Earth's radius in km
-  //   const dLat = (lat2 - lat1) * Math.PI / 180;
-  //   const dLon = (lon2 - lon1) * Math.PI / 180;
-  //   const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-  //             Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-  //             Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  //   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-  //   const distance = R * c * 1000; // Distance in meters
-  //   return distance;
-  // }
+    // Set the map view to the new marker
+    map.setView([latitude, longitude], 20);
+  }
 
   function connectNodes(points, threshold) {
     //     // Reset the graph on each call
@@ -551,6 +488,7 @@ export const MapView = () => {
   const [renderKey, setRenderKey] = useState(0);
   const { setDestination, setSource, destination, source } =
     useContext(AuthContext);
+  const { setMobileLocation } = useContext(DeviceLocationHistoryContext);
   // const clearPolylinesRef = useRef(null);
   let file = [];
   const loadCsvData = async () => {
@@ -1163,6 +1101,7 @@ export const MapView = () => {
   };
 
   const handleClearMap = () => {
+    setMobileLocation(null);
     setPointsData([]); // Clear points data
     setRenderKey((prevKey) => prevKey + 1); // Update renderKey to
     // trigger re-render
@@ -1177,7 +1116,7 @@ export const MapView = () => {
         key={renderKey}
         id="map"
         style={{ height: "80vh", width: "100%" }}
-        center={[31.59, 74.375]}
+        center={[31.578532989784815, 74.35845342205458]}
         zoom={18}
       >
         {/* <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" /> */}
@@ -1196,29 +1135,11 @@ export const MapView = () => {
         />
       </MapContainer>
 
-      {/* <input
-        type="file"
-        accept=".csv"
-        onChange={(e) => loadCsvData(e.target.files[0])}
-      />
-      <input
-        type="file"
-        accept=".csv"
-        onChange={(e) => loadPointsCsv(e.target.files[0])}
-      />
-      <div>
-        <label>Threshold (meters): </label>
-        <input
-          type="number"
-          value={threshold}
-          onChange={(e) => setThreshold(Number(e.target.value))}
-        />
-      </div> */}
       <button
-        className="absolute top-10 right-10 bg-blue-500 px-4 py-2 text-white rounded-md"
+        className="absolute top-2 right-10 bg-blue-500 px-4 py-2 text-white rounded-md"
         onClick={handleClearMap}
       >
-        Clear Map
+        Clear Map Data
       </button>
     </div>
   );

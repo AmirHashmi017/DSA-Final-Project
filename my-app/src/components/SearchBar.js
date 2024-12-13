@@ -100,6 +100,9 @@ const SearchBar = () => {
     setSearchQuery('');
     setL(false)
   };
+  const handleCloseModal = () => {
+    setIsMultiRoutingVisible(false);
+  };
   return (
     <div className="relative">
       {!locationSelected ? (
@@ -207,7 +210,15 @@ const SearchBar = () => {
           }
           {isMultiRoutingVisible && (
         <div className="mt-4 p-4 border rounded bg-gray-100">
+          <div className='flex flex-row w-full justify-between items-center'>
           <h3 className="text-lg font-bold mb-2">Add Additional Destinations</h3>
+          <button
+          onClick={handleCloseModal}
+          className=" text-xl font-bold text-gray-600"
+          >
+          X
+        </button>
+          </div>
           <input
             type="text"
             placeholder="Add Destination"

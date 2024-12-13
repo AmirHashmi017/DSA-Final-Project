@@ -64,8 +64,8 @@ const handleProfileClick = () => {
 </div>
     ) :(
 
-        <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
+        <div className="flex justify-center items-center h-screen backdrop-blur-2xl absolute w-full inset-0 z-[9999999]">
+      <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md absolute top-[20vh]">
         <h2 className="text-2xl font-bold mb-4 text-center">
           {isLogin ? "Login" : "Sign Up"}
         </h2>

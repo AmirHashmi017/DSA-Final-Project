@@ -1,5 +1,6 @@
 [
   {
+<<<<<<< HEAD
     "UserID": 1734030612871,
     "SourceLocation": "UET Power House",
     "DestinationLocation": "IBM UET"
@@ -63,5 +64,10 @@
     "UserID": 1734030612871,
     "SourceLocation": "IBM UET",
     "DestinationLocation": "Sir Syed Hall"
+=======
+    "UserID": 1734090436179,
+    "SourceLocation": "Cricket Ground UET",
+    "DestinationLocation": "Auditorium Complex"
+>>>>>>> 28ed2dd84ed0c05541411f3245b50b1943ab88f2
   }
 ]

@@ -125,21 +125,9 @@ const SearchBar = () => {
     setL(false);
   };
 
-  const handleClearLocations = () => {
-    // setSource("");
-    // setDestination("");
-    // setLocationSelected(null);
-    // setSearchQuery("");
-    // setAdditionalDestinations([]);
-    if (mapRef.current) {
-      mapRef.current.eachLayer((layer) => {
-        if (layer instanceof L.Marker || layer instanceof L.Polyline) {
-          mapRef.current.removeLayer(layer);
-        }
-      });
-    }
+  const handleCloseModal = () => {
+    setIsMultiRoutingVisible(false);
   };
-
   return (
     <div className="relative">
       {!locationSelected ? (
@@ -251,10 +239,10 @@ const SearchBar = () => {
                   </button>
 
                   <button
-                    onClick={handleClearLocations}
-                    className="bg-red-500 text-white px-4 py-2 rounded mt-4"
+                    onClick={handleCloseModal}
+                    className=" text-xl font-bold text-gray-600"
                   >
-                    Clear Locations
+                    X
                   </button>
                 </div>
               )}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -12,11 +12,11 @@ import "leaflet/dist/leaflet.css";
 import "../styles/tailwind.css";
 import "leaflet-routing-machine";
 import { AuthContext } from "../utils/AuthContext";
-import { pointsData } from "./pointsData.js";
+import { PointsData } from "./pointsData.js";
 import { PriorityQueue } from "../DataStructures/PriorityQueue.js";
 let mstPolylines = [];
 
-let points = pointsData;
+let points = PointsData;
 let mapInstance = null;
 // Function to set points
 export function setPoints(newPoints) {
@@ -67,6 +67,7 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
   useEffect(() => {
     dijkstra(source, destination);
   }, [source, destination]);
+
   useEffect(() => {
     if (searchMST) {
       primMST(locationsMST);
@@ -93,6 +94,17 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
     // Connect nodes for points
     connectNodes(pointsData, threshold);
   }, [pointsData, map, threshold]);
+
+  // Function to clear polylines
+  // const clearPolylines = () => {
+  //   polylines.forEach((polyline) => {
+  //     map.removeLayer(polyline);
+  //   });
+  //   setPolylines([]);
+  // };
+
+  // Provide the clearPolylines function to the parent component
+  // clearPolylinesRef.current = clearPolylines;
 
   //   function dijkstra(startNode, endNode) {
 
@@ -173,8 +185,9 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
   // }
   //   }
 
+  let existingPolyline = null;
+
   function dijkstra(startNode, endNode) {
-    // const map = useMap();
     // Initialize distances and predecessors
     console.log("Global Graph:", graph);
     const distances = {};
@@ -228,13 +241,15 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
       path.unshift(currentNode);
       currentNode = predecessors[currentNode];
     }
-    polylines = [];
+
+    // Remove the existing polyline if it exists
+    if (existingPolyline) {
+      existingPolyline.remove();
+    }
 
     // Draw the shortest path on the map
     if (path.length > 1) {
-      polylines.forEach((polyline) => {
-        polyline.remove();
-      });
+      const newPolylines = [];
       for (let i = 0; i < path.length - 1; i++) {
         const startPoint = points.find((p) => p.name === path[i]);
         const endPoint = points.find((p) => p.name === path[i + 1]);
@@ -251,9 +266,15 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
             .addTo(map)
             .bindPopup(`Shortest Path: ${path[i]} → ${path[i + 1]}`); // Bind a popup for the line segment
           console.log(`Shortest Path: ${path[i]} → ${path[i + 1]}`);
-          polylines.push(polyline);
+          newPolylines.push(polyline);
         }
       }
+      // Update the existing polyline reference
+      existingPolyline = L.layerGroup(newPolylines).addTo(map);
+
+      // set the path source and destination to null
+      console.log("Logged Source and Destination");
+      console.log(source, destination);
     }
 
     // Ensure the function also computes and returns the path and its total distance
@@ -526,7 +547,11 @@ export const MapView = () => {
   const [pointsData, setPointsData] = useState([]);
   const [graph, setGraph] = useState({});
   const [threshold, setThreshold] = useState(500);
-  const [polylines, setPolylines] = useState();
+  const [polylines, setPolylines] = useState(null);
+  const [renderKey, setRenderKey] = useState(0);
+  const { setDestination, setSource, destination, source } =
+    useContext(AuthContext);
+  // const clearPolylinesRef = useRef(null);
   let file = [];
   const loadCsvData = async () => {
     // Fetch the CSV file
@@ -563,6 +588,11 @@ export const MapView = () => {
     loadPointsCsv();
     loadCsvData();
   }, []);
+
+  useEffect(() => {
+    loadPointsCsv();
+  }, [renderKey]);
+
   const loadPointsCsv = (file) => {
     // const reader = new FileReader();
     // reader.onload = (event) => {
@@ -1132,9 +1162,19 @@ export const MapView = () => {
     setPointsData(points);
   };
 
+  const handleClearMap = () => {
+    setPointsData([]); // Clear points data
+    setRenderKey((prevKey) => prevKey + 1); // Update renderKey to
+    // trigger re-render
+    setSource(null);
+    setDestination(null);
+    setPoints(PointsData);
+  };
+
   return (
     <div>
       <MapContainer
+        key={renderKey}
         id="map"
         style={{ height: "80vh", width: "100%" }}
         center={[31.59, 74.375]}
@@ -1174,6 +1214,12 @@ export const MapView = () => {
           onChange={(e) => setThreshold(Number(e.target.value))}
         />
       </div> */}
+      <button
+        className="absolute top-10 right-10 bg-blue-500 px-4 py-2 text-white rounded-md"
+        onClick={handleClearMap}
+      >
+        Clear Map
+      </button>
     </div>
   );
 };

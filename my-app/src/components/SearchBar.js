@@ -165,7 +165,7 @@ const SearchBar = () => {
             <input
             type="text"
             placeholder="Destination Location"
-            value={destinationLocation}
+            value={destination?destination:destinationLocation}
             onChange={(e) => setDestinationLocation(e.target.value)}
             className="border p-2 mr-2"
           />

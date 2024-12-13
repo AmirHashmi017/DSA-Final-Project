@@ -1,12 +1,7 @@
 [
   {
     "UserID": 1734090436179,
-    "SourceLocation": "Zohra Hall (Girl's Hostel)",
-    "DestinationLocation": "Cricket Ground UET"
-  },
-  {
-    "UserID": 1734090436179,
-    "SourceLocation": "UET Power House",
-    "DestinationLocation": "Cricket Ground UET"
+    "SourceLocation": "Cricket Ground UET",
+    "DestinationLocation": "Auditorium Complex"
   }
 ]

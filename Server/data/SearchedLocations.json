@@ -1,37 +1,17 @@
 [
   {
-    "UserID": 1,
-    "SourceLocation": "Cricket Groung UET",
-    "DestinationLocation": "Department of Mechatronics and Control Engineering"
+    "UserID": 1734090436179,
+    "SourceLocation": "Ayesha Hall Girls Hostel.",
+    "DestinationLocation": "Cricket Groung UET"
   },
   {
-    "UserID": 1,
-    "SourceLocation": "Cricket Groung UET",
-    "DestinationLocation": "UET Gate number 3"
+    "UserID": 1734090436179,
+    "SourceLocation": "Ayesha Hall Girls Hostel.",
+    "DestinationLocation": "UET Power House"
   },
   {
-    "UserID": 1,
-    "SourceLocation": "Cricket Groung UET",
-    "DestinationLocation": "UET Gate number 3"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "Cricket Groung UET",
-    "DestinationLocation": "Transport Office"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "Cricket Groung UET",
-    "DestinationLocation": "National Library of Engineering Sciences"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "Cricket Groung UET",
-    "DestinationLocation": "National Library of Engineering Sciences"
-  },
-  {
-    "UserID": 1,
-    "SourceLocation": "BasketBall Court",
+    "UserID": 1734090436179,
+    "SourceLocation": "Department of Mechatronics and Control Engineering",
     "DestinationLocation": "Cricket Groung UET"
   }
 ]

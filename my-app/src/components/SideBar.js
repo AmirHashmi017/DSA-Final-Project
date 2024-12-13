@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import ContentSection from './ContentSection';
 import { AuthContext } from '../utils/AuthContext';
 import { SearchedLocationsContext, SearchedLocationsProvider,l,setL } from '../utils/SearchedLocationsContext';
@@ -8,16 +8,29 @@ import TopVisitedLocations from "./TopVisitedLocations";
 
 const Sidebar = () => {
   const { locations, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
-  const { login } = useContext(AuthContext);
+  const { login,user } = useContext(AuthContext);
   const { addLocation, fetchLocations, searchedLocations, deleteLocation } = useContext(SearchedLocationsContext);
   const [activeIcon, setActiveIcon] = useState(null);
   const [sourceLocation, setSourceLocation] = useState('');
   const [destinationLocation, setDestinationLocation] = useState('');
-  const [userID] = useState(1); // Replace with dynamic user ID if available
+  const userID = user?.userId;
+  const [titles, setTitles] = useState('');
+
   const {l,setL}=useContext(SearchedLocationsContext)
   const handleIconClick = (iconName) => {
     setActiveIcon(activeIcon === iconName ? null : iconName);
   };
+  useEffect(() => {
+    if (activeIcon === 'saved') {
+      setTitles('Saved Locations');
+    } else if (activeIcon === 'topVisited') {
+      setTitles('Top Visited Locations');
+    } else if (activeIcon === 'recent') {
+      setTitles('Recent Searches');
+    } else if (activeIcon === 'devices') {
+      setTitles('Devices');
+    }
+  }, [activeIcon]);
 
   const handleClose = () => {
     setActiveIcon(null);
@@ -110,9 +123,9 @@ const Sidebar = () => {
 
      
         {activeIcon &&
-          <div className="w-full h-full h bg-white p-6 shadow-lg rounded-lg ">
+          <div className="w-full h-full h bg-white p-6 shadow-lg rounded-lg max-h-screen overflow-y-scroll">
             <div className="flex justify-between items-center flex-row">
-              <h3 className="text-xl font-semibold mb-4">sdfsdf</h3>
+              <h3 className="text-xl font-semibold mb-4">{titles}</h3>
               <button onClick={handleClose} className="text-xl text-gray-500 hover:text-red-600">
                 <i className="fa-solid fa-xmark"></i>
               </button>

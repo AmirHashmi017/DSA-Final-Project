@@ -2,18 +2,33 @@ import React, { useContext, useState } from 'react';
 import {l,setL,SearchedLocationsContext} from '../utils/SearchedLocationsContext';
 import { AuthContext } from '../utils/AuthContext';
 import { useLocationsContext ,addBookMarkedLocation} from '../utils/BookMarkedLocationsContext';
-import { dijkstra } from './MapView.js';
-import { useMap } from './MapView.js';
+import { MapPoints } from './MapView.js';
+import {MapView} from './MapView.js'
+import {pointsData} from './pointsData.js'
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polygon,
+  useMap,
+} from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "../styles/tailwind.css";
+import "leaflet-routing-machine";
+
 
 const SearchBar = () => {
   const recentLocations = ['New York', 'Los Angeles', 'Chicago', 'San Francisco', 'Miami'];
+  const { login,user,source,destination,setSource,setDestination } = useContext(AuthContext);
   const { locations, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
-  const { login } = useContext(AuthContext);
   const { addLocation, fetchLocations, searchedLocations, deleteLocation } = useContext(SearchedLocationsContext);
   const [isFocused, setIsFocused] = useState(false);
   const [sourceLocation, setSourceLocation] = useState('');
+  //  const [dijkstra]=MapPoints(pointsData, 200)
   const [destinationLocation, setDestinationLocation] = useState('');
-  const [userID] = useState(1); // Replace with dynamic user ID if available
+  const userID = user?.userId;
   const [searchQuery, setSearchQuery] = useState('');
   const [locationSelected, setLocationSelected] = useState(null);
   const {l,setL}=useContext(SearchedLocationsContext);
@@ -29,6 +44,7 @@ const SearchBar = () => {
 
   const handleSearch = () => {
     setLocationSelected(searchQuery);
+    setDestination(searchQuery)
   };
   const handleAddBookMarkedLocation = (location) => {
     addBookMarkedLocation(userID, sourceLocation, destinationLocation);
@@ -48,12 +64,14 @@ const SearchBar = () => {
       // Compute the shortest path using Dijkstra
       console.log("Source:", sourceLocation);
       console.log("Destination:", destinationLocation);
-  const result = dijkstra(
-    sourceLocation,
-    destinationLocation
-  );
+      setSource(sourceLocation)
+      setDestination(destinationLocation)
+  // const result = dijkstra(
+  //   sourceLocation,
+  //   destinationLocation
+  // );
 
-  console.log("Shortest path result:", result);
+  // console.log("Shortest path result:", result);
 
   // Mark the shortest path in red
  
@@ -145,12 +163,12 @@ const SearchBar = () => {
             className="border p-2 mr-2 my-2"
             />
             <input
-            type="text"
-            placeholder="Destination Location"
-            value={destinationLocation}
-            onChange={(e) => setDestinationLocation(e.target.value)}
-            className="border p-2 mr-2"
-          />
+        type="text"
+        placeholder="Destination Location"
+        value={destinationLocation}
+        onChange={(e) => setDestinationLocation(e.target.value)}
+        className="border p-2 mr-2"
+      />
           <button
           onClick={handleFinalSearch}
           className="bg-blue-500 text-white px-12 py-2 rounded my-2"

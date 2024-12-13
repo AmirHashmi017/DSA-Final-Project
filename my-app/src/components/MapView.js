@@ -52,7 +52,7 @@ const calculateDistance = (lat1, lng1, lat2, lng2) => {
 export const MapPoints = ({ pointsData, threshold ,setGraph}) => {
   
   let polylines = [];
-  const { login,user,source,destination,setSource,setDestination,locationsMST,setMST,searchMST } = useContext(AuthContext);
+  const { login,user,source,destination,setSource,setDestination,locationsMST,setMST,searchMST,distances,setDistances } = useContext(AuthContext);
   console.log(source,destination)
   const map = useMap();
    useEffect(() => {
@@ -260,6 +260,8 @@ export const MapPoints = ({ pointsData, threshold ,setGraph}) => {
    }
   
    // Ensure the function also computes and returns the path and its total distance
+   console.log('distances',distances[endNode])
+   setDistances(distances[endNode])
    return {
      path,
      distance: distances[endNode],
@@ -485,6 +487,7 @@ export const MapPoints = ({ pointsData, threshold ,setGraph}) => {
 
            graph[points[i].name].push({ name: points[j].name, distance });
            graph[points[j].name].push({ name: points[i].name, distance });
+       
 
           // Create and store the polyline
           // const polyline = L.polyline(

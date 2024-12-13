@@ -21,7 +21,7 @@ import "leaflet-routing-machine";
 
 const SearchBar = () => {
   const recentLocations = ['New York', 'Los Angeles', 'Chicago', 'San Francisco', 'Miami'];
-  const { login,user,source,destination,setSource,setDestination,locations,setLocations,setMST,searchMST } = useContext(AuthContext);
+  const { login,user,source,destination,setSource,setDestination,locations,setLocations,setMST,searchMST,distances } = useContext(AuthContext);
   const { locationsMST, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
   const { addLocation, fetchLocations, searchedLocations, deleteLocation } = useContext(SearchedLocationsContext);
   const [additionalDestinations, setAdditionalDestinations] = useState([]);
@@ -153,6 +153,11 @@ const SearchBar = () => {
             >
               &times;
             </button>
+            {distances && distances<10000 && 
+               <h2 className="text-4xl font-bold mb-6">
+                { distances.toFixed(3) + " meters" }
+                </h2>
+            }
           <h2 className="text-3xl font-bold mb-6">{locationSelected}</h2>
           <div className="flex space-x-4 mb-6">
             <button

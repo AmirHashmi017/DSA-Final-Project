@@ -2,23 +2,55 @@ import React, { useContext, useState } from 'react';
 import {l,setL,SearchedLocationsContext} from '../utils/SearchedLocationsContext';
 import { AuthContext } from '../utils/AuthContext';
 import { useLocationsContext ,addBookMarkedLocation} from '../utils/BookMarkedLocationsContext';
+import { MapPoints } from './MapView.js';
+import {MapView} from './MapView.js'
+import {pointsData} from './pointsData.js'
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polygon,
+  useMap,
+} from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "../styles/tailwind.css";
+import "leaflet-routing-machine";
+
 
 const SearchBar = () => {
   const recentLocations = ['New York', 'Los Angeles', 'Chicago', 'San Francisco', 'Miami'];
-  const { locations, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
-  const { login } = useContext(AuthContext);
+  const { login,user,source,destination,setSource,setDestination,locations,setLocations,setMST,searchMST } = useContext(AuthContext);
+  const { locationsMST, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
   const { addLocation, fetchLocations, searchedLocations, deleteLocation } = useContext(SearchedLocationsContext);
+  const [additionalDestinations, setAdditionalDestinations] = useState([]);
+  const [isMultiRoutingVisible, setIsMultiRoutingVisible] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [sourceLocation, setSourceLocation] = useState('');
+  //  const [dijkstra]=MapPoints(pointsData, 200)
   const [destinationLocation, setDestinationLocation] = useState('');
-  const [userID] = useState(1); // Replace with dynamic user ID if available
+  const userID = user?.userId;
   const [searchQuery, setSearchQuery] = useState('');
   const [locationSelected, setLocationSelected] = useState(null);
   const {l,setL}=useContext(SearchedLocationsContext);
   const handleFocus = () => {
     setIsFocused(true);
   };
+  const handleAddDestination = () => {
+    if (destinationLocation.trim() !== "") {
+      setAdditionalDestinations([...additionalDestinations, destinationLocation]);
+      setDestinationLocation(""); // Clear the input field
+    }
+  };
 
+  const handleSaveRoute = () => {
+    const allDestinations = [sourceLocation, ...additionalDestinations];
+    setLocations(allDestinations)
+    setMST(true)
+    console.log("Saved Route:", allDestinations);
+    // You can store the list or send it to an API here
+  };
   const handleBlur = () => {
     setTimeout(() => {
       setIsFocused(false);
@@ -27,12 +59,15 @@ const SearchBar = () => {
 
   const handleSearch = () => {
     setLocationSelected(searchQuery);
+    setDestination(searchQuery)
   };
   const handleAddBookMarkedLocation = (location) => {
+    alert(`${sourceLocation} => ${destinationLocation} bookmarked!`);
     addBookMarkedLocation(userID, sourceLocation, destinationLocation);
   };
   const handleDirectionClick = () => {
     alert(`Directions to ${locationSelected}`);
+    
     setL(true)
   };
 
@@ -41,6 +76,21 @@ const SearchBar = () => {
   };
   const handleFinalSearch = () => {
     addLocation(userID, sourceLocation, destinationLocation);
+
+      // Compute the shortest path using Dijkstra
+      console.log("Source:", sourceLocation);
+      console.log("Destination:", destinationLocation);
+      setSource(sourceLocation)
+      setDestination(destinationLocation)
+  // const result = dijkstra(
+  //   sourceLocation,
+  //   destinationLocation
+  // );
+
+  // console.log("Shortest path result:", result);
+
+  // Mark the shortest path in red
+ 
     alert('Location Searched')
 
     // setSourceLocation('');
@@ -129,20 +179,57 @@ const SearchBar = () => {
             className="border p-2 mr-2 my-2"
             />
             <input
-            type="text"
-            placeholder="Destination Location"
-            value={destinationLocation}
-            onChange={(e) => setDestinationLocation(e.target.value)}
-            className="border p-2 mr-2"
-          />
+        type="text"
+        placeholder="Destination Location"
+        value={destinationLocation}
+        onChange={(e) => setDestinationLocation(e.target.value)}
+        className="border p-2 mr-2"
+      />
           <button
           onClick={handleFinalSearch}
           className="bg-blue-500 text-white px-12 py-2 rounded my-2"
           >
           Search
           </button>
+          <button
+        onClick={() => setIsMultiRoutingVisible(!isMultiRoutingVisible)}
+        className="bg-green-500 text-white px-12 py-2 rounded my-2"
+      >
+        Add Multiple Destinations
+      </button>
           </div> 
           }
+          {isMultiRoutingVisible && (
+        <div className="mt-4 p-4 border rounded bg-gray-100">
+          <h3 className="text-lg font-bold mb-2">Add Additional Destinations</h3>
+          <input
+            type="text"
+            placeholder="Add Destination"
+            value={destinationLocation}
+            onChange={(e) => setDestinationLocation(e.target.value)}
+            className="border p-2 mr-2 my-2"
+          />
+          <button
+            onClick={handleAddDestination}
+            className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+          >
+            Add
+          </button>
+          <button
+            onClick={handleSaveRoute}
+            className="bg-green-500 text-white px-4 py-2 rounded"
+          >
+            Save Route
+          </button>
+          <ul className="mt-4">
+            {additionalDestinations.map((dest, index) => (
+              <li key={index} className="my-1">
+                {dest}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
           </div>
         </div>
       </div>

@@ -34,5 +34,17 @@
     "userName": "Qasim",
     "email": "qasim@gmail.com",
     "password": "123"
+  },
+  "sheharyarxd@gmail.com": {
+    "userId": 1734030612871,
+    "userName": "sheharyar",
+    "email": "sheharyarxd@gmail.com",
+    "password": "121"
+  },
+  "amirhashmi017@gmail.com": {
+    "userId": 1734090436179,
+    "userName": "Amir Hashmi",
+    "email": "amirhashmi017@gmail.com",
+    "password": "amir@017"
   }
 }

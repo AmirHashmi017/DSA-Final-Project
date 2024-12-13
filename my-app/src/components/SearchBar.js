@@ -163,12 +163,12 @@ const SearchBar = () => {
             className="border p-2 mr-2 my-2"
             />
             <input
-            type="text"
-            placeholder="Destination Location"
-            value={destination?destination:destinationLocation}
-            onChange={(e) => setDestinationLocation(e.target.value)}
-            className="border p-2 mr-2"
-          />
+        type="text"
+        placeholder="Destination Location"
+        value={destinationLocation}
+        onChange={(e) => setDestinationLocation(e.target.value)}
+        className="border p-2 mr-2"
+      />
           <button
           onClick={handleFinalSearch}
           className="bg-blue-500 text-white px-12 py-2 rounded my-2"

@@ -191,30 +191,127 @@ export const MapPoints = ({ pointsData, threshold ,setGraph}) => {
       console.log("Location not found");
     }
   }
-  function connectNodes(points, threshold) {
-    // Reset the graph on each call
-    const polylines = []; // Reset polylines
+  // function connectNodes(points, threshold) {
+  //   const polylines = []; // Reset polylines
+  //   const graph = {}; // Reset the graph
+  
+  //   const maxRequests = 5; // Max simultaneous requests at a time
+  //   let requestCount = 0;  // Track active requests
+  //   const delayTime = 500; // Delay between requests (in milliseconds)
+  
+  //   // Function to process routes with a delay
+  //   function processRoutes(startIndex, endIndex) {
+  //     if (startIndex >= points.length) return; // Exit if all points are processed
+  
+  //     const startPoint = points[startIndex];
+  //     if (!graph[startPoint.name]) {
+  //       graph[startPoint.name] = [];
+  //     }
+  
+  //     const endPoint = points[endIndex];
+  //     const distance = calculateDistance(startPoint, endPoint);
+  //     if (distance > threshold) return; // Skip if distance exceeds threshold
+  
+  //     // Use Leaflet Routing Machine to calculate the distance between points
+  //     const routeControl = L.Routing.control({
+  //       waypoints: [
+  //         L.latLng(startPoint.latitude, startPoint.longitude),
+  //         L.latLng(endPoint.latitude, endPoint.longitude),
+  //       ],
+  //       routeWhileDragging: false,
+  //       createMarker: function() { return null; }, // Disable markers
+  //     }).on('routesfound', function(e) {
+  //       const route = e.routes[0];
+  //       const routeDistance = route.summary.totalDistance; // Distance in meters
+  
+  //       // If the distance is less than or equal to the threshold, add to the graph
+  //       if (routeDistance <= threshold) {
+  //         graph[startPoint.name].push({ name: endPoint.name, distance: routeDistance });
+  //         graph[endPoint.name].push({ name: startPoint.name, distance: routeDistance });
+  
+  //         // Create and store the polyline on the map
+  //         const polyline = L.Routing.line(route).addTo(map);
+  //         polylines.push({
+  //           points: [startPoint.name, endPoint.name],
+  //           polyline,
+  //         });
+  //       }
+  
+  //       requestCount--; // Decrease active request count
+  //     }).addTo(map); // Add routing control to the map for calculating routes
+  
+  //     requestCount++; // Increase active request count
+  
+  //     // If too many requests are running, add a delay before processing the next one
+  //     if (requestCount >= maxRequests) {
+  //       setTimeout(() => {
+  //         processRoutes(startIndex, endIndex + 1);
+  //       }, delayTime);
+  //     } else {
+  //       processRoutes(startIndex, endIndex + 1);
+  //     }
+  //   }
+  
+  //   // Loop through each pair of points
+  //   for (let i = 0; i < points.length; i++) {
+  //     for (let j = i + 1; j < points.length; j++) {
+  //       // Delay next call if there are too many ongoing requests
+  //       if (requestCount < maxRequests) {
+  //         processRoutes(i, j);
+  //       } else {
+  //         setTimeout(() => {
+  //           processRoutes(i, j);
+  //         }, delayTime); // Delay next request if max request limit reached
+  //       }
+  //     }
+  //   }
+  // }
+  
+  // // Dummy function to calculate distance between two points (could be replaced with a more efficient method)
+  // function calculateDistance(point1, point2) {
+  //   const lat1 = point1.latitude;
+  //   const lon1 = point1.longitude;
+  //   const lat2 = point2.latitude;
+  //   const lon2 = point2.longitude;
+  
+  //   const R = 6371; // Earth's radius in km
+  //   const dLat = (lat2 - lat1) * Math.PI / 180;
+  //   const dLon = (lon2 - lon1) * Math.PI / 180;
+  //   const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+  //             Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+  //             Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  //   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  
+  //   const distance = R * c * 1000; // Distance in meters
+  //   return distance;
+  // }
+  
+  
+  
+   function connectNodes(points, threshold) {
+//     // Reset the graph on each call
+     const polylines = []; // Reset polylines
 
-    for (let i = 0; i < points.length; i++) {
+     for (let i = 0; i < points.length; i++) {
       if (!graph[points[i].name]) {
-        graph[points[i].name] = [];
-      }
+      graph[points[i].name] = [];
+       }
 
-      for (let j = i + 1; j < points.length; j++) {
-        const distance = calculateDistance(
-          points[i].latitude,
-          points[i].longitude,
-          points[j].latitude,
-          points[j].longitude
+       for (let j = i + 1; j < points.length; j++) {
+         const distance = calculateDistance(
+           points[i].latitude,
+           points[i].longitude,
+           points[j].latitude,
+           points[j].longitude
         );
 
-        if (distance <= threshold) {
-          if (!graph[points[j].name]) {
-            graph[points[j].name] = [];
-          }
+         if (distance <= threshold) {
+           if (!graph[points[j].name]) {
+             graph[points[j].name] = [];
+           }
 
-          graph[points[i].name].push({ name: points[j].name, distance });
-          graph[points[j].name].push({ name: points[i].name, distance });
+           graph[points[i].name].push({ name: points[j].name, distance });
+           graph[points[j].name].push({ name: points[i].name, distance });
 
           // Create and store the polyline
           // const polyline = L.polyline(
@@ -222,26 +319,26 @@ export const MapPoints = ({ pointsData, threshold ,setGraph}) => {
           //     [points[i].latitude, points[i].longitude],
           //     [points[j].latitude, points[j].longitude],
           //   ],
-          //   { color: "blue", weight: 1 }
-          // )
-          //    .addTo(map)
-          //   // .bindPopup(`Distance: ${distance.toFixed(2)} meters`);
+           //   { color: "blue", weight: 1 }
+        // )
+         //    .addTo(map)
+        //   // .bindPopup(`Distance: ${distance.toFixed(2)} meters`);
 
           // polylines.push({
-          //   points: [points[i].name, points[j].name],
-          //   polyline,
-          // });
-        }
+            //   points: [points[i].name, points[j].name],
+            //   polyline,
+            // });
+          }
+       }
+  
+  
       }
-      
-
-    }
-
-    console.log("Graph of connections (node points):", graph);
-   
-
-  return null; // This component doesn't render anything itself
-};
+  
+     console.log("Graph of connections (node points):", graph);
+  
+  
+     return null; // This component doesn't render anything itself
+   };
 
 
 }
@@ -251,7 +348,7 @@ export const MapView = () => {
   // const map=useMap()
   const [pointsData, setPointsData] = useState([]);
   const [graph, setGraph] = useState({});
-  const [threshold, setThreshold] = useState(200);
+  const [threshold, setThreshold] = useState(20);
   const [polylines, setPolylines] = useState();
   let file=[]
   const loadCsvData = async () => {

@@ -12,6 +12,7 @@ export const AuthProvider = ({ children }) => {
     const [destination, setDestination] = useState();
     const [locationsMST,setLocations]=useState();
     const [searchMST,setMST]=useState(false);
+    const [distances, setDistances] = useState("");
     const baseRoute = "http://localhost:3000";
 
     // Login function
@@ -73,7 +74,7 @@ const signup = async (userData) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, getUserDetails, signup, handleLogout, token ,showModal,setShowModal,source,setDestination,destination,setSource,locationsMST,setLocations,setMST,searchMST}}>
+        <AuthContext.Provider value={{ user, login, logout, getUserDetails, signup, handleLogout, token ,showModal,setShowModal,source,setDestination,destination,setSource,locationsMST,setLocations,setMST,searchMST,distances,setDistances}}>
             {children}
         </AuthContext.Provider>
     );

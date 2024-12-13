@@ -20,8 +20,7 @@ import "leaflet-routing-machine";
 
 
 const SearchBar = () => {
-  const recentLocations = ['New York', 'Los Angeles', 'Chicago', 'San Francisco', 'Miami'];
-  const { login,user,source,destination,setSource,setDestination,locations,setLocations,setMST,searchMST } = useContext(AuthContext);
+  const { login,user,source,destination,setSource,setDestination,locations,setLocations,setMST,searchMST,distances } = useContext(AuthContext);
   const { locationsMST, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
   const { addLocation, fetchLocations, searchedLocations, deleteLocation } = useContext(SearchedLocationsContext);
   const [additionalDestinations, setAdditionalDestinations] = useState([]);
@@ -130,14 +129,16 @@ const SearchBar = () => {
           {isFocused && (
             <div className="absolute top-full left-0 w-1/2 bg-white shadow-lg mt-2 rounded-lg max-h-40 overflow-y-auto z-[9999]">
               <ul className="text-sm">
-                {recentLocations.map((location, index) => (
+              {[...new Map(
+  searchedLocations.map((location) => [location.DestinationLocation, location])
+).values()].map((location, index) => (
                   <li
                     key={index}
                     className="px-4 py-2 hover:bg-blue-100 cursor-pointer"
-                    onClick={() => setSearchQuery(location)}
+                    onClick={() => setSearchQuery(location.DestinationLocation)}
                   >
                     <i className="fa-solid fa-rotate-left pl-2 pr-4"></i>
-                    {location}
+                    {location.DestinationLocation || "N/A"}
                   </li>
                 ))}
               </ul>
@@ -153,6 +154,11 @@ const SearchBar = () => {
             >
               &times;
             </button>
+            {distances && distances<10000 && 
+               <h2 className="text-4xl font-bold mb-6">
+                { distances.toFixed(3) + " meters" }
+                </h2>
+            }
           <h2 className="text-3xl font-bold mb-6">{locationSelected}</h2>
           <div className="flex space-x-4 mb-6">
             <button

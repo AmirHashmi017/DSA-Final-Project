@@ -8,7 +8,7 @@ import TopVisitedLocations from "./TopVisitedLocations";
 
 const Sidebar = () => {
   const { locations, fetchBookMarkedLocations, addBookMarkedLocation, deleteBookMarkedLocation, loading, error } = useLocationsContext();
-  const { login,user } = useContext(AuthContext);
+  const { login,user,distances } = useContext(AuthContext);
   const { addLocation, fetchLocations, searchedLocations, deleteLocation } = useContext(SearchedLocationsContext);
   const [activeIcon, setActiveIcon] = useState(null);
   const [sourceLocation, setSourceLocation] = useState('');

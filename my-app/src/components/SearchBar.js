@@ -2,8 +2,22 @@ import React, { useContext, useState } from 'react';
 import {l,setL,SearchedLocationsContext} from '../utils/SearchedLocationsContext';
 import { AuthContext } from '../utils/AuthContext';
 import { useLocationsContext ,addBookMarkedLocation} from '../utils/BookMarkedLocationsContext';
-import { dijkstra } from './MapView.js';
-import { useMap } from './MapView.js';
+import { MapPoints } from './MapView.js';
+import {MapView} from './MapView.js'
+
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  Polygon,
+  useMap,
+} from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "../styles/tailwind.css";
+import "leaflet-routing-machine";
+
 
 const SearchBar = () => {
   const recentLocations = ['New York', 'Los Angeles', 'Chicago', 'San Francisco', 'Miami'];
@@ -12,6 +26,8 @@ const SearchBar = () => {
   const { addLocation, fetchLocations, searchedLocations, deleteLocation } = useContext(SearchedLocationsContext);
   const [isFocused, setIsFocused] = useState(false);
   const [sourceLocation, setSourceLocation] = useState('');
+  // const {pointsData, threshold, setGraph }=MapView()
+  // const [dijkstra]=MapPoints(pointsData, threshold, setGraph)
   const [destinationLocation, setDestinationLocation] = useState('');
   const userID = user?.userId;
   const [searchQuery, setSearchQuery] = useState('');
@@ -48,12 +64,12 @@ const SearchBar = () => {
       // Compute the shortest path using Dijkstra
       console.log("Source:", sourceLocation);
       console.log("Destination:", destinationLocation);
-  const result = dijkstra(
-    sourceLocation,
-    destinationLocation
-  );
+  // const result = dijkstra(
+  //   sourceLocation,
+  //   destinationLocation
+  // );
 
-  console.log("Shortest path result:", result);
+  // console.log("Shortest path result:", result);
 
   // Mark the shortest path in red
  

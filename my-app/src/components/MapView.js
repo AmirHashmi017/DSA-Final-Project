@@ -313,6 +313,7 @@ export const MapView = () => {
     // };
     // reader.readAsText(file);
     const points = [
+      {name:"Civil Engineering Department, UET Lahore",latitude:31.579069019634254,longitude: 74.35703661351242},
       {name:"Al-Khawarizmi Institute of Computer Science",latitude:31.57807108217065,longitude: 74.35786330238952},
       {name:"Environmental engineering department uet Lahore",latitude:31.577497148974047,longitude: 74.3569819290696},
       {name:"Research Centre",latitude:31.577201274011752, longitude:74.35702738186762},
@@ -408,7 +409,7 @@ export const MapView = () => {
       {name:"Main Block - Physics Department",latitude:31.578126544583647, longitude:74.35993844932673},
       {name:"Old Mechanical Dept. UET",latitude:31.577995551012148, longitude:74.35998238115661},
       {name:"UET Power House",latitude:31.577835767390912,longitude: 74.36061601332679},
-      {name:"Cricket Groung UET",latitude:31.57828899350485,longitude: 74.36149182116054},
+      {name:"Cricket Ground UET",latitude:31.57828899350485,longitude: 74.36149182116054},
       {name:"Visiting Faculty Hostel",latitude:31.579275864854143,longitude: 74.35930550338462},
       {name:"Khadija Hall (Jannat)",latitude:31.579418232561707,longitude: 74.35988683425488},
       {name:"Bachelors Faculty Hostel",latitude:31.57930824933636,longitude: 74.36094713492295},

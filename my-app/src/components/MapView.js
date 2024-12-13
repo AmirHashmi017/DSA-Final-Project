@@ -13,7 +13,8 @@ import "../styles/tailwind.css";
 import "leaflet-routing-machine";
 import { AuthContext } from '../utils/AuthContext';
 import {pointsData} from './pointsData.js'
-
+import { PriorityQueue } from "../DataStructures/PriorityQueue.js";
+let mstPolylines = [];
 
 let points = pointsData;
 let mapInstance = null;
@@ -51,7 +52,7 @@ const calculateDistance = (lat1, lng1, lat2, lng2) => {
 export const MapPoints = ({ pointsData, threshold ,setGraph}) => {
   
   let polylines = [];
-  const { login,user,source,destination,setSource,setDestination } = useContext(AuthContext);
+  const { login,user,source,destination,setSource,setDestination,locationsMST,setMST,searchMST } = useContext(AuthContext);
   console.log(source,destination)
   const map = useMap();
    useEffect(() => {
@@ -60,10 +61,20 @@ export const MapPoints = ({ pointsData, threshold ,setGraph}) => {
 
    }, [source,destination]);
    useEffect(() => {
+     if (searchMST) {
+       primMST(locationsMST);
+       console.log("agya")
+      setMST(false);
+    }
+  }, [locationsMST, searchMST]);
+  
+
+   useEffect(() => {
     setView(destination); 
 
 
   }, [destination]);
+
 
 
   useEffect(() => {
@@ -82,6 +93,86 @@ export const MapPoints = ({ pointsData, threshold ,setGraph}) => {
     // Connect nodes for points
     connectNodes(pointsData, threshold);
   }, [pointsData, map, threshold]);
+
+//   function dijkstra(startNode, endNode) {
+
+//     if (!startNode) {
+//       throw new Error(`Start node "${startNode}" does not exist in the graph`);
+//   }
+  
+//   if (!endNode) {
+//       throw new Error(`End node "${endNode}" does not exist in the graph`);
+//   }
+//   if(startNode!=""  && endNode!="")
+//   {
+//     const distances = {}; // Track the shortest known distances to each node
+//     const predecessors = {}; // Track the shortest path
+//     const priorityQueue = new PriorityQueue(); // Initialize the priority queue
+
+//     // Initialize distances
+//     for (const node in graph) {
+//         distances[node] = Infinity;
+//     }
+//     distances[startNode] = 0;
+
+//     // Enqueue the start node
+//     priorityQueue.Enqueue(startNode, 0);
+
+//     while (!priorityQueue.IsEmpty()) {
+//         const dequeued = priorityQueue.Dequeue();
+
+//         // Handle case where dequeued is null
+//         if (!dequeued || !dequeued.data) {
+//             console.warn("Dequeued item is null or invalid:", dequeued);
+//             continue;
+//         }
+
+//         const { data: currentNode } = dequeued;
+
+//         // Process neighbors
+//         for (const neighbor of graph[currentNode] || []) {
+//             const { name: neighborNode, distance: edgeWeight } = neighbor;
+
+//             // Calculate new distance
+//             const newDistance = distances[currentNode] + edgeWeight;
+
+//             if (newDistance < distances[neighborNode]) {
+//                 distances[neighborNode] = newDistance;
+//                 predecessors[neighborNode] = currentNode;
+//                 priorityQueue.Enqueue(neighborNode, newDistance); // Use newDistance as priority
+//             }
+//         }
+
+//         // Exit early if we've reached the target node
+//         if (currentNode === endNode) {
+//             break;
+//         }
+//     }
+
+//     // Reconstruct the shortest path
+//     const path = [];
+//     let currentNode = endNode;
+
+//     while (currentNode !== undefined) {
+//         path.unshift(currentNode);
+//         currentNode = predecessors[currentNode];
+//     }
+
+//     // If the startNode isn't in the path, it means no path exists
+//     if (path[0] !== startNode) {
+//         return {
+//             path: [],
+//             distance: Infinity, // No path exists
+//         };
+//     }
+
+//     return {
+//         path, // The reconstructed path
+//         distance: distances[endNode], // Total distance to endNode
+//     };
+// }
+//   }
+  
 
     function dijkstra(startNode, endNode){
  
@@ -174,6 +265,88 @@ export const MapPoints = ({ pointsData, threshold ,setGraph}) => {
      distance: distances[endNode],
    };
   }
+
+  function primMST(nodesToVisit) {
+    const subGraph = {};
+    const mstEdges = [];
+    const visited = new Set();
+    const priorityQueue = [];
+  
+    // Step 1: Build the subGraph
+    for (const node of nodesToVisit) {
+      if (graph[node]) {
+        subGraph[node] = graph[node].filter(neighbor =>
+          nodesToVisit.includes(neighbor.name)
+        );
+      } else {
+        console.warn(`Node ${node} not found in the graph.`);
+      }
+    }
+    console.log("Constructed subGraph:", subGraph);
+  
+    // Step 2: Initialize MST with the first node
+    const startNode = nodesToVisit[0];
+    visited.add(startNode);
+  
+    // Add edges of the start node to the priority queue
+    if (subGraph[startNode]) {
+      for (const neighbor of subGraph[startNode]) {
+        priorityQueue.push({ from: startNode, to: neighbor.name, weight: neighbor.distance });
+      }
+    }
+    priorityQueue.sort((a, b) => a.weight - b.weight);
+    console.log("Initial Priority Queue:", priorityQueue);
+  
+    // Step 3: Build the MST
+    while (mstEdges.length < nodesToVisit.length - 1 && priorityQueue.length > 0) {
+      const { from, to, weight } = priorityQueue.shift();
+  
+      if (visited.has(to)) continue;
+  
+      mstEdges.push({ from, to, weight });
+      visited.add(to);
+  
+      console.log("MST Edges So Far:", mstEdges);
+      console.log("Visited Nodes:", visited);
+  
+      if (subGraph[to]) {
+        for (const neighbor of subGraph[to]) {
+          if (!visited.has(neighbor.name)) {
+            priorityQueue.push({ from: to, to: neighbor.name, weight: neighbor.distance });
+          }
+        }
+      }
+      priorityQueue.sort((a, b) => a.weight - b.weight);
+    }
+  
+    // Step 4: Calculate the total weight of the MST
+    const totalWeight = mstEdges.reduce((sum, edge) => sum + edge.weight, 0);
+    console.log("Final MST Edges:", mstEdges);
+    console.log("Total Weight:", totalWeight);
+  
+    mstEdges.forEach(edge => {
+      const startPoint = points.find(p => p.name === edge.from);
+      const endPoint = points.find(p => p.name === edge.to);
+  
+      if (startPoint && endPoint) {
+        L.polyline(
+          [
+            [startPoint.latitude, startPoint.longitude],
+            [endPoint.latitude, endPoint.longitude],
+          ],
+          { color: "green", weight: 5 } // Define the MST line color and thickness
+        )
+          .addTo(map)
+          .bindPopup(`MST Edge: ${edge.from} → ${edge.to} (Weight: ${edge.weight})`);
+      }
+    });
+
+    return { mstEdges, totalWeight };
+  }
+  
+  
+
+  
   function setView(){
     const selectedLocation = pointsData.find(
       (location) => location.name.toLowerCase().trim() === destination.toLowerCase()
@@ -334,8 +507,12 @@ export const MapPoints = ({ pointsData, threshold ,setGraph}) => {
   
       }
   
-     console.log("Graph of connections (node points):", graph);
-  
+    //  console.log("Graph of connections (node points):", graph);
+    //  const nodesToVisit = ["Tariq Hall","Department of Chemistry UET Lahore" ,"Annexe Ground","Khalid Hall","Secret Wall UET Lahore"];
+    //  const result = primMST(nodesToVisit);
+     
+    //  console.log("MST Edges:", result.mstEdges);
+    //  console.log("Total Weight:", result.totalWeight);
   
      return null; // This component doesn't render anything itself
    };
@@ -348,7 +525,7 @@ export const MapView = () => {
   // const map=useMap()
   const [pointsData, setPointsData] = useState([]);
   const [graph, setGraph] = useState({});
-  const [threshold, setThreshold] = useState(20);
+  const [threshold, setThreshold] = useState(500);
   const [polylines, setPolylines] = useState();
   let file=[]
   const loadCsvData = async () => {
@@ -410,6 +587,7 @@ export const MapView = () => {
     // };
     // reader.readAsText(file);
     const points = [
+      {name:"Civil Engineering Department, UET Lahore",latitude:31.579069019634254,longitude: 74.35703661351242},
       {name:"Al-Khawarizmi Institute of Computer Science",latitude:31.57807108217065,longitude: 74.35786330238952},
       {name:"Environmental engineering department uet Lahore",latitude:31.577497148974047,longitude: 74.3569819290696},
       {name:"Research Centre",latitude:31.577201274011752, longitude:74.35702738186762},
@@ -505,7 +683,7 @@ export const MapView = () => {
       {name:"Main Block - Physics Department",latitude:31.578126544583647, longitude:74.35993844932673},
       {name:"Old Mechanical Dept. UET",latitude:31.577995551012148, longitude:74.35998238115661},
       {name:"UET Power House",latitude:31.577835767390912,longitude: 74.36061601332679},
-      {name:"Cricket Groung UET",latitude:31.57828899350485,longitude: 74.36149182116054},
+      {name:"Cricket Ground UET",latitude:31.57828899350485,longitude: 74.36149182116054},
       {name:"Visiting Faculty Hostel",latitude:31.579275864854143,longitude: 74.35930550338462},
       {name:"Khadija Hall (Jannat)",latitude:31.579418232561707,longitude: 74.35988683425488},
       {name:"Bachelors Faculty Hostel",latitude:31.57930824933636,longitude: 74.36094713492295},

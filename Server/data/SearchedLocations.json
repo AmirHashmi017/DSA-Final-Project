@@ -1,137 +1,22 @@
 [
   {
     "UserID": 1734030612871,
+    "SourceLocation": "Sir Syed Hall",
+    "DestinationLocation": "IBM UET"
+  },
+  {
+    "UserID": 1734030612871,
     "SourceLocation": "IBM UET",
-    "DestinationLocation": "Sir Syed Hal"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UE"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Iqbal Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "UET Gate number 3",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "UET Gate number 3",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "UET Gate number 3",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
     "DestinationLocation": "UET Gate number 3"
   },
   {
     "UserID": 1734030612871,
-    "SourceLocation": "UET Power House",
-    "DestinationLocation": "UET Gate number 3"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "UET Power House",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
     "SourceLocation": "Sir Syed Hall",
     "DestinationLocation": "IBM UET"
+  },
+  {
+    "UserID": 1734030612871,
+    "SourceLocation": "IBM UET",
+    "DestinationLocation": "Sir Syed Hall"
   }
 ]

@@ -59,6 +59,11 @@ export const MapPoints = ({ pointsData, threshold ,setGraph}) => {
 
 
    }, [source,destination]);
+   useEffect(() => {
+    setView(destination); 
+
+
+  }, [destination]);
 
 
   useEffect(() => {
@@ -168,6 +173,23 @@ export const MapPoints = ({ pointsData, threshold ,setGraph}) => {
      path,
      distance: distances[endNode],
    };
+  }
+  function setView(){
+    const selectedLocation = pointsData.find(
+      (location) => location.name.toLowerCase().trim() === destination.toLowerCase()
+    );
+    console.log(selectedLocation)
+    if (selectedLocation) {
+      const latitude=selectedLocation.latitude;
+      const longitude=selectedLocation.longitude;
+
+
+      if (latitude && longitude ) {
+        map.setView([latitude, longitude], 20); // Set the map view based on the coordinates
+      }
+    } else {
+      console.log("Location not found");
+    }
   }
   function connectNodes(points, threshold) {
     // Reset the graph on each call

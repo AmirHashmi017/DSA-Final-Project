@@ -44,6 +44,7 @@ const SearchBar = () => {
 
   const handleSearch = () => {
     setLocationSelected(searchQuery);
+    setDestination(searchQuery)
   };
   const handleAddBookMarkedLocation = (location) => {
     addBookMarkedLocation(userID, sourceLocation, destinationLocation);

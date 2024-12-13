@@ -1,67 +1,7 @@
 [
   {
-    "UserID": 1734030612871,
-    "SourceLocation": "UET Power House",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "UET Power House"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "UET Power House"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "UET Power House"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "UET Power House"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "UET Power House"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "Sir Syed Hall"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "IBM UET",
-    "DestinationLocation": "UET Gate number 3"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "IBM UET",
-    "DestinationLocation": "Sir Syed Hall"
+    "UserID": 1734115812127,
+    "SourceLocation": "Zohra Hall (Girl's Hostel)",
+    "DestinationLocation": "UET Swimming Pool"
   }
 ]

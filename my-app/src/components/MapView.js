@@ -230,37 +230,41 @@ export const MapView = () => {
   const [graph, setGraph] = useState({});
   const [threshold, setThreshold] = useState(200);
   const [polylines, setPolylines] = useState();
-
-  const loadCsvData = (file) => {
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const csvData = event.target.result;
-      const rows = csvData.split("\n").slice(1); // Skip header row
-      const polygons = rows
-        .map((row) => {
-          const columns = row.split(";");
-          if (columns.length === 2) {
-            const polygonId = columns[0].trim();
-            const coordinates = columns[1].split("@");
-            const latLngs = coordinates
-              .map((coord) => {
-                const [lng, lat] = coord
-                  .split(",")
-                  .map((val) => parseFloat(val.trim()));
-                return isNaN(lng) || isNaN(lat) ? null : [lat, lng];
-              })
-              .filter(Boolean);
-            return latLngs.length ? { polygonId, latLngs } : null;
-          }
-          return null;
-        })
-        .filter(Boolean);
-      setPolylines(polygons);
-    };
-    reader.readAsText(file);
+  let file=[]
+  const loadCsvData = async () => {
+    // Fetch the CSV file
+    const fileData = await fetch('/coordinatesMain.csv')
+      .then((response) => response.text())
+      .catch((error) => console.error("Error fetching CSV:", error));
+  
+    // Process the CSV data
+    const rows = fileData.split("\n").slice(1); // Skip header row
+    const polygons = rows
+      .map((row) => {
+        const columns = row.split(";");
+        if (columns.length === 2) {
+          const polygonId = columns[0].trim();
+          const coordinates = columns[1].split("@");
+          const latLngs = coordinates
+            .map((coord) => {
+              const [lng, lat] = coord
+                .split(",")
+                .map((val) => parseFloat(val.trim()));
+              return isNaN(lng) || isNaN(lat) ? null : [lat, lng];
+            })
+            .filter(Boolean);
+          return latLngs.length ? { polygonId, latLngs } : null;
+        }
+        return null;
+      })
+      .filter(Boolean);
+  
+    // Update the state with the parsed data
+    setPolylines(polygons);
   };
   useEffect(() => {
     loadPointsCsv(); 
+    loadCsvData();
   }, []);
   const loadPointsCsv = (file) => {
     // const reader = new FileReader();
@@ -422,7 +426,7 @@ export const MapView = () => {
         />
       </MapContainer>
 
-      <input
+      {/* <input
         type="file"
         accept=".csv"
         onChange={(e) => loadCsvData(e.target.files[0])}
@@ -439,7 +443,7 @@ export const MapView = () => {
           value={threshold}
           onChange={(e) => setThreshold(Number(e.target.value))}
         />
-      </div>
+      </div> */}
     </div>
   );
 

@@ -111,14 +111,8 @@ const SearchBar = () => {
 
   const handleFinalSearch = () => {
     addLocation(userID, sourceLocation, destinationLocation);
-
-    // Compute the shortest path using Dijkstra
-    console.log("Source:", sourceLocation);
-    console.log("Destination:", destinationLocation);
     setSource(sourceLocation);
     setDestination(destinationLocation);
-
-    alert("Location Searched");
   };
 
   const handleCrossClick = () => {

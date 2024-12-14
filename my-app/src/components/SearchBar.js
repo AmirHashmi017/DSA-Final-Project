@@ -147,7 +147,7 @@ const SearchBar = () => {
                 className="bg-blue-600 text-white px-4 py-2.5 hover:bg-blue-700 rounded-r-3xl"
                 onClick={handleSearch}
               >
-                Searchs
+                Search
               </button>
             </>
           )}

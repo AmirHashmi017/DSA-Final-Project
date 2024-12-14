@@ -16,6 +16,25 @@ import { PointsData } from "./pointsData.js";
 import { DeviceLocationHistoryContext } from "../utils/TrackDevicesContext.js";
 let mstPolylines = [];
 
+const {
+  Node,
+  height,
+  balanceFactor,
+  rotateLeft,
+  rotateRight,
+  findMinNode,
+  insert,
+  deleteNode,
+  search,
+  preOrder,
+  inOrder,
+  postOrder
+} = require('../DataStructures/AVL Tree.js');
+
+let sscnode=null;
+let gsscnode=null;
+let bholacafenode=null;
+
 let points = PointsData;
 let mapInstance = null;
 // Function to set points
@@ -369,8 +388,67 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
 
     //  console.log("MST Edges:", result.mstEdges);
     //  console.log("Total Weight:", result.totalWeight);
-
+    CreateAVLTree();
     return null; // This component doesn't render anything itself
+  }
+  function CreateAVLTree()
+  {
+    sscnode=null;
+    gsscnode=null;
+    bholacafenode=null;
+    sscnode = new Node("Student Service Center - SSC");
+    gsscnode = new Node("Girls Student Services Center, UET Lahore");
+    bholacafenode = new Node("Sports Cafeteria UET Lahore");
+
+    // Create the initial nodes
+sscnode = new Node("Student Service Center - SSC");
+gsscnode = new Node("Girls Student Services Center, UET Lahore");
+bholacafenode = new Node("Sports Cafeteria UET Lahore");
+
+// Add 5 places under SSC Node
+sscnode = insert(sscnode, "Khalid Photocopy");
+sscnode = insert(sscnode, "Tanvir Composing");
+sscnode = insert(sscnode, "Madina General Store");
+sscnode = insert(sscnode, "General Store & Stationary");
+sscnode = insert(sscnode, "SSC Juice Corner");
+sscnode = insert(sscnode, "Amjad Restaurant");
+sscnode = insert(sscnode, "NonStop Fast Food");
+sscnode = insert(sscnode, "Shehbaaz Dahibhale");
+sscnode = insert(sscnode, "Zahoor Samosa");
+sscnode = insert(sscnode, "Delight IceCream");
+
+// Add 5 places under GSSC Node
+gsscnode = insert(gsscnode, "Star Photocopy");
+gsscnode = insert(gsscnode, "Rajab General Store");
+gsscnode = insert(gsscnode, "Ishaq Fruite Juice");
+gsscnode = insert(gsscnode, "Bombay Biryani");
+gsscnode = insert(gsscnode, "Italian Fast Food");
+gsscnode = insert(gsscnode, "Farooq Samosa");
+gsscnode = insert(gsscnode, "Taste IceCream");
+
+// Add 5 places under Bhola Cafe Node
+bholacafenode = insert(bholacafenode, "Azam Bro Canteen");
+bholacafenode = insert(bholacafenode, "Bhola Juice Corner");
+bholacafenode = insert(bholacafenode, "Sheikh Samosa");
+bholacafenode = insert(bholacafenode, "Cold IceCream");
+bholacafenode = insert(bholacafenode, "Bhola Canteen");
+
+// Print the structure of each tree using PreOrder Traversal
+console.log("SSC Node Tree (PreOrder):");
+preOrder(sscnode);
+
+console.log("\nGSSC Node Tree (PreOrder):");
+preOrder(gsscnode);
+
+console.log("\nBhola Cafe Node Tree (PreOrder):");
+preOrder(bholacafenode);
+
+console.log(search(bholacafenode, "Bhola Juice Corner"));
+
+console.log(search(gsscnode, "Italian Fast Food"));
+
+console.log(search(sscnode, "Khalid Photocopy"));
+
   }
 };
 

@@ -1,72 +1,17 @@
 [
   {
-    "UserID": 1734090436179,
-    "SourceLocation": "School of Architecture and Design UET Lahore",
-    "DestinationLocation": "HBL Bank ATM"
+    "UserID": 1734192264178,
+    "SourceLocation": "Ayesha Hall Girls Hostel.",
+    "DestinationLocation": "Visiting Faculty Hostel"
   },
   {
     "UserID": 1734090436179,
-    "SourceLocation": "Visiting Faculty Hostel",
-    "DestinationLocation": "Azam Bro Canteen"
-  },
-  {
-    "UserID": 1734090436179,
-    "SourceLocation": "UET Football Ground",
-    "DestinationLocation": "Azam Bro Canteen"
-  },
-  {
-    "UserID": 1734090436179,
-    "SourceLocation": "Producer director office Building",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734090436179,
-    "SourceLocation": "UET Power House",
-    "DestinationLocation": "Ground"
-  },
-  {
-    "UserID": 1734090436179,
-    "SourceLocation": "UET Power House",
-    "DestinationLocation": "Department of Mechatronics and Control Engineering"
-  },
-  {
-    "UserID": 1734090436179,
-    "SourceLocation": "UET Power House",
-    "DestinationLocation": " Ground"
-  },
-  {
-    "UserID": 1734090436179,
-    "SourceLocation": "UET Power House",
-    "DestinationLocation": "Software Engineering Centre"
+    "SourceLocation": "UET Basketball Court",
+    "DestinationLocation": "Faculty Hostel"
   },
   {
     "UserID": 1734090436179,
     "SourceLocation": "Cricket Ground UET",
-    "DestinationLocation": "UET Power House"
-  },
-  {
-    "UserID": 1734090436179,
-    "SourceLocation": "Cricket Ground UET",
-    "DestinationLocation": "Auditorium Complex"
-  },
-  {
-    "UserID": 1734090436179,
-    "SourceLocation": "Bhola",
-    "DestinationLocation": "Khalid Photocopy"
-  },
-  {
-    "UserID": 1734090436179,
-    "SourceLocation": "Yasir Food and Tuck Shop",
-    "DestinationLocation": "Khalid Photocopy"
-  },
-  {
-    "UserID": 1734090436179,
-    "SourceLocation": "Yasir Food and Tuck Shop",
-    "DestinationLocation": "Khalid Photocopy"
-  },
-  {
-    "UserID": 1734090436179,
-    "SourceLocation": "Yasir Food and Tuck Shop",
-    "DestinationLocation": "Cricket Ground UET"
+    "DestinationLocation": "Visiting Faculty Hostel"
   }
 ]

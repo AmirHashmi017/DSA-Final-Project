@@ -19,7 +19,6 @@ export const LocationsProvider = ({ children }) => {
       }
       const data = await response.json();
       setLocations(data);
-      console.log(data)
       setError(null);
     } catch (err) {
       setError(err.message || "Failed to fetch locations.");

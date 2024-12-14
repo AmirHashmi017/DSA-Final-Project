@@ -80,8 +80,6 @@ const SearchBar = () => {
     const allDestinations = [sourceLocation, ...additionalDestinations];
     setLocations(allDestinations);
     setMST(true);
-    console.log("Saved Route:", allDestinations);
-    // You can store the list or send it to an API here
   };
 
   const handleBlur = () => {

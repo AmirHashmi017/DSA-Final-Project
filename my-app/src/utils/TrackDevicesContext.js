@@ -20,7 +20,6 @@ export const DeviceLocationHistoryProvider = ({ children }) => {
         },
       });
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         setTrackDeviceLocationHistory(data);
       } else {
@@ -41,7 +40,6 @@ export const DeviceLocationHistoryProvider = ({ children }) => {
         body: JSON.stringify(payload),
       });
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         getLocationHistory(payload?.userId);
       } else {

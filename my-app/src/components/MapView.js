@@ -126,6 +126,57 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
   function dijkstra(startNode, endNode) {
     // Initialize distances and predecessors
     console.log("Global Graph:", graph);
+    if(typeof startNode !== 'undefined' && typeof endNode !== 'undefined' && startNode!==null && endNode!==null)
+    {
+    if(!(startNode in graph))
+    {
+      let IssourceFound=false;
+      const sourcetemp=startNode;
+      if(search(sscnode,startNode)!==null)
+      {
+        startNode="Student Service Center - SSC";
+        IssourceFound=true;
+      }
+      else if(search(gsscnode,startNode)!==null)
+      {
+        startNode="Girls Student Services Center, UET Lahore";
+        IssourceFound=true;
+      }
+      else if(search(bholacafenode,startNode)!==null)
+      {
+        startNode="Sports Cafeteria UET Lahore";
+        IssourceFound=true;
+      }
+      if(IssourceFound)
+      alert(sourcetemp+" found in "+ startNode);
+      else
+      alert(sourcetemp+ " Not Found");
+    }
+    if(!(endNode in graph))
+    {
+      let IsDestFound=false;
+      const tempdest=endNode;
+      if(search(sscnode,endNode)!==null)
+        {
+          endNode="Student Service Center - SSC";
+          IsDestFound=true;
+        }
+        else if(search(gsscnode,endNode)!==null)
+        {
+          endNode="Girls Student Services Center, UET Lahore";
+          IsDestFound=true;
+        }
+        else if(search(bholacafenode,endNode)!==null)
+        {
+          endNode="Sports Cafeteria UET Lahore";
+          IsDestFound=true;
+        }
+        if(IsDestFound)
+        alert(tempdest+" found in "+ endNode);
+        else
+        alert(tempdest+ " Not Found");
+    }
+  }
     const distances = {};
     const predecessors = {};
     const priorityQueue = new Set();
@@ -433,21 +484,8 @@ bholacafenode = insert(bholacafenode, "Sheikh Samosa");
 bholacafenode = insert(bholacafenode, "Cold IceCream");
 bholacafenode = insert(bholacafenode, "Bhola Canteen");
 
-// Print the structure of each tree using PreOrder Traversal
-console.log("SSC Node Tree (PreOrder):");
-preOrder(sscnode);
 
-console.log("\nGSSC Node Tree (PreOrder):");
-preOrder(gsscnode);
 
-console.log("\nBhola Cafe Node Tree (PreOrder):");
-preOrder(bholacafenode);
-
-console.log(search(bholacafenode, "Bhola Juice Corner"));
-
-console.log(search(gsscnode, "Italian Fast Food"));
-
-console.log(search(sscnode, "Khalid Photocopy"));
 
   }
 };

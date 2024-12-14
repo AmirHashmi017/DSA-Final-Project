@@ -93,8 +93,9 @@ const SearchBar = () => {
   const handleSearch = () => {
     setLocationSelected(searchQuery);
     setDestination(searchQuery);
-    // setLocations([]);
-    // setSource("");
+    setAdditionalDestinations([]);
+    setSourceLocation("")
+    
   };
 
   const handleAddBookMarkedLocation = () => {
@@ -154,7 +155,7 @@ const SearchBar = () => {
           {isFocused && (
             <div className="absolute top-full left-0 w-1/2 bg-white shadow-lg mt-2 rounded-lg max-h-40 overflow-y-auto z-[9999]">
               <ul className="text-sm">
-                {[
+                {searchedLocations && searchedLocations.length>0 &&[
                   ...new Map(
                     searchedLocations.map((location) => [
                       location.DestinationLocation,

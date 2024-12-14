@@ -1,67 +1,52 @@
 [
   {
-    "UserID": 1734115812127,
-    "SourceLocation": "Zohra Hall (Girl's Hostel)",
-    "DestinationLocation": "UET Swimming Pool"
+    "UserID": 1734090436179,
+    "SourceLocation": "UET Swimming Pool",
+    "DestinationLocation": "Darbar-e-Mujaddadi"
   },
   {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "UET Power House"
+    "UserID": 1734090436179,
+    "SourceLocation": "UET Swimming Pool",
+    "DestinationLocation": "Software Engineering Centre"
   },
   {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
+    "UserID": 1734090436179,
+    "SourceLocation": "UET Swimming Pool",
+    "DestinationLocation": "Junaid Jamshed Cricket Stadium"
   },
   {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
+    "UserID": 1734090436179,
+    "SourceLocation": "Zubair Hall",
+    "DestinationLocation": "UET Football Ground"
   },
   {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "UET Power House"
+    "UserID": 1734090436179,
+    "SourceLocation": "UET Science Society",
+    "DestinationLocation": "Darbar-e-Mujaddadi"
   },
   {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "UET Power House"
+    "UserID": 1734090436179,
+    "SourceLocation": "National Museum of Science & Technology",
+    "DestinationLocation": "Darbar-e-Mujaddadi"
   },
   {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "UET Power House"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "UET Power House"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "Sir Syed Hall"
-  },
-  {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
-  },
-  {
-    "UserID": 1734030612871,
+    "UserID": 1734090436179,
     "SourceLocation": "IBM UET",
-    "DestinationLocation": "UET Gate number 3"
+    "DestinationLocation": "Faculty Hostel"
   },
   {
-    "UserID": 1734030612871,
-    "SourceLocation": "Sir Syed Hall",
-    "DestinationLocation": "IBM UET"
+    "UserID": 1734090436179,
+    "SourceLocation": "UET Power House",
+    "DestinationLocation": "Environmental engineering department uet Lahore"
   },
   {
-    "UserID": 1734030612871,
-    "SourceLocation": "IBM UET",
-    "DestinationLocation": "Sir Syed Hall"
+    "UserID": 1734090436179,
+    "SourceLocation": "UET Power House",
+    "DestinationLocation": "Al-Khawarizmi Institute of Computer Science"
+  },
+  {
+    "UserID": 1734090436179,
+    "SourceLocation": "UET Power House",
+    "DestinationLocation": "Cricket Ground UET"
   }
 ]

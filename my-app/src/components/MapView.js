@@ -13,7 +13,6 @@ import "../styles/tailwind.css";
 import "leaflet-routing-machine";
 import { AuthContext } from "../utils/AuthContext";
 import { PointsData } from "./pointsData.js";
-import { PriorityQueue } from "../DataStructures/PriorityQueue.js";
 import { DeviceLocationHistoryContext } from "../utils/TrackDevicesContext.js";
 let mstPolylines = [];
 
@@ -101,95 +100,7 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
     connectNodes(pointsData, threshold);
   }, [pointsData, map, threshold]);
 
-  // Function to clear polylines
-  // const clearPolylines = () => {
-  //   polylines.forEach((polyline) => {
-  //     map.removeLayer(polyline);
-  //   });
-  //   setPolylines([]);
-  // };
-
-  // Provide the clearPolylines function to the parent component
-  // clearPolylinesRef.current = clearPolylines;
-
-  //   function dijkstra(startNode, endNode) {
-
-  //     if (!startNode) {
-  //       throw new Error(`Start node "${startNode}" does not exist in the graph`);
-  //   }
-
-  //   if (!endNode) {
-  //       throw new Error(`End node "${endNode}" does not exist in the graph`);
-  //   }
-  //   if(startNode!=""  && endNode!="")
-  //   {
-  //     const distances = {}; // Track the shortest known distances to each node
-  //     const predecessors = {}; // Track the shortest path
-  //     const priorityQueue = new PriorityQueue(); // Initialize the priority queue
-
-  //     // Initialize distances
-  //     for (const node in graph) {
-  //         distances[node] = Infinity;
-  //     }
-  //     distances[startNode] = 0;
-
-  //     // Enqueue the start node
-  //     priorityQueue.Enqueue(startNode, 0);
-
-  //     while (!priorityQueue.IsEmpty()) {
-  //         const dequeued = priorityQueue.Dequeue();
-
-  //         // Handle case where dequeued is null
-  //         if (!dequeued || !dequeued.data) {
-  //             console.warn("Dequeued item is null or invalid:", dequeued);
-  //             continue;
-  //         }
-
-  //         const { data: currentNode } = dequeued;
-
-  //         // Process neighbors
-  //         for (const neighbor of graph[currentNode] || []) {
-  //             const { name: neighborNode, distance: edgeWeight } = neighbor;
-
-  //             // Calculate new distance
-  //             const newDistance = distances[currentNode] + edgeWeight;
-
-  //             if (newDistance < distances[neighborNode]) {
-  //                 distances[neighborNode] = newDistance;
-  //                 predecessors[neighborNode] = currentNode;
-  //                 priorityQueue.Enqueue(neighborNode, newDistance); // Use newDistance as priority
-  //             }
-  //         }
-
-  //         // Exit early if we've reached the target node
-  //         if (currentNode === endNode) {
-  //             break;
-  //         }
-  //     }
-
-  //     // Reconstruct the shortest path
-  //     const path = [];
-  //     let currentNode = endNode;
-
-  //     while (currentNode !== undefined) {
-  //         path.unshift(currentNode);
-  //         currentNode = predecessors[currentNode];
-  //     }
-
-  //     // If the startNode isn't in the path, it means no path exists
-  //     if (path[0] !== startNode) {
-  //         return {
-  //             path: [],
-  //             distance: Infinity, // No path exists
-  //         };
-  //     }
-
-  //     return {
-  //         path, // The reconstructed path
-  //         distance: distances[endNode], // Total distance to endNode
-  //     };
-  // }
-  //   }
+ 
 
   let existingPolyline = null;
 
@@ -448,22 +359,6 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
 
           graph[points[i].name].push({ name: points[j].name, distance });
           graph[points[j].name].push({ name: points[i].name, distance });
-
-          // Create and store the polyline
-          // const polyline = L.polyline(
-          //   [
-          //     [points[i].latitude, points[i].longitude],
-          //     [points[j].latitude, points[j].longitude],
-          //   ],
-          //   { color: "blue", weight: 1 }
-          // )
-          //    .addTo(map)
-          //   // .bindPopup(`Distance: ${distance.toFixed(2)} meters`);
-
-          // polylines.push({
-          //   points: [points[i].name, points[j].name],
-          //   polyline,
-          // });
         }
       }
     }

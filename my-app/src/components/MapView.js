@@ -78,6 +78,8 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
     setSource,
     setDestination,
     locationsMST,
+    distances,
+    setDistances,
     setMST,
     searchMST,
   } = useContext(AuthContext);
@@ -265,6 +267,7 @@ export const MapPoints = ({ pointsData, threshold, setGraph }) => {
     }
 
     // Ensure the function also computes and returns the path and its total distance
+    setDistances(distances[endNode]);
     return {
       path,
       distance: distances[endNode],

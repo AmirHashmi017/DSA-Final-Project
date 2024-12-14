@@ -93,6 +93,8 @@ const SearchBar = () => {
   const handleSearch = () => {
     setLocationSelected(searchQuery);
     setDestination(searchQuery);
+    // setLocations([]);
+    // setSource("");
   };
 
   const handleAddBookMarkedLocation = () => {
@@ -182,11 +184,12 @@ const SearchBar = () => {
             >
               &times;
             </button>
-            {distances && distances < 10000 && (
+            {distances>0 && distances && distances < 10000 && (
               <h2 className="text-4xl font-bold mb-6">
                 {distances.toFixed(3) + " meters"}
+
               </h2>
-            )}
+            )}          
             <h2 className="text-3xl font-bold mb-6">{locationSelected}</h2>
             <div className="flex space-x-4 mb-6">
               <button

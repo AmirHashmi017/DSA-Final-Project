@@ -6,8 +6,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   // const baseRoute = "http://192.168.43.116:3000/api/auth";
-  const baseRoute = "http://192.1.1.104:3000/api/auth";
-  
+  const baseRoute = "http://192.168.43.161:3000/api/auth";
 
   const login = async (payload) => {
     try {

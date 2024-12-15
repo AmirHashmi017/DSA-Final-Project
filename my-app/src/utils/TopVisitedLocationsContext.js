@@ -20,7 +20,6 @@ export const TopVisitedLocationsProvider = ({ children }) => {
     try {
       const response = await axios.get(`${API_BASE_URL}/Get/${userId}`);
       const { data } = response.data;
-      console.log(data)
       setLocations(data);
       setLoading(false);
     } catch (err) {

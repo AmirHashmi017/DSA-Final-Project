@@ -1,9 +1,7 @@
 import React, { createContext, useState } from "react";
 
-// Create the AuthContext
 export const DeviceLocationHistoryContext = createContext();
 
-// AuthContext Provider Component
 export const DeviceLocationHistoryProvider = ({ children }) => {
   const [trackDeviceLocationHistory, setTrackDeviceLocationHistory] = useState(
     []
@@ -20,7 +18,6 @@ export const DeviceLocationHistoryProvider = ({ children }) => {
         },
       });
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         setTrackDeviceLocationHistory(data);
       } else {
@@ -41,7 +38,6 @@ export const DeviceLocationHistoryProvider = ({ children }) => {
         body: JSON.stringify(payload),
       });
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
         getLocationHistory(payload?.userId);
       } else {

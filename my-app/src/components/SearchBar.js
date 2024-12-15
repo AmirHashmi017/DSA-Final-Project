@@ -25,6 +25,8 @@ import "leaflet/dist/leaflet.css";
 import "../styles/tailwind.css";
 import "leaflet-routing-machine";
 
+
+
 const SearchBar = () => {
   const {
     login,
@@ -78,8 +80,6 @@ const SearchBar = () => {
     const allDestinations = [sourceLocation, ...additionalDestinations];
     setLocations(allDestinations);
     setMST(true);
-    console.log("Saved Route:", allDestinations);
-    // You can store the list or send it to an API here
   };
 
   const handleBlur = () => {
@@ -91,6 +91,9 @@ const SearchBar = () => {
   const handleSearch = () => {
     setLocationSelected(searchQuery);
     setDestination(searchQuery);
+    setAdditionalDestinations([]);
+    setSourceLocation("")
+    
   };
 
   const handleAddBookMarkedLocation = () => {
@@ -109,14 +112,8 @@ const SearchBar = () => {
 
   const handleFinalSearch = () => {
     addLocation(userID, sourceLocation, destinationLocation);
-
-    // Compute the shortest path using Dijkstra
-    console.log("Source:", sourceLocation);
-    console.log("Destination:", destinationLocation);
     setSource(sourceLocation);
     setDestination(destinationLocation);
-
-    alert("Location Searched");
   };
 
   const handleCrossClick = () => {
@@ -147,7 +144,7 @@ const SearchBar = () => {
                 className="bg-blue-600 text-white px-4 py-2.5 hover:bg-blue-700 rounded-r-3xl"
                 onClick={handleSearch}
               >
-                Searchs
+                Search
               </button>
             </>
           )}
@@ -156,7 +153,7 @@ const SearchBar = () => {
           {isFocused && (
             <div className="absolute top-full left-0 w-1/2 bg-white shadow-lg mt-2 rounded-lg max-h-40 overflow-y-auto z-[9999]">
               <ul className="text-sm">
-                {[
+                {searchedLocations && searchedLocations.length>0 &&[
                   ...new Map(
                     searchedLocations.map((location) => [
                       location.DestinationLocation,
@@ -186,11 +183,12 @@ const SearchBar = () => {
             >
               &times;
             </button>
-            {distances && distances < 10000 && (
+            {distances>0 && distances && distances < 10000 && (
               <h2 className="text-4xl font-bold mb-6">
                 {distances.toFixed(3) + " meters"}
+
               </h2>
-            )}
+            )}          
             <h2 className="text-3xl font-bold mb-6">{locationSelected}</h2>
             <div className="flex space-x-4 mb-6">
               <button

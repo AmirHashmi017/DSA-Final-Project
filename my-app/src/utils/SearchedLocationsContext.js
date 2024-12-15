@@ -20,7 +20,6 @@ const SearchedLocationsProvider = ({ children }) => {
         headers: {
             "Content-Type": "application/json",
         },
-        // body: JSON.stringify(userData),
     });
     const data = await response.json();
       setSearchedLocations(data);
@@ -56,7 +55,6 @@ const SearchedLocationsProvider = ({ children }) => {
   
       const responseData = await response.json();
   
-      // Ensure the response data contains the expected 'location' object
       if (responseData && responseData.location) {
         setSearchedLocations((prev) => [...prev, responseData.location]);
       } else {

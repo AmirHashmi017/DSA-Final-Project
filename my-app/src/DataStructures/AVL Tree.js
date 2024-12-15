@@ -144,7 +144,7 @@ function search(root, key) {
 
 function preOrder(node) {
     if (node !== null) {
-        process.stdout.write(node.key + " ");
+
         preOrder(node.left);
         preOrder(node.right);
     }
@@ -153,7 +153,6 @@ function preOrder(node) {
 function inOrder(node) {
     if (node !== null) {
         inOrder(node.left);
-        process.stdout.write(node.key + " ");
         inOrder(node.right);
     }
 }
@@ -162,7 +161,22 @@ function postOrder(node) {
     if (node !== null) {
         postOrder(node.left);
         postOrder(node.right);
-        process.stdout.write(node.key + " ");
     }
 }
+
+module.exports = {
+    Node,
+    height,
+    balanceFactor,
+    rotateLeft,
+    rotateRight,
+    findMinNode,
+    insert,
+    deleteNode,
+    search,
+    preOrder,
+    inOrder,
+    postOrder
+};
+
 

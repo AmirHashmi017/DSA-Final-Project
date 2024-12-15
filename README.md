@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-# DSA-Final-Project
-
-The Repository is for DSA Final Project "Custom Map and Mobile Tracker" within UET Lahore
-=======
 # 🎯 Map & Mobile Tracker - Campus Ninja for UET Lahore!
 
 Welcome, dear wanderer! You've stumbled upon the ultimate navigation wizard for UET Lahore. Forget aimless wandering and awkward "Where's the library?" questions. With our custom-made campus guide, you'll always find your way, whether it's to the cafeteria, the lecture halls, or that secret chai spot!
@@ -46,8 +41,6 @@ This ain't your grandma's old paper map! 🚀 It's a high-tech, brainy tracker d
 3. Let the algorithms work their magic. 💫
 4. Follow the route like a boss. 😎
 
-
-
 ## 🔮 Future Spells & Potions
 
 - **Dynamic Map Updates:** Because new buildings pop up like mushrooms! 🏗️
@@ -64,56 +57,72 @@ This ain't your grandma's old paper map! 🚀 It's a high-tech, brainy tracker d
 Guided by the mighty wizards:  
 **Sir Nazeef-ul-Haq** & **Sir Waseem**. 🧙‍♂️🧙‍♂️
 
-
 ## 🛠️ How to Run This Project
 
-Follow these simple steps to bring your project to life! 🌟  
+Follow these simple steps to bring your project to life! 🌟
 
 ### 1️⃣ Backend (Server)
-1. Navigate to the `server` folder.  
-2. Run the command in terminal:  
+
+1. Navigate to the `server` folder.
+2. Run the command in terminal:
+
 ```bash
     npm install
 ```
+
 3. Start the server with:
+
 ```bash
     node index.js
 ```
+
 4.Your backend is now running! 🎉
 
 ### 1️⃣ Frontend (Client)
+
 1. Navigate to the `my-app` folder.
 2. Run the command in terminal:
- ``` bash
-    npm install
+
+```bash
+   npm install
 ```
+
 3. Start the Client Side(Frontend) with:
-``` bash
+
+```bash
    npm run start
 ```
+
 4. Your frontend is now running! 🎉
 
 ### 1️⃣ Frontend (Client) React Native App
+
 1. Make sure you have Expo Go installed on your mobile device. You can get it from the App Store for iOS or Google Play for Android.
 2. Navigate to the `Mobil App` folder (the same folder where you have the React Native code).
 3. Run the command:
-``` bash
+
+```bash
 npm install
 ```
+
 4. Install expo cli:
-``` bash
+
+```bash
 npm install -g expo-cli
 ```
+
 5. Start the React Native app with Expo
-``` bash
+
+```bash
 npx expo start -c
 ```
+
 6. A QR code will appear in the terminal or the browser.
 7. Open Expo Go on your mobile device and scan the QR code to run the app on your phone. 📱
 8. Your React Native app is now running! 🎉
 
-
 ### Process Explanation:
+
 - For the **Backend (Server)**: It starts the backend by installing dependencies and running the server with Node.js.
 - For the **Frontend (Client)**: It installs dependencies and runs the React app.
 - For **React Native App (Using Expo Go)**: It uses Expo Go for an easy way to run the React Native app on your mobile device.
@@ -126,4 +135,3 @@ Check out the code and join the fun:
 👉 [GitHub Repository](https://github.com/AmirHashmi017/DSA-Final-Project)
 
 **Warning:** Using this app might make you the coolest (and most punctual) person on campus! 😏
->>>>>>> f5631a6a5183e17b0e3af0f08f45ee4b78c43a9d

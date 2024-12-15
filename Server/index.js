@@ -9,7 +9,6 @@ const TopVisitedLocationsRoutes = require("./routes/TopVisitedLocationsRoutes.js
 
 const app = express();
 const corsOptions = {
-  // origin: ["http://localhost:3000", "http://yourfrontenddomain.com"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };

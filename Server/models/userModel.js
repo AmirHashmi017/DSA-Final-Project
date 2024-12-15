@@ -4,7 +4,6 @@ const User = require("../Classes/UserClass");
 
 const filePath = path.join(__dirname, "../data/users.json");
 
-// Define the user schema
 const userSchema = {
   userId: "number",
   userName: "string",
@@ -18,7 +17,6 @@ const validateUser = (user) => {
   );
 };
 
-// Get all users from the file
 const getUsers = async () => {
   const data = await fs.readFile(filePath, "utf8");
   const parsedData = JSON.parse(data);
@@ -26,7 +24,6 @@ const getUsers = async () => {
   return parsedData;
 };
 
-// Save users to the file
 const saveUsers = async (users) => {
   await fs.writeFile(filePath, JSON.stringify(users, null, 2));
 };
@@ -40,7 +37,6 @@ const addUser = async (user) => {
   saveUsers(users);
 };
 
-// Find a user by email
 const findUserByEmail = async (email) => {
   const users = await getUsers();
   console.log("users in email function", users);

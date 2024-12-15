@@ -12,7 +12,6 @@ class DoublyLinkedList {
     this.tail = null;
   }
 
-  // Add a node to the end
   append(data) {
     const newNode = new Node(data);
     if (!this.head) {
@@ -24,7 +23,6 @@ class DoublyLinkedList {
     this.tail = newNode;
   }
 
-  // Add a node to the beginning
   prepend(data) {
     const newNode = new Node(data);
     if (!this.head) {
@@ -36,7 +34,6 @@ class DoublyLinkedList {
     this.head = newNode;
   }
 
-  // Remove a node from the list
   remove(data) {
     if (!this.head) return null;
 

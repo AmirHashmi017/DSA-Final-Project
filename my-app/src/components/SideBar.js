@@ -150,10 +150,6 @@ const Sidebar = () => {
           className="cursor-pointer text-gray-500 hover:text-blue-600 flex flex-col text-center mb-5 items-end justify-end "
           onClick={() => handleIconClick(null)}
         >
-          {/* <div>
-            <i className="fa-solid fa-arrow-right-from-bracket text-xl rotate-180"></i>
-            <div className="text-sm">Log Out</div>
-          </div> */}
         </div>
       </div>
 
@@ -170,8 +166,6 @@ const Sidebar = () => {
                 <i className="fa-solid fa-xmark"></i>
               </button>
             </div>
-            {/* side-ba */}
-            {/* Display Content Sections */}
             {activeIcon === "saved" &&
               (locations && locations.length > 0 ? (
                 locations.map((location, index) => (
@@ -192,11 +186,6 @@ const Sidebar = () => {
                 />
               ))}
             {activeIcon === "topVisited" && (
-              // <ContentSection
-              //   title="Top Visited Locations"
-              //   content="Your top visited locations will appear here."
-              //   onClose={handleClose}
-              // />
               <TopVisitedLocations userId={userID} />
             )}
             {activeIcon === "recent" &&

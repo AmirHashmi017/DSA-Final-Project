@@ -68,7 +68,7 @@ const AuthStack = () => (
 
 const styles = StyleSheet.create({
   headerIconContainer: {
-    marginHorizontal: 10, // Add spacing for the icons
+    marginHorizontal: 10, 
   },
 });
 

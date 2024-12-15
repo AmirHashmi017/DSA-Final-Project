@@ -1,17 +1,7 @@
 [
   {
-    "UserID": 1734192264178,
-    "SourceLocation": "Ayesha Hall Girls Hostel.",
-    "DestinationLocation": "Visiting Faculty Hostel"
-  },
-  {
-    "UserID": 1734090436179,
-    "SourceLocation": "UET Basketball Court",
-    "DestinationLocation": "Faculty Hostel"
-  },
-  {
-    "UserID": 1734090436179,
-    "SourceLocation": "Cricket Ground UET",
-    "DestinationLocation": "Visiting Faculty Hostel"
+    "UserID": 1734115812127,
+    "SourceLocation": "Department of Mechanical Engineering",
+    "DestinationLocation": "Girls Student Services Center, UET Lahore"
   }
 ]

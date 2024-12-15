@@ -1,13 +1,13 @@
 import React, { useContext, useState } from "react";
-import { AuthContext } from "../utils/AuthContext"; // Adjust the import path if necessary
+import { AuthContext } from "../utils/AuthContext";
 
 const LoginSignupForm = () => {
   const { login,signup,user,handleLogout ,showModal,setShowModal} = useContext(AuthContext);
-  const [isLogin, setIsLogin] = useState(true); // Toggle between login and signup
+  const [isLogin, setIsLogin] = useState(true); 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    userName: isLogin ? "" : "DefaultUser", // Only for signup
+    userName: isLogin ? "" : "DefaultUser", 
   });
 
   const handleChange = (e) => {
@@ -23,14 +23,13 @@ const LoginSignupForm = () => {
     if (isLogin) {
       await login({ email: formData.email, password: formData.password });
     } else {
-      console.log("Signup: ", formData);
       await signup(formData);
     }
   };
 
 
 const handleProfileClick = () => {
-    setShowModal(true); // Show modal when profile is clicked
+    setShowModal(true);
 };
   return user ? (
     <div className="relative z-[9999999999999999]">

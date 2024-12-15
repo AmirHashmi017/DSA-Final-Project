@@ -12,7 +12,6 @@ const TopVisitedLocations = ({ userId }) => {
 
   return (
     <div>
-      {/* {loading && <p>Loading...</p>} */}
       {error && <p style={{ color: "red" }}>{error}</p>}
       {!loading && !error && locations.length === 0 && <p>No locations found.</p>}
       {locations.length > 0 && (

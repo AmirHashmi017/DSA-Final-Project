@@ -1,9 +1,6 @@
 import React, { createContext, useState } from "react";
 
-// Create the AuthContext
 export const AuthContext = createContext();
-
-// AuthContext Provider Component
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem("authToken") || null);
     const [user, setUser] = useState(null);
@@ -18,7 +15,6 @@ export const AuthProvider = ({ children }) => {
     // Login function
     const login = async (userData) => {
         try {
-            console.log("Login: ", userData);
             const response = await fetch(`${baseRoute}/api/auth/login`, {
                 method: "POST",
                 headers: {
@@ -27,7 +23,6 @@ export const AuthProvider = ({ children }) => {
                 body: JSON.stringify(userData),
             });
             const data = await response.json();
-            console.log(data);
             if (response.ok) {
                 setUser(data?.user);
             } else {
@@ -61,12 +56,10 @@ const signup = async (userData) => {
 };
     // Logout function
     const logout = () => {
-        console.log("Logout");
         setUser(null);
     };
     const handleLogout = () => {
         logout();
-        // navigate("/"); 
     };
     // Function to get user details
     const getUserDetails = () => {
